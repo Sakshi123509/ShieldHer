@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import AuthPages from "./AuthPages";
 // ─── Easing ───────────────────────────────────────────────────
 const easeOutCubic = x => 1 - Math.pow(1 - x, 3);
 const easeOutBack  = x => { const c1=1.70158,c3=c1+1; return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2); };
@@ -177,7 +177,7 @@ function drawBranding(ctx, alpha, sc, cx, cy) {
   
   ctx.fillStyle="rgba(200,240,255,0.95)";
   ctx.shadowColor="#00cfff"; ctx.shadowBlur=28*sc;
-  ctx.fillText("SHIELDHER", 0, 295*sc);
+  ctx.fillText("SHIELDHER", 0, 290*sc);
   ctx.restore();
 }
 
@@ -305,6 +305,7 @@ export default function ShieldHerLoader() {
     <>
       {/* Login always mounted underneath, fades in when showLogin=true
       <LoginPage visible={showLogin} /> */}
+      <AuthPages visible={AuthPages}/>
 
       {/* Loader sits on top, fades out, then unmounts */}
       {!hideLoader && (

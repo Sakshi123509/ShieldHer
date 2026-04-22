@@ -1,9 +1,11 @@
 import React from 'react'
-import ShieldHerLoader from './ShieldHerLoader'
+// import ShieldHerLoader from './Pages/ShieldHerLoader'
+import AuthPages from './Pages/AuthPages'
 const App = () => {
   return (
     <>
-  <ShieldHerLoader/>
+  {/* <ShieldHerLoader/> */}
+  <AuthPages/>
     </>
   )
 }
