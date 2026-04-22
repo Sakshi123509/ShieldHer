@@ -4,7 +4,7 @@ import User from "../models/User.js";
 
 
 // REGISTER
-exports.registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
@@ -27,7 +27,7 @@ exports.registerUser = async (req, res) => {
 };
 
 // LOGIN
-exports.loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {

@@ -1,4 +1,22 @@
 import { useState, useEffect, useRef } from "react";
+import { loginUser } from "../api/serverApi";
+import { registerUser } from "../api/serverApi";
+
+const handleRegister = async () => {
+  const data = await registerUser({ name, email, password });
+  alert(data.msg);
+};
+
+const handleLogin = async () => {
+  const data = await loginUser({ email, password });
+
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+    alert("Login success");
+  } else {
+    alert(data.msg);
+  }
+};
 
 // ── Animated Background Canvas ────────────────────────────────
 function AnimatedBackground({ mode }) {
@@ -331,6 +349,16 @@ function LoginPage({ onSwitch }) {
   const [btnHover, setBtnHover] = useState(false);
   const [gHover, setGHover] = useState(false);
 
+  const handleLogin = async () => {
+    const data = await loginUser({ email, password });
+
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+      alert("Login success");
+    } else {
+      alert(data.msg || "Login failed");
+    }
+  };
   return (
     <div
       style={{
@@ -547,6 +575,7 @@ function LoginPage({ onSwitch }) {
             position: "relative",
             overflow: "hidden",
           }}
+          onClick={handleLogin}
         >
           AUTHENTICATE
         </button>
@@ -628,6 +657,17 @@ function SignupPage({ onSwitch }) {
   const [confirm, setConfirm] = useState("");
   const [btnHover, setBtnHover] = useState(false);
   const [gHover, setGHover] = useState(false);
+
+  function SignupPage({ onSwitch }) {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleRegister = async () => {
+      const data = await registerUser({ name, email, password });
+      alert(data.msg || "Registered");
+    };
+  }
 
   return (
     <div
@@ -872,6 +912,7 @@ function SignupPage({ onSwitch }) {
               : "0 0 16px rgba(0,207,255,0.12)",
             transition: "all .25s",
           }}
+          onClick={handleRegister}
         >
           JOIN SHIELDHER
         </button>
