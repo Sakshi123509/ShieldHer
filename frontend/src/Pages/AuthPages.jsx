@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import sign from "../assets/sign.png"
 // ── Animated Background Canvas ────────────────────────────────
 function AnimatedBackground({ mode }) {
   const canvasRef = useRef(null);
@@ -287,14 +287,23 @@ function LoginPage({ onSwitch }) {
       width: "100%", maxWidth: "420px",
       margin: "0 auto",
       animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdfb27220-1720-4f05-94ab-72ac01b730b5_1536x1024.png')",
+  backgroundSize: "contain",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
+
+  
+ 
+ 
     }}>
       {/* Card */}
       <div style={{
-        background: "rgba(4,18,48,0.82)",
+        background: "rgba(4, 18, 48, 0.63)",
+        //  backgroundBlendMode: "multiply"  ,
         border: "1px solid rgba(0,180,255,0.18)",
         borderRadius: "16px",
         padding: "40px 36px 36px",
-        backdropFilter: "blur(24px)",
+        // backdropFilter: "blur(24px)",
         boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
         position: "relative",
         overflow: "hidden",
@@ -447,13 +456,21 @@ function SignupPage({ onSwitch }) {
       width: "100%", maxWidth: "420px",
       margin: "0 auto",
       animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+
+      backgroundImage: `url(${sign})`,
+
+  backgroundSize: "contain",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
+
+  
     }}>
       <div style={{
-        background: "rgba(4,18,48,0.82)",
+        background: "rgba(4, 18, 48, 0.63)",
         border: "1px solid rgba(0,180,255,0.18)",
         borderRadius: "16px",
         padding: "36px 36px 32px",
-        backdropFilter: "blur(24px)",
+        // backdropFilter: "blur(24px)",
         boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
         position: "relative", overflow: "hidden",
       }}>
