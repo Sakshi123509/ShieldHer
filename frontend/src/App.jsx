@@ -1,13 +1,15 @@
-import React from 'react'
-import ShieldHerLoader from './Pages/ShieldHerLoader'
-// import AuthPages from './Pages/AuthPages'
-const App = () => {
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthPages from "./pages/AuthPages";
+
+function App() {
   return (
-    <>
-  <ShieldHerLoader/>
-  {/* <AuthPages/> */}
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AuthPages />} />
+        {/* <Route path="/home" element={<Home />} /> */}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;  

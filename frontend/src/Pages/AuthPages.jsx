@@ -1,4 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+// ── Mock API (replace with your real imports) ─────────────────
+import { loginUser } from "../api/serverApi";
+import { registerUser } from "../api/serverApi";
 
 // ── Animated Background Canvas ────────────────────────────────
 function AnimatedBackground({ mode }) {
@@ -61,7 +65,6 @@ function AnimatedBackground({ mode }) {
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.stroke();
-      // Orbiting dot
       const ox = cx + Math.cos(t) * r;
       const oy = cy + Math.sin(t) * r;
       ctx.beginPath();
@@ -99,7 +102,6 @@ function AnimatedBackground({ mode }) {
       ctx.restore();
     }
 
-    // Floating shield symbols positions
     const shields = [
       { x: 0.1, y: 0.2, size: 22, speed: 0.4 },
       { x: 0.85, y: 0.15, size: 16, speed: 0.6 },
@@ -118,7 +120,6 @@ function AnimatedBackground({ mode }) {
       tRef.current += dt;
       const t = tRef.current;
 
-      // Background
       const grd = ctx.createRadialGradient(
         W * 0.5,
         H * 0.4,
@@ -133,7 +134,6 @@ function AnimatedBackground({ mode }) {
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, W, H);
 
-      // Ambient center glow
       const ag = ctx.createRadialGradient(
         W * 0.5,
         H * 0.5,
@@ -147,12 +147,10 @@ function AnimatedBackground({ mode }) {
       ctx.fillStyle = ag;
       ctx.fillRect(0, 0, W, H);
 
-      // Large background orbit rings
       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.38, t * 0.2, 0.06);
       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.45, -t * 0.15, 0.04);
       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.28, t * 0.3, 0.05);
 
-      // Floating shield symbols
       shields.forEach((s, i) => {
         const floatY = Math.sin(t * s.speed + i) * 12;
         drawShieldSymbol(
@@ -165,7 +163,6 @@ function AnimatedBackground({ mode }) {
         );
       });
 
-      // DNA strands on sides
       if (mode === "signup") {
         drawDNAStrand(ctx, W * 0.04, H * 0.5, t * 0.6, 0.5);
         drawDNAStrand(ctx, W * 0.96, H * 0.5, t * 0.6 + Math.PI, 0.5);
@@ -174,7 +171,6 @@ function AnimatedBackground({ mode }) {
         drawDNAStrand(ctx, W * 0.96, H * 0.5, t * 0.6 + Math.PI, 0.4);
       }
 
-      // Floating particles
       const pts = particlesRef.current;
       pts.forEach((p) => {
         p.x += p.vx;
@@ -198,7 +194,6 @@ function AnimatedBackground({ mode }) {
         ctx.restore();
       });
 
-      // Grid lines (very faint)
       ctx.save();
       ctx.globalAlpha = 0.025;
       ctx.strokeStyle = "#00cfff";
@@ -217,7 +212,6 @@ function AnimatedBackground({ mode }) {
       }
       ctx.restore();
 
-      // Pulse rings emanating from center
       for (let i = 0; i < 3; i++) {
         const phase = (t * 0.4 + i / 3) % 1;
         const pr = phase * Math.min(W, H) * 0.5;
@@ -244,12 +238,7 @@ function AnimatedBackground({ mode }) {
   return (
     <canvas
       ref={canvasRef}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: "none",
-      }}
+      style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
     />
   );
 }
@@ -278,7 +267,7 @@ function GoogleIcon() {
   );
 }
 
-// ── Shared input style ────────────────────────────────────────
+// ── Shared Field ──────────────────────────────────────────────
 function Field({ label, type = "text", placeholder, value, onChange }) {
   const [focused, setFocused] = useState(false);
   return (
@@ -324,6 +313,18 @@ function Field({ label, type = "text", placeholder, value, onChange }) {
   );
 }
 
+const cornerStyles = [
+  { top: 10, left: 10, borderTop: "1px solid", borderLeft: "1px solid" },
+  { top: 10, right: 10, borderTop: "1px solid", borderRight: "1px solid" },
+  { bottom: 10, left: 10, borderBottom: "1px solid", borderLeft: "1px solid" },
+  {
+    bottom: 10,
+    right: 10,
+    borderBottom: "1px solid",
+    borderRight: "1px solid",
+  },
+];
+
 // ── Login Page ────────────────────────────────────────────────
 function LoginPage({ onSwitch }) {
   const [email, setEmail] = useState("");
@@ -331,40 +332,23 @@ function LoginPage({ onSwitch }) {
   const [btnHover, setBtnHover] = useState(false);
   const [gHover, setGHover] = useState(false);
 
+  // FIX: handleLogin defined inside component so it has access to state
+  const navigate = useNavigate();
   const handleLogin = async () => {
     const data = await loginUser({ email, password });
-
     if (data.token) {
       localStorage.setItem("token", data.token);
-      alert("Login success");
+      console.log("✅ Login successful! User:", email);
+      navigate("/home");
     } else {
       alert(data.msg || "Login failed");
+      console.error("❌ Login failed:", data.msg);
     }
   };
-  return (
-    <div style={{
-      position: "relative", zIndex: 10,
-      width: "100%", maxWidth: "420px",
-      margin: "0 auto",
-      animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
-backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdfb27220-1720-4f05-94ab-72ac01b730b5_1536x1024.png')",
-  backgroundSize: "contain",
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center",
 
-  
- 
- 
-    }}>
-      {/* Card */}
-      <div style={{
-        background: "rgba(4, 18, 48, 0.63)",
-        //  backgroundBlendMode: "multiply"  ,
-        border: "1px solid rgba(0,180,255,0.18)",
-        borderRadius: "16px",
-        padding: "40px 36px 36px",
-        // backdropFilter: "blur(24px)",
-        boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+  return (
+    <div
+      style={{
         position: "relative",
         zIndex: 10,
         width: "100%",
@@ -373,7 +357,7 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
         animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
       }}
     >
-      {/* Card */}
+      {/* FIX: Removed duplicate outer card wrapper — single card div only */}
       <div
         style={{
           background: "rgba(4,18,48,0.82)",
@@ -387,7 +371,6 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
           overflow: "hidden",
         }}
       >
-        {/* Top accent line */}
         <div
           style={{
             position: "absolute",
@@ -400,7 +383,6 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
           }}
         />
 
-        {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <div
             style={{
@@ -447,7 +429,6 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
           />
         </div>
 
-        {/* Google button */}
         <button
           onMouseEnter={() => setGHover(true)}
           onMouseLeave={() => setGHover(false)}
@@ -473,11 +454,9 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
             marginBottom: "20px",
           }}
         >
-          <GoogleIcon />
-          CONTINUE WITH GOOGLE
+          <GoogleIcon /> CONTINUE WITH GOOGLE
         </button>
 
-        {/* Divider */}
         <div
           style={{
             display: "flex",
@@ -512,7 +491,6 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
           />
         </div>
 
-        {/* Fields */}
         <div
           style={{
             display: "flex",
@@ -537,7 +515,6 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
           />
         </div>
 
-        {/* Forgot */}
         <div style={{ textAlign: "right", marginBottom: "24px" }}>
           <span
             style={{
@@ -553,10 +530,10 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
           </span>
         </div>
 
-        {/* Submit */}
         <button
           onMouseEnter={() => setBtnHover(true)}
           onMouseLeave={() => setBtnHover(false)}
+          onClick={handleLogin}
           style={{
             width: "100%",
             padding: "14px",
@@ -578,12 +555,10 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
             position: "relative",
             overflow: "hidden",
           }}
-          onClick={handleLogin}
         >
           AUTHENTICATE
         </button>
 
-        {/* Switch */}
         <p
           style={{
             textAlign: "center",
@@ -609,33 +584,7 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
           </span>
         </p>
 
-        {/* Corner decorations */}
-        {[
-          {
-            top: 10,
-            left: 10,
-            borderTop: "1px solid",
-            borderLeft: "1px solid",
-          },
-          {
-            top: 10,
-            right: 10,
-            borderTop: "1px solid",
-            borderRight: "1px solid",
-          },
-          {
-            bottom: 10,
-            left: 10,
-            borderBottom: "1px solid",
-            borderLeft: "1px solid",
-          },
-          {
-            bottom: 10,
-            right: 10,
-            borderBottom: "1px solid",
-            borderRight: "1px solid",
-          },
-        ].map((s, i) => (
+        {cornerStyles.map((s, i) => (
           <div
             key={i}
             style={{
@@ -653,6 +602,7 @@ backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_li
 }
 
 // ── Signup Page ───────────────────────────────────────────────
+// FIX: Removed nested SignupPage definition inside itself
 function SignupPage({ onSwitch }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -661,47 +611,59 @@ function SignupPage({ onSwitch }) {
   const [btnHover, setBtnHover] = useState(false);
   const [gHover, setGHover] = useState(false);
 
-  function SignupPage({ onSwitch }) {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const handleRegister = async () => {
-      const data = await registerUser({ name, email, password });
-      alert(data.msg || "Registered");
-    };
-  }
+  // FIX: handleRegister defined inside component so it has access to state
+  const handleRegister = async () => {
+    if (password !== confirm) {
+      alert("Passwords do not match");
+      return;
+    }
+    const data = await registerUser({ name, email, password });
+    if (data.msg) {
+      console.log("✅ Registered! User:", email);
+      onSwitch(); // login page pe le jao
+    } else {
+      alert(data.error || "Registration failed");
+    }
+  };
 
   return (
-    <div style={{
-      position: "relative", zIndex: 10,
-      width: "100%", maxWidth: "420px",
-      margin: "0 auto",
-      animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+    <div
+      style={{
+        position: "relative",
+        zIndex: 10,
+        width: "100%",
+        maxWidth: "420px",
+        margin: "0 auto",
+        animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+        // FIX: Removed `sign` variable reference (was undefined). Add your image URL here if needed:
+        // backgroundImage: "url('/your-image-path.png')",
+      }}
+    >
+      <div
+        style={{
+          background: "rgba(4,18,48,0.82)",
+          border: "1px solid rgba(0,180,255,0.18)",
+          borderRadius: "16px",
+          padding: "36px 36px 32px",
+          backdropFilter: "blur(24px)",
+          boxShadow:
+            "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "20%",
+            right: "20%",
+            height: "1px",
+            background:
+              "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
+          }}
+        />
 
-      backgroundImage: `url(${sign})`,
-
-  backgroundSize: "contain",
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center",
-
-  
-    }}>
-      <div style={{
-        background: "rgba(4, 18, 48, 0.63)",
-        border: "1px solid rgba(0,180,255,0.18)",
-        borderRadius: "16px",
-        padding: "36px 36px 32px",
-        // backdropFilter: "blur(24px)",
-        boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
-        position: "relative", overflow: "hidden",
-      }}>
-        <div style={{
-          position: "absolute", top: 0, left: "20%", right: "20%", height: "1px",
-          background: "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
-        }}/>
-
-        {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "28px" }}>
           <div
             style={{
@@ -748,7 +710,6 @@ function SignupPage({ onSwitch }) {
           />
         </div>
 
-        {/* Google */}
         <button
           onMouseEnter={() => setGHover(true)}
           onMouseLeave={() => setGHover(false)}
@@ -774,11 +735,9 @@ function SignupPage({ onSwitch }) {
             marginBottom: "18px",
           }}
         >
-          <GoogleIcon />
-          SIGN UP WITH GOOGLE
+          <GoogleIcon /> SIGN UP WITH GOOGLE
         </button>
 
-        {/* Divider */}
         <div
           style={{
             display: "flex",
@@ -813,7 +772,6 @@ function SignupPage({ onSwitch }) {
           />
         </div>
 
-        {/* Fields */}
         <div
           style={{
             display: "flex",
@@ -852,7 +810,6 @@ function SignupPage({ onSwitch }) {
           />
         </div>
 
-        {/* Terms */}
         <p
           style={{
             fontSize: "10px",
@@ -885,10 +842,10 @@ function SignupPage({ onSwitch }) {
           </span>
         </p>
 
-        {/* Submit */}
         <button
           onMouseEnter={() => setBtnHover(true)}
           onMouseLeave={() => setBtnHover(false)}
+          onClick={handleRegister}
           style={{
             width: "100%",
             padding: "14px",
@@ -908,12 +865,10 @@ function SignupPage({ onSwitch }) {
               : "0 0 16px rgba(0,207,255,0.12)",
             transition: "all .25s",
           }}
-          onClick={handleRegister}
         >
           JOIN SHIELDHER
         </button>
 
-        {/* Switch */}
         <p
           style={{
             textAlign: "center",
@@ -939,32 +894,7 @@ function SignupPage({ onSwitch }) {
           </span>
         </p>
 
-        {[
-          {
-            top: 10,
-            left: 10,
-            borderTop: "1px solid",
-            borderLeft: "1px solid",
-          },
-          {
-            top: 10,
-            right: 10,
-            borderTop: "1px solid",
-            borderRight: "1px solid",
-          },
-          {
-            bottom: 10,
-            left: 10,
-            borderBottom: "1px solid",
-            borderLeft: "1px solid",
-          },
-          {
-            bottom: 10,
-            right: 10,
-            borderBottom: "1px solid",
-            borderRight: "1px solid",
-          },
-        ].map((s, i) => (
+        {cornerStyles.map((s, i) => (
           <div
             key={i}
             style={{
@@ -983,7 +913,7 @@ function SignupPage({ onSwitch }) {
 
 // ── Main Export ───────────────────────────────────────────────
 export default function AuthPages() {
-  const [page, setPage] = useState("login"); // "login" | "signup"
+  const [page, setPage] = useState("login");
 
   return (
     <div
@@ -1000,10 +930,8 @@ export default function AuthPages() {
         overflow: "hidden",
       }}
     >
-      {/* Animated canvas background */}
       <AnimatedBackground mode={page} />
 
-      {/* Corner HUD marks */}
       {[
         { top: 16, left: 16, borderTop: "1px solid", borderLeft: "1px solid" },
         {
@@ -1039,7 +967,6 @@ export default function AuthPages() {
         />
       ))}
 
-      {/* Status bar top */}
       <div
         style={{
           position: "fixed",
@@ -1066,7 +993,6 @@ export default function AuthPages() {
         />
       </div>
 
-      {/* Page content */}
       <div
         style={{
           position: "relative",
@@ -1083,21 +1009,12 @@ export default function AuthPages() {
       </div>
 
       <style>{`
-        @keyframes pulseDot {
-          0%,100% { opacity:1; transform:scale(1); }
-          50%      { opacity:0.3; transform:scale(0.5); }
-        }
-        @keyframes slideUp {
-          from { opacity:0; transform:translateY(28px); }
-          to   { opacity:1; transform:translateY(0); }
-        }
-        * { box-sizing:border-box; }
-        body { margin:0; background:#060d1a; }
-        input::placeholder { color:rgba(0,150,200,0.3); }
-        input:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0 100px rgba(0,25,65,0.9) inset !important;
-          -webkit-text-fill-color: #a8f0ff !important;
-        }
+        @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.5)} }
+        @keyframes slideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+        *{box-sizing:border-box}
+        body{margin:0;background:#060d1a}
+        input::placeholder{color:rgba(0,150,200,0.3)}
+        input:-webkit-autofill{-webkit-box-shadow:0 0 0 100px rgba(0,25,65,0.9) inset !important;-webkit-text-fill-color:#a8f0ff !important}
       `}</style>
     </div>
   );

@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000/auth";
+const BASE_URL = "http://localhost:5000/auth";
 
 // REGISTER API
 export const registerUser = async (userData) => {
