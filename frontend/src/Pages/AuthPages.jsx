@@ -1,8 +1,1042 @@
+// import { useState, useEffect, useRef } from "react";
+// import { loginUser, registerUser } from "../api";
+// import sign from "../assets/sign.png";
+
+// // ── Animated Background Canvas ────────────────────────────────
+// function AnimatedBackground({ mode }) {
+//   const canvasRef = useRef(null);
+//   const rafRef = useRef(null);
+//   const tRef = useRef(0);
+//   const lastRef = useRef(null);
+//   const particlesRef = useRef([]);
+
+//   useEffect(() => {
+//     const canvas = canvasRef.current;
+//     const ctx = canvas.getContext("2d");
+
+//     function resize() {
+//       canvas.width = window.innerWidth;
+//       canvas.height = window.innerHeight;
+//       initParticles();
+//     }
+
+//     function initParticles() {
+//       particlesRef.current = Array.from({ length: 60 }, () => ({
+//         x: Math.random() * canvas.width,
+//         y: Math.random() * canvas.height,
+//         r: 1 + Math.random() * 2.5,
+//         vx: (Math.random() - 0.5) * 0.4,
+//         vy: -0.3 - Math.random() * 0.5,
+//         alpha: 0.2 + Math.random() * 0.6,
+//         pulse: Math.random() * Math.PI * 2,
+//       }));
+//     }
+
+//     resize();
+//     window.addEventListener("resize", resize);
+
+//     function drawShieldSymbol(ctx, x, y, size, alpha, t) {
+//       ctx.save();
+//       ctx.globalAlpha = alpha;
+//       ctx.translate(x, y);
+//       ctx.rotate(Math.sin(t * 0.5) * 0.05);
+//       ctx.strokeStyle = "#00cfff";
+//       ctx.shadowColor = "#00cfff";
+//       ctx.shadowBlur = 10;
+//       ctx.lineWidth = 1.2;
+//       ctx.beginPath();
+//       ctx.moveTo(0, -size);
+//       ctx.bezierCurveTo(size * 0.85, -size * 0.5, size, size * 0.1, 0, size);
+//       ctx.bezierCurveTo(-size, size * 0.1, -size * 0.85, -size * 0.5, 0, -size);
+//       ctx.closePath();
+//       ctx.stroke();
+//       ctx.restore();
+//     }
+
+//     function drawOrbit(ctx, cx, cy, r, t, alpha) {
+//       ctx.save();
+//       ctx.globalAlpha = alpha;
+//       ctx.strokeStyle = "#00cfff";
+//       ctx.shadowColor = "#00cfff";
+//       ctx.shadowBlur = 8;
+//       ctx.lineWidth = 0.6;
+//       ctx.beginPath();
+//       ctx.arc(cx, cy, r, 0, Math.PI * 2);
+//       ctx.stroke();
+//       // Orbiting dot
+//       const ox = cx + Math.cos(t) * r;
+//       const oy = cy + Math.sin(t) * r;
+//       ctx.beginPath();
+//       ctx.arc(ox, oy, 2.5, 0, Math.PI * 2);
+//       ctx.fillStyle = "#7de8ff";
+//       ctx.shadowBlur = 14;
+//       ctx.fill();
+//       ctx.restore();
+//     }
+
+//     function drawDNAStrand(ctx, x, y, t, alpha) {
+//       ctx.save();
+//       ctx.globalAlpha = alpha * 0.5;
+//       ctx.strokeStyle = "#00cfff";
+//       ctx.lineWidth = 0.8;
+//       for (let i = 0; i < 12; i++) {
+//         const py = y + i * 18 - 100;
+//         const px1 = x + Math.sin(t + i * 0.6) * 18;
+//         const px2 = x - Math.sin(t + i * 0.6) * 18;
+//         ctx.beginPath();
+//         ctx.moveTo(px1, py);
+//         ctx.lineTo(px2, py);
+//         ctx.strokeStyle = `rgba(0,207,255,${0.15 + Math.abs(Math.sin(t + i)) * 0.3})`;
+//         ctx.shadowBlur = 6;
+//         ctx.stroke();
+//         ctx.beginPath();
+//         ctx.arc(px1, py, 2, 0, Math.PI * 2);
+//         ctx.fillStyle = "#7de8ff";
+//         ctx.shadowBlur = 8;
+//         ctx.fill();
+//         ctx.beginPath();
+//         ctx.arc(px2, py, 2, 0, Math.PI * 2);
+//         ctx.fill();
+//       }
+//       ctx.restore();
+//     }
+
+//     // Floating shield symbols positions
+//     const shields = [
+//       { x: 0.1, y: 0.2, size: 22, speed: 0.4 },
+//       { x: 0.85, y: 0.15, size: 16, speed: 0.6 },
+//       { x: 0.92, y: 0.7, size: 20, speed: 0.35 },
+//       { x: 0.05, y: 0.75, size: 14, speed: 0.5 },
+//       { x: 0.5, y: 0.05, size: 12, speed: 0.7 },
+//       { x: 0.15, y: 0.5, size: 10, speed: 0.55 },
+//       { x: 0.8, y: 0.45, size: 18, speed: 0.45 },
+//     ];
+
+//     function render(now) {
+//       const W = canvas.width,
+//         H = canvas.height;
+//       const dt = Math.min(now - (lastRef.current || now), 50) / 1000;
+//       lastRef.current = now;
+//       tRef.current += dt;
+//       const t = tRef.current;
+
+//       // Background
+//       const grd = ctx.createRadialGradient(
+//         W * 0.5,
+//         H * 0.4,
+//         0,
+//         W * 0.5,
+//         H * 0.5,
+//         Math.max(W, H) * 0.8,
+//       );
+//       grd.addColorStop(0, "#060f22");
+//       grd.addColorStop(0.5, "#040c1a");
+//       grd.addColorStop(1, "#020810");
+//       ctx.fillStyle = grd;
+//       ctx.fillRect(0, 0, W, H);
+
+//       // Ambient center glow
+//       const ag = ctx.createRadialGradient(
+//         W * 0.5,
+//         H * 0.5,
+//         0,
+//         W * 0.5,
+//         H * 0.5,
+//         W * 0.4,
+//       );
+//       ag.addColorStop(0, `rgba(0,80,160,${0.08 + Math.sin(t * 0.8) * 0.03})`);
+//       ag.addColorStop(1, "rgba(0,0,0,0)");
+//       ctx.fillStyle = ag;
+//       ctx.fillRect(0, 0, W, H);
+
+//       // Large background orbit rings
+//       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.38, t * 0.2, 0.06);
+//       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.45, -t * 0.15, 0.04);
+//       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.28, t * 0.3, 0.05);
+
+//       // Floating shield symbols
+//       shields.forEach((s, i) => {
+//         const floatY = Math.sin(t * s.speed + i) * 12;
+//         drawShieldSymbol(
+//           ctx,
+//           s.x * W,
+//           s.y * H + floatY,
+//           s.size,
+//           0.07 + Math.sin(t * s.speed + i * 1.3) * 0.04,
+//           t
+//         );
+//       });
+
+//       // DNA strands on sides
+//       if (mode === "signup") {
+//         drawDNAStrand(ctx, W * 0.04, H * 0.5, t * 0.6, 0.5);
+//         drawDNAStrand(ctx, W * 0.96, H * 0.5, t * 0.6 + Math.PI, 0.5);
+//       } else {
+//         drawDNAStrand(ctx, W * 0.04, H * 0.5, t * 0.6, 0.4);
+//         drawDNAStrand(ctx, W * 0.96, H * 0.5, t * 0.6 + Math.PI, 0.4);
+//       }
+
+//       // Floating particles
+//       const pts = particlesRef.current;
+//       pts.forEach((p) => {
+//         p.x += p.vx;
+//         p.y += p.vy;
+//         p.pulse += dt * 1.5;
+//         if (p.y < -10) {
+//           p.y = H + 10;
+//           p.x = Math.random() * W;
+//         }
+//         if (p.x < -10) p.x = W + 10;
+//         if (p.x > W + 10) p.x = -10;
+//         const pa = p.alpha * (0.5 + Math.sin(p.pulse) * 0.5);
+//         ctx.save();
+//         ctx.globalAlpha = pa * 0.7;
+//         ctx.fillStyle = "#00cfff";
+//         ctx.shadowColor = "#00cfff";
+//         ctx.shadowBlur = 6;
+//         ctx.beginPath();
+//         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+//         ctx.fill();
+//         ctx.restore();
+//       });
+
+//       // Grid lines (very faint)
+//       ctx.save();
+//       ctx.globalAlpha = 0.025;
+//       ctx.strokeStyle = "#00cfff";
+//       ctx.lineWidth = 0.5;
+//       for (let x = 0; x < W; x += 80) {
+//         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+//       }
+//       for (let y = 0; y < H; y += 80) {
+//         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+//       }
+//       ctx.restore();
+
+//       // Pulse rings emanating from center
+//       for (let i = 0; i < 3; i++) {
+//         const phase = (t * 0.4 + i / 3) % 1;
+//         const pr = phase * Math.min(W, H) * 0.5;
+//         ctx.save();
+//         ctx.globalAlpha = (1 - phase) * 0.04;
+//         ctx.strokeStyle = "#00cfff";
+//         ctx.lineWidth = 1.5;
+//         ctx.beginPath();
+//         ctx.arc(W * 0.5, H * 0.5, pr, 0, Math.PI * 2);
+//         ctx.stroke();
+//         ctx.restore();
+//       }
+
+//       rafRef.current = requestAnimationFrame(render);
+//     }
+
+//     rafRef.current = requestAnimationFrame(render);
+//     return () => {
+//       cancelAnimationFrame(rafRef.current);
+//       window.removeEventListener("resize", resize);
+//     };
+//   }, [mode]);
+
+//   return (
+//     <canvas
+//       ref={canvasRef}
+//       style={{
+//         position: "fixed",
+//         inset: 0,
+//         zIndex: 0,
+//         pointerEvents: "none",
+//       }}
+//     />
+//   );
+// }
+
+// // ── Google Icon ───────────────────────────────────────────────
+// function GoogleIcon() {
+//   return (
+//     <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0 }}>
+//       <path
+//         fill="#4285F4"
+//         d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+//       />
+//       <path
+//         fill="#34A853"
+//         d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"
+//       />
+//       <path
+//         fill="#FBBC05"
+//         d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+//       />
+//       <path
+//         fill="#EA4335"
+//         d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"
+//       />
+//     </svg>
+//   );
+// }
+
+// // ── Shared input style ────────────────────────────────────────
+// function Field({ label, type = "text", placeholder, value, onChange }) {
+//   const [focused, setFocused] = useState(false);
+//   return (
+//     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+//       <label style={{
+//         fontSize: "9px", letterSpacing: "3px",
+//         color: focused ? "rgba(0,207,255,0.8)" : "rgba(0,207,255,0.45)",
+//         textTransform: "uppercase", transition: "color .2s",
+//         fontFamily: "'Courier New', monospace",
+//       }}>{label}</label>
+//       <input
+//         type={type}
+//         placeholder={placeholder}
+//         value={value}
+//         onChange={onChange}
+//         onFocus={() => setFocused(true)}
+//         onBlur={() => setFocused(false)}
+//         style={{
+//           padding: "12px 16px",
+//           background: focused ? "rgba(0,40,90,0.7)" : "rgba(0,25,65,0.55)",
+//           border: `1px solid ${focused ? "rgba(0,207,255,0.65)" : "rgba(0,150,220,0.22)"}`,
+//           borderRadius: "6px",
+//           color: "#a8f0ff",
+//           fontSize: "13px",
+//           letterSpacing: "0.5px",
+//           outline: "none",
+//           fontFamily: "'Courier New', monospace",
+//           boxShadow: focused
+//             ? "0 0 16px rgba(0,207,255,0.12), inset 0 1px 0 rgba(0,207,255,0.08)"
+//             : "none",
+//           transition: "all .25s",
+//           width: "100%",
+//           boxSizing: "border-box",
+//         }}
+//       />
+//     </div>
+//   );
+// }
+
+// // ── Login Page ────────────────────────────────────────────────
+// function LoginPage({ onSwitch }) {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [btnHover, setBtnHover] = useState(false);
+//   const [gHover, setGHover] = useState(false);
+
+//   const handleLogin = async () => {
+//     const data = await loginUser({ email, password });
+
+//     if (data.token) {
+//       localStorage.setItem("token", data.token);
+//       alert("Login success");
+//     } else {
+//       alert(data.msg || "Login failed");
+//     }
+//   };
+//   return (
+//     <div style={{
+//       position: "relative", zIndex: 10,
+//       width: "100%", maxWidth: "420px",
+//       margin: "0 auto",
+//       animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+// backgroundImage: "url('https://substackcdn.com/image/fetch/$s_!LP9-!,w_1272,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdfb27220-1720-4f05-94ab-72ac01b730b5_1536x1024.png')",
+//   backgroundSize: "contain",
+//   backgroundRepeat: "no-repeat",
+//   backgroundPosition: "center",
+
+  
+ 
+ 
+//     }}>
+//       {/* Card */}
+//       <div style={{
+//         background: "rgba(4, 18, 48, 0.63)",
+//         //  backgroundBlendMode: "multiply"  ,
+//         border: "1px solid rgba(0,180,255,0.18)",
+//         borderRadius: "16px",
+//         padding: "40px 36px 36px",
+//         // backdropFilter: "blur(24px)",
+//         boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+//         position: "relative",
+//         zIndex: 10,
+//         width: "100%",
+//         maxWidth: "420px",
+//         margin: "0 auto",
+//         animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+//       }}
+//     >
+//       {/* Card */}
+//       <div
+//         style={{
+//           background: "rgba(4,18,48,0.82)",
+//           border: "1px solid rgba(0,180,255,0.18)",
+//           borderRadius: "16px",
+//           padding: "40px 36px 36px",
+//           backdropFilter: "blur(24px)",
+//           boxShadow:
+//             "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+//           position: "relative",
+//           overflow: "hidden",
+//         }}
+//       >
+//         {/* Top accent line */}
+//         <div
+//           style={{
+//             position: "absolute",
+//             top: 0,
+//             left: "20%",
+//             right: "20%",
+//             height: "1px",
+//             background:
+//               "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
+//           }}
+//         />
+
+//         {/* Header */}
+//         <div style={{ textAlign: "center", marginBottom: "32px" }}>
+//           <div style={{
+//             fontSize: "10px", letterSpacing: "5px",
+//             color: "rgba(0,207,255,0.45)", marginBottom: "10px",
+//             fontFamily: "'Courier New', monospace",
+//           }}>◈ SECURE PORTAL</div>
+//           <h1 style={{
+//             margin: 0, fontSize: "2rem", letterSpacing: "4px",
+//             color: "#7de8ff",
+//             textShadow: "0 0 30px rgba(0,207,255,0.5)",
+//             fontFamily: "'Courier New', monospace",
+//             fontWeight: 700,
+//           }}>SIGN IN</h1>
+//           <p style={{
+//             margin: "8px 0 0", fontSize: "12px",
+//             color: "rgba(100,200,255,0.45)", letterSpacing: "1.5px",
+//             fontFamily: "'Courier New', monospace",
+//           }}>SHIELDHER · POWERING RESILIENCE</p>
+//           <div style={{
+//             height: "1px", marginTop: "16px",
+//             background: "linear-gradient(90deg,transparent,rgba(0,207,255,0.3),transparent)",
+//           }}/>
+//         </div>
+
+//         {/* Google button */}
+//         <button
+//           onMouseEnter={() => setGHover(true)}
+//           onMouseLeave={() => setGHover(false)}
+//           style={{
+//             width: "100%",
+//             padding: "12px",
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "center",
+//             gap: "10px",
+//             background: gHover
+//               ? "rgba(255,255,255,0.1)"
+//               : "rgba(255,255,255,0.05)",
+//             border: "1px solid rgba(255,255,255,0.15)",
+//             borderRadius: "6px",
+//             cursor: "pointer",
+//             color: "rgba(200,230,255,0.85)",
+//             fontSize: "13px",
+//             letterSpacing: "1.5px",
+//             fontFamily: "'Courier New', monospace",
+//             transition: "all .2s",
+//             boxShadow: gHover ? "0 0 20px rgba(255,255,255,0.06)" : "none",
+//             marginBottom: "20px",
+//           }}
+//         >
+//           <GoogleIcon />
+//           CONTINUE WITH GOOGLE
+//         </button>
+
+//         {/* Divider */}
+//         <div style={{
+//           display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px",
+//         }}>
+//           <div style={{ flex: 1, height: "1px", background: "rgba(0,150,220,0.2)" }}/>
+//           <span style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(0,150,220,0.4)", fontFamily: "'Courier New', monospace" }}>OR</span>
+//           <div style={{ flex: 1, height: "1px", background: "rgba(0,150,220,0.2)" }}/>
+//         </div>
+
+//         {/* Fields */}
+//         <div
+//           style={{
+//             display: "flex",
+//             flexDirection: "column",
+//             gap: "16px",
+//             marginBottom: "24px",
+//           }}
+//         >
+//           <Field
+//             label="Email Address"
+//             type="email"
+//             placeholder="you@example.com"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//           />
+//           <Field
+//             label="Password"
+//             type="password"
+//             placeholder="••••••••••"
+//             value={password}
+//             onChange={(e) => setPassword(e.target.value)}
+//           />
+//         </div>
+
+//         {/* Forgot */}
+//         <div style={{ textAlign: "right", marginBottom: "24px" }}>
+//           <span style={{
+//             fontSize: "11px", letterSpacing: "1px",
+//             color: "rgba(0,207,255,0.5)", cursor: "pointer",
+//             fontFamily: "'Courier New', monospace",
+//             textDecoration: "underline",
+//           }}>FORGOT PASSWORD?</span>
+//         </div>
+
+//         {/* Submit */}
+//         <button
+//           onMouseEnter={() => setBtnHover(true)}
+//           onMouseLeave={() => setBtnHover(false)}
+//           style={{
+//             width: "100%",
+//             padding: "14px",
+//             background: btnHover
+//               ? "linear-gradient(90deg,rgba(0,130,230,0.6),rgba(0,207,255,0.5))"
+//               : "linear-gradient(90deg,rgba(0,100,200,0.4),rgba(0,180,255,0.3))",
+//             border: "1px solid rgba(0,207,255,0.5)",
+//             borderRadius: "6px",
+//             cursor: "pointer",
+//             color: "#7de8ff",
+//             fontSize: "13px",
+//             letterSpacing: "3px",
+//             textTransform: "uppercase",
+//             fontFamily: "'Courier New', monospace",
+//             boxShadow: btnHover
+//               ? "0 0 30px rgba(0,207,255,0.3), 0 0 60px rgba(0,100,200,0.2)"
+//               : "0 0 16px rgba(0,207,255,0.12)",
+//             transition: "all .25s",
+//             position: "relative",
+//             overflow: "hidden",
+//           }}
+//           onClick={handleLogin}
+//         >
+//           AUTHENTICATE
+//         </button>
+
+//         {/* Switch */}
+//         <p
+//           style={{
+//             textAlign: "center",
+//             marginTop: "24px",
+//             marginBottom: 0,
+//             fontSize: "12px",
+//             color: "rgba(100,180,220,0.5)",
+//             fontFamily: "'Courier New', monospace",
+//             letterSpacing: "1px",
+//           }}
+//         >
+//           NEW TO SHIELDHER?{" "}
+//           <span
+//             onClick={onSwitch}
+//             style={{
+//               color: "#00cfff",
+//               cursor: "pointer",
+//               textDecoration: "underline",
+//               letterSpacing: "1.5px",
+//             }}
+//           >
+//             CREATE ACCOUNT
+//           </span>
+//         </p>
+
+//         {/* Corner decorations */}
+//         {[
+//           {
+//             top: 10,
+//             left: 10,
+//             borderTop: "1px solid",
+//             borderLeft: "1px solid",
+//           },
+//           {
+//             top: 10,
+//             right: 10,
+//             borderTop: "1px solid",
+//             borderRight: "1px solid",
+//           },
+//           {
+//             bottom: 10,
+//             left: 10,
+//             borderBottom: "1px solid",
+//             borderLeft: "1px solid",
+//           },
+//           {
+//             bottom: 10,
+//             right: 10,
+//             borderBottom: "1px solid",
+//             borderRight: "1px solid",
+//           },
+//         ].map((s, i) => (
+//           <div
+//             key={i}
+//             style={{
+//               position: "absolute",
+//               width: "14px",
+//               height: "14px",
+//               borderColor: "rgba(0,207,255,0.25)",
+//               ...s,
+//             }}
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+// // ── Signup Page ───────────────────────────────────────────────
+// function SignupPage({ onSwitch }) {
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [confirm, setConfirm] = useState("");
+//   const [btnHover, setBtnHover] = useState(false);
+//   const [gHover, setGHover] = useState(false);
+
+  
+//   return (
+//     <div style={{
+//       position: "relative", zIndex: 10,
+//       width: "100%", maxWidth: "420px",
+//       margin: "0 auto",
+//       animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+
+//       backgroundImage: `url(${sign})`,
+
+//   backgroundSize: "contain",
+//   backgroundRepeat: "no-repeat",
+//   backgroundPosition: "center",
+
+  
+//     }}>
+//       <div style={{
+//         background: "rgba(4, 18, 48, 0.64)",
+//         border: "1px solid rgba(0,180,255,0.18)",
+//         borderRadius: "16px",
+//         padding: "36px 36px 32px",
+//         // backdropFilter: "blur(24px)",
+//         boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+//         position: "relative", overflow: "hidden",
+//       }}>
+//         <div style={{
+//           position: "absolute", top: 0, left: "20%", right: "20%", height: "1px",
+//           background: "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
+//         }}/>
+
+//         {/* Header */}
+//         <div style={{ textAlign: "center", marginBottom: "28px" }}>
+//           <div
+//             style={{
+//               fontSize: "10px",
+//               letterSpacing: "5px",
+//               color: "rgba(0,207,255,0.45)",
+//               marginBottom: "10px",
+//               fontFamily: "'Courier New', monospace",
+//             }}
+//           >
+//             ◈ JOIN THE SHIELD
+//           </div>
+//           <h1
+//             style={{
+//               margin: 0,
+//               fontSize: "2rem",
+//               letterSpacing: "4px",
+//               color: "#7de8ff",
+//               textShadow: "0 0 30px rgba(0,207,255,0.5)",
+//               fontFamily: "'Courier New', monospace",
+//               fontWeight: 700,
+//             }}
+//           >
+//             CREATE ACCOUNT
+//           </h1>
+//           <p
+//             style={{
+//               margin: "8px 0 0",
+//               fontSize: "12px",
+//               color: "rgba(100,200,255,0.45)",
+//               letterSpacing: "1.5px",
+//               fontFamily: "'Courier New', monospace",
+//             }}
+//           >
+//             SHIELDHER · POWERING RESILIENCE
+//           </p>
+//           <div
+//             style={{
+//               height: "1px",
+//               marginTop: "14px",
+//               background:
+//                 "linear-gradient(90deg,transparent,rgba(0,207,255,0.3),transparent)",
+//             }}
+//           />
+//         </div>
+
+//         {/* Google */}
+//         <button
+//           onMouseEnter={() => setGHover(true)}
+//           onMouseLeave={() => setGHover(false)}
+//           style={{
+//             width: "100%",
+//             padding: "12px",
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "center",
+//             gap: "10px",
+//             background: gHover
+//               ? "rgba(255,255,255,0.1)"
+//               : "rgba(255,255,255,0.05)",
+//             border: "1px solid rgba(255,255,255,0.15)",
+//             borderRadius: "6px",
+//             cursor: "pointer",
+//             color: "rgba(200,230,255,0.85)",
+//             fontSize: "13px",
+//             letterSpacing: "1.5px",
+//             fontFamily: "'Courier New', monospace",
+//             transition: "all .2s",
+//             boxShadow: gHover ? "0 0 20px rgba(255,255,255,0.06)" : "none",
+//             marginBottom: "18px",
+//           }}
+//         >
+//           <GoogleIcon />
+//           SIGN UP WITH GOOGLE
+//         </button>
+
+//         {/* Divider */}
+//         <div
+//           style={{
+//             display: "flex",
+//             alignItems: "center",
+//             gap: "12px",
+//             marginBottom: "18px",
+//           }}
+//         >
+//           <div
+//             style={{
+//               flex: 1,
+//               height: "1px",
+//               background: "rgba(0,150,220,0.2)",
+//             }}
+//           />
+//           <span
+//             style={{
+//               fontSize: "10px",
+//               letterSpacing: "2px",
+//               color: "rgba(0,150,220,0.4)",
+//               fontFamily: "'Courier New', monospace",
+//             }}
+//           >
+//             OR
+//           </span>
+//           <div
+//             style={{
+//               flex: 1,
+//               height: "1px",
+//               background: "rgba(0,150,220,0.2)",
+//             }}
+//           />
+//         </div>
+
+//         {/* Fields */}
+//         <div
+//           style={{
+//             display: "flex",
+//             flexDirection: "column",
+//             gap: "14px",
+//             marginBottom: "22px",
+//           }}
+//         >
+//           <Field
+//             label="Full Name"
+//             type="text"
+//             placeholder="Your name"
+//             value={name}
+//             onChange={(e) => setName(e.target.value)}
+//           />
+//           <Field
+//             label="Email Address"
+//             type="email"
+//             placeholder="you@example.com"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//           />
+//           <Field
+//             label="Password"
+//             type="password"
+//             placeholder="Create a strong password"
+//             value={password}
+//             onChange={(e) => setPassword(e.target.value)}
+//           />
+//           <Field
+//             label="Confirm Password"
+//             type="password"
+//             placeholder="Repeat password"
+//             value={confirm}
+//             onChange={(e) => setConfirm(e.target.value)}
+//           />
+//         </div>
+
+//         {/* Terms */}
+//         <p
+//           style={{
+//             fontSize: "10px",
+//             letterSpacing: "0.8px",
+//             color: "rgba(0,150,200,0.4)",
+//             textAlign: "center",
+//             marginBottom: "18px",
+//             fontFamily: "'Courier New', monospace",
+//           }}
+//         >
+//           BY JOINING YOU AGREE TO OUR{" "}
+//           <span
+//             style={{
+//               color: "rgba(0,207,255,0.6)",
+//               cursor: "pointer",
+//               textDecoration: "underline",
+//             }}
+//           >
+//             TERMS
+//           </span>{" "}
+//           &{" "}
+//           <span
+//             style={{
+//               color: "rgba(0,207,255,0.6)",
+//               cursor: "pointer",
+//               textDecoration: "underline",
+//             }}
+//           >
+//             PRIVACY POLICY
+//           </span>
+//         </p>
+
+//         {/* Submit */}
+//         <button
+//           onMouseEnter={() => setBtnHover(true)}
+//           onMouseLeave={() => setBtnHover(false)}
+//           style={{
+//             width: "100%",
+//             padding: "14px",
+//             background: btnHover
+//               ? "linear-gradient(90deg,rgba(0,130,230,0.6),rgba(0,207,255,0.5))"
+//               : "linear-gradient(90deg,rgba(0,100,200,0.4),rgba(0,180,255,0.3))",
+//             border: "1px solid rgba(0,207,255,0.5)",
+//             borderRadius: "6px",
+//             cursor: "pointer",
+//             color: "#7de8ff",
+//             fontSize: "13px",
+//             letterSpacing: "3px",
+//             textTransform: "uppercase",
+//             fontFamily: "'Courier New', monospace",
+//             boxShadow: btnHover
+//               ? "0 0 30px rgba(0,207,255,0.3), 0 0 60px rgba(0,100,200,0.2)"
+//               : "0 0 16px rgba(0,207,255,0.12)",
+//             transition: "all .25s",
+//           }}
+//           onClick={handleRegister}
+//         >
+//           JOIN SHIELDHER
+//         </button>
+
+//         {/* Switch */}
+//         <p
+//           style={{
+//             textAlign: "center",
+//             marginTop: "20px",
+//             marginBottom: 0,
+//             fontSize: "12px",
+//             color: "rgba(100,180,220,0.5)",
+//             fontFamily: "'Courier New', monospace",
+//             letterSpacing: "1px",
+//           }}
+//         >
+//           ALREADY PROTECTED?{" "}
+//           <span
+//             onClick={onSwitch}
+//             style={{
+//               color: "#00cfff",
+//               cursor: "pointer",
+//               textDecoration: "underline",
+//               letterSpacing: "1.5px",
+//             }}
+//           >
+//             SIGN IN
+//           </span>
+//         </p>
+
+//         {[
+//           {
+//             top: 10,
+//             left: 10,
+//             borderTop: "1px solid",
+//             borderLeft: "1px solid",
+//           },
+//           {
+//             top: 10,
+//             right: 10,
+//             borderTop: "1px solid",
+//             borderRight: "1px solid",
+//           },
+//           {
+//             bottom: 10,
+//             left: 10,
+//             borderBottom: "1px solid",
+//             borderLeft: "1px solid",
+//           },
+//           {
+//             bottom: 10,
+//             right: 10,
+//             borderBottom: "1px solid",
+//             borderRight: "1px solid",
+//           },
+//         ].map((s, i) => (
+//           <div
+//             key={i}
+//             style={{
+//               position: "absolute",
+//               width: "14px",
+//               height: "14px",
+//               borderColor: "rgba(0,207,255,0.25)",
+//               ...s,
+//             }}
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+// // ── Main Export ───────────────────────────────────────────────
+// export default function AuthPages() {
+//   const [page, setPage] = useState("login"); // "login" | "signup"
+
+//   return (
+//     <div
+//       style={{
+//         minHeight: "100vh",
+//         width: "100%",
+//         display: "flex",
+//         alignItems: "center",
+//         justifyContent: "center",
+//         padding: "24px 16px",
+//         boxSizing: "border-box",
+//         fontFamily: "'Courier New', monospace",
+//         position: "relative",
+//         overflow: "hidden",
+//       }}
+//     >
+//       {/* Animated canvas background */}
+//       <AnimatedBackground mode={page} />
+
+//       {/* Corner HUD marks */}
+//       {[
+//         { top: 16, left: 16, borderTop: "1px solid", borderLeft: "1px solid" },
+//         {
+//           top: 16,
+//           right: 16,
+//           borderTop: "1px solid",
+//           borderRight: "1px solid",
+//         },
+//         {
+//           bottom: 16,
+//           left: 16,
+//           borderBottom: "1px solid",
+//           borderLeft: "1px solid",
+//         },
+//         {
+//           bottom: 16,
+//           right: 16,
+//           borderBottom: "1px solid",
+//           borderRight: "1px solid",
+//         },
+//       ].map((s, i) => (
+//         <div
+//           key={i}
+//           style={{
+//             position: "fixed",
+//             width: "24px",
+//             height: "24px",
+//             borderColor: "rgba(0,180,255,0.22)",
+//             ...s,
+//             zIndex: 20,
+//             pointerEvents: "none",
+//           }}
+//         />
+//       ))}
+
+//       {/* Status bar top */}
+//       <div
+//         style={{
+//           position: "fixed",
+//           top: "20px",
+//           left: "50%",
+//           transform: "translateX(-50%)",
+//           zIndex: 20,
+//           pointerEvents: "none",
+//           display: "flex",
+//           alignItems: "center",
+//           gap: "8px",
+//         }}
+//       >
+//         <span
+//           style={{
+//             display: "inline-block",
+//             width: "6px",
+//             height: "6px",
+//             borderRadius: "50%",
+//             background: "#00cfff",
+//             boxShadow: "0 0 8px #00cfff",
+//             animation: "pulseDot 1.4s ease-in-out infinite",
+//           }}
+//         />
+//       </div>
+
+//       {/* Page content */}
+//       <div
+//         style={{
+//           position: "relative",
+//           zIndex: 10,
+//           width: "100%",
+//           maxWidth: "420px",
+//         }}
+//       >
+//         {page === "login" ? (
+//           <LoginPage onSwitch={() => setPage("signup")} />
+//         ) : (
+//           <SignupPage onSwitch={() => setPage("login")} />
+//         )}
+//       </div>
+
+//       <style>{`
+//         @keyframes pulseDot {
+//           0%,100% { opacity:1; transform:scale(1); }
+//           50%      { opacity:0.3; transform:scale(0.5); }
+//         }
+//         @keyframes slideUp {
+//           from { opacity:0; transform:translateY(28px); }
+//           to   { opacity:1; transform:translateY(0); }
+//         }
+//         * { box-sizing:border-box; }
+//         body { margin:0; background:#060d1a; }
+//         input::placeholder { color:rgba(0,150,200,0.3); }
+//         input:-webkit-autofill {
+//           -webkit-box-shadow: 0 0 0 100px rgba(0,25,65,0.9) inset !important;
+//           -webkit-text-fill-color: #a8f0ff !important;
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 // ── Mock API (replace with your real imports) ─────────────────
 import { loginUser } from "../api/serverApi";
 import { registerUser } from "../api/serverApi";
+
+// ⚠️ IMPORTANT: adjust these paths based on your project
+import { loginUser, registerUser } from "../api";
+import sign from "../assets/sign.png";
 
 // ── Animated Background Canvas ────────────────────────────────
 function AnimatedBackground({ mode }) {
@@ -113,13 +1147,16 @@ function AnimatedBackground({ mode }) {
     ];
 
     function render(now) {
-      const W = canvas.width,
-        H = canvas.height;
+      const W = canvas.width, H = canvas.height;
       const dt = Math.min(now - (lastRef.current || now), 50) / 1000;
       lastRef.current = now;
       tRef.current += dt;
       const t = tRef.current;
 
+      ctx.fillStyle = "#020810";
+      ctx.fillRect(0, 0, W, H);
+
+      particlesRef.current.forEach((p) => {
       const grd = ctx.createRadialGradient(
         W * 0.5,
         H * 0.4,
@@ -175,23 +1212,12 @@ function AnimatedBackground({ mode }) {
       pts.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        p.pulse += dt * 1.5;
-        if (p.y < -10) {
-          p.y = H + 10;
-          p.x = Math.random() * W;
-        }
-        if (p.x < -10) p.x = W + 10;
-        if (p.x > W + 10) p.x = -10;
-        const pa = p.alpha * (0.5 + Math.sin(p.pulse) * 0.5);
-        ctx.save();
-        ctx.globalAlpha = pa * 0.7;
-        ctx.fillStyle = "#00cfff";
-        ctx.shadowColor = "#00cfff";
-        ctx.shadowBlur = 6;
+        if (p.y < 0) p.y = H;
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#00cfff";
         ctx.fill();
-        ctx.restore();
       });
 
       ctx.save();
@@ -229,12 +1255,14 @@ function AnimatedBackground({ mode }) {
     }
 
     rafRef.current = requestAnimationFrame(render);
+
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", resize);
     };
   }, [mode]);
 
+  return <canvas ref={canvasRef} style={{ position: "fixed", inset: 0 }} />;
   return (
     <canvas
       ref={canvasRef}
@@ -243,9 +1271,12 @@ function AnimatedBackground({ mode }) {
   );
 }
 
-// ── Google Icon ───────────────────────────────────────────────
-function GoogleIcon() {
+// ── Input Field ───────────────────────────────────────────────
+function Field({ label, type, value, onChange }) {
   return (
+    <div>
+      <label>{label}</label>
+      <input type={type} value={value} onChange={onChange} />
     <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0 }}>
       <path
         fill="#4285F4"
@@ -329,8 +1360,6 @@ const cornerStyles = [
 function LoginPage({ onSwitch }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [btnHover, setBtnHover] = useState(false);
-  const [gHover, setGHover] = useState(false);
 
   // FIX: handleLogin defined inside component so it has access to state
   const navigate = useNavigate();
@@ -345,6 +1374,17 @@ function LoginPage({ onSwitch }) {
       console.error("❌ Login failed:", data.msg);
     }
   };
+
+  return (
+    <div>
+      <h2>Login</h2>
+
+      <Field label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <Field label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+      <button onClick={handleLogin}>Login</button>
+
+      <p onClick={onSwitch}>Create Account</p>
 
   return (
     <div
@@ -608,8 +1648,6 @@ function SignupPage({ onSwitch }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [btnHover, setBtnHover] = useState(false);
-  const [gHover, setGHover] = useState(false);
 
   // FIX: handleRegister defined inside component so it has access to state
   const handleRegister = async () => {
@@ -617,6 +1655,23 @@ function SignupPage({ onSwitch }) {
       alert("Passwords do not match");
       return;
     }
+
+    const data = await registerUser({ name, email, password });
+    alert(data.msg || "Registered");
+  };
+
+  return (
+    <div>
+      <h2>Signup</h2>
+
+      <Field label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <Field label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <Field label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <Field label="Confirm Password" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+
+      <button onClick={handleRegister}>Register</button>
+
+      <p onClick={onSwitch}>Already have account?</p>
     const data = await registerUser({ name, email, password });
     if (data.msg) {
       console.log("✅ Registered! User:", email);
@@ -911,11 +1966,19 @@ function SignupPage({ onSwitch }) {
   );
 }
 
-// ── Main Export ───────────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────────
 export default function AuthPages() {
   const [page, setPage] = useState("login");
 
   return (
+    <div>
+      <AnimatedBackground mode={page} />
+
+      {page === "login" ? (
+        <LoginPage onSwitch={() => setPage("signup")} />
+      ) : (
+        <SignupPage onSwitch={() => setPage("login")} />
+      )}
     <div
       style={{
         minHeight: "100vh",
