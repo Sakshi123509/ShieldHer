@@ -213,7 +213,7 @@ function Field({ label, type = "text", placeholder, value, onChange }) {
         style={{
           fontSize: "9px",
           letterSpacing: "3px",
-          color: focused ? "rgba(0,207,255,0.8)" : "rgba(0,207,255,0.45)",
+          color: focused ? "rgba(0,207,255,0.8)" : "rgba(0, 208, 255, 0.85)",
           textTransform: "uppercase",
           transition: "color .2s",
           fontFamily: "'Courier New', monospace",
@@ -335,7 +335,7 @@ function LoginPage({ onSwitch }) {
             style={{
               fontSize: "10px",
               letterSpacing: "5px",
-              color: "rgba(0,207,255,0.45)",
+              color: "rgba(0, 208, 255, 0.62)",
               marginBottom: "10px",
               fontFamily: "'Courier New', monospace",
             }}
@@ -359,7 +359,7 @@ function LoginPage({ onSwitch }) {
             style={{
               margin: "8px 0 0",
               fontSize: "12px",
-              color: "rgba(100,200,255,0.45)",
+              color: "rgba(100, 201, 255, 0.57)",
               letterSpacing: "1.5px",
               fontFamily: "'Courier New', monospace",
             }}
@@ -467,7 +467,7 @@ function LoginPage({ onSwitch }) {
             style={{
               fontSize: "11px",
               letterSpacing: "1px",
-              color: "rgba(0,207,255,0.5)",
+              color: "rgba(0, 208, 255, 0.73)",
               cursor: "pointer",
               fontFamily: "'Courier New', monospace",
               textDecoration: "underline",
