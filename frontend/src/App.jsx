@@ -8,13 +8,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* 🔥 Loader FIRST */}
-        <Route path="/" element={<ShieldHerLoader />} />
+     
+        {/* <Route path="/" element={<ShieldHerLoader />} /> */}
 
-        {/* 👉 After loader */}
+        
         <Route path="/login" element={<AuthPages />} />
 
-        {/* 👉 After login */}
+        
         <Route path="/home" element={<Home/>} />
       </Routes>
     </BrowserRouter>

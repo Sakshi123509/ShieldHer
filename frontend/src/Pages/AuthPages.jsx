@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 // ── Mock API (replace with your real imports) ─────────────────
 import { loginUser } from "../api/serverApi";
 import { registerUser } from "../api/serverApi";
+import sign from "../assets/sign.png";
+import log from "../assets/log.webp";
 
 // ── Animated Background Canvas ────────────────────────────────
 function AnimatedBackground({ mode }) {
@@ -37,24 +39,6 @@ function AnimatedBackground({ mode }) {
     resize();
     window.addEventListener("resize", resize);
 
-    function drawShieldSymbol(ctx, x, y, size, alpha, t) {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.translate(x, y);
-      ctx.rotate(Math.sin(t * 0.5) * 0.05);
-      ctx.strokeStyle = "#00cfff";
-      ctx.shadowColor = "#00cfff";
-      ctx.shadowBlur = 10;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(0, -size);
-      ctx.bezierCurveTo(size * 0.85, -size * 0.5, size, size * 0.1, 0, size);
-      ctx.bezierCurveTo(-size, size * 0.1, -size * 0.85, -size * 0.5, 0, -size);
-      ctx.closePath();
-      ctx.stroke();
-      ctx.restore();
-    }
-
     function drawOrbit(ctx, cx, cy, r, t, alpha) {
       ctx.save();
       ctx.globalAlpha = alpha;
@@ -72,33 +56,6 @@ function AnimatedBackground({ mode }) {
       ctx.fillStyle = "#7de8ff";
       ctx.shadowBlur = 14;
       ctx.fill();
-      ctx.restore();
-    }
-
-    function drawDNAStrand(ctx, x, y, t, alpha) {
-      ctx.save();
-      ctx.globalAlpha = alpha * 0.5;
-      ctx.strokeStyle = "#00cfff";
-      ctx.lineWidth = 0.8;
-      for (let i = 0; i < 12; i++) {
-        const py = y + i * 18 - 100;
-        const px1 = x + Math.sin(t + i * 0.6) * 18;
-        const px2 = x - Math.sin(t + i * 0.6) * 18;
-        ctx.beginPath();
-        ctx.moveTo(px1, py);
-        ctx.lineTo(px2, py);
-        ctx.strokeStyle = `rgba(0,207,255,${0.15 + Math.abs(Math.sin(t + i)) * 0.3})`;
-        ctx.shadowBlur = 6;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(px1, py, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "#7de8ff";
-        ctx.shadowBlur = 8;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(px2, py, 2, 0, Math.PI * 2);
-        ctx.fill();
-      }
       ctx.restore();
     }
 
@@ -150,26 +107,6 @@ function AnimatedBackground({ mode }) {
       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.38, t * 0.2, 0.06);
       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.45, -t * 0.15, 0.04);
       drawOrbit(ctx, W * 0.5, H * 0.5, Math.min(W, H) * 0.28, t * 0.3, 0.05);
-
-      shields.forEach((s, i) => {
-        const floatY = Math.sin(t * s.speed + i) * 12;
-        drawShieldSymbol(
-          ctx,
-          s.x * W,
-          s.y * H + floatY,
-          s.size,
-          0.07 + Math.sin(t * s.speed + i * 1.3) * 0.04,
-          t,
-        );
-      });
-
-      if (mode === "signup") {
-        drawDNAStrand(ctx, W * 0.04, H * 0.5, t * 0.6, 0.5);
-        drawDNAStrand(ctx, W * 0.96, H * 0.5, t * 0.6 + Math.PI, 0.5);
-      } else {
-        drawDNAStrand(ctx, W * 0.04, H * 0.5, t * 0.6, 0.4);
-        drawDNAStrand(ctx, W * 0.96, H * 0.5, t * 0.6 + Math.PI, 0.4);
-      }
 
       const pts = particlesRef.current;
       pts.forEach((p) => {
@@ -347,28 +284,38 @@ function LoginPage({ onSwitch }) {
   };
 
   return (
-    <div
-      style={{
-        position: "relative",
-        zIndex: 10,
-        width: "100%",
-        maxWidth: "420px",
-        margin: "0 auto",
-        animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
-      }}
-    >
+   <div
+  style={{
+    position: "relative",
+    zIndex: 10,
+    width: "100%",
+    maxWidth: "420px",
+    margin: "0 auto",
+    animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+
+    background: `
+      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+      url(${log})
+    `,
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+  }}
+>
       {/* FIX: Removed duplicate outer card wrapper — single card div only */}
       <div
         style={{
-          background: "rgba(4,18,48,0.82)",
+          background: "rgba(4, 18, 48, 0.68)",
           border: "1px solid rgba(0,180,255,0.18)",
           borderRadius: "16px",
           padding: "40px 36px 36px",
-          backdropFilter: "blur(24px)",
+          // backdropFilter: "blur(24px)",
           boxShadow:
             "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
           position: "relative",
           overflow: "hidden",
+
+
         }}
       >
         <div
@@ -635,17 +582,25 @@ function SignupPage({ onSwitch }) {
         maxWidth: "420px",
         margin: "0 auto",
         animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+
+         background: `
+      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+      url(${sign})
+    `,
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
         // FIX: Removed `sign` variable reference (was undefined). Add your image URL here if needed:
         // backgroundImage: "url('/your-image-path.png')",
       }}
     >
       <div
         style={{
-          background: "rgba(4,18,48,0.82)",
+          background: "rgba(4, 18, 48, 0.67)",
           border: "1px solid rgba(0,180,255,0.18)",
           borderRadius: "16px",
           padding: "36px 36px 32px",
-          backdropFilter: "blur(24px)",
+          // backdropFilter: "blur(24px)",
           boxShadow:
             "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
           position: "relative",
