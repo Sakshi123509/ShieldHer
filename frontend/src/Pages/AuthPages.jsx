@@ -111,14 +111,22 @@ function AnimatedBackground({ mode }) {
     ];
 
     function render(now) {
-      const W = canvas.width, H = canvas.height;
+      const W = canvas.width,
+        H = canvas.height;
       const dt = Math.min(now - (lastRef.current || now), 50) / 1000;
       lastRef.current = now;
       tRef.current += dt;
       const t = tRef.current;
 
       // Background
-      const grd = ctx.createRadialGradient(W * 0.5, H * 0.4, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.8);
+      const grd = ctx.createRadialGradient(
+        W * 0.5,
+        H * 0.4,
+        0,
+        W * 0.5,
+        H * 0.5,
+        Math.max(W, H) * 0.8,
+      );
       grd.addColorStop(0, "#060f22");
       grd.addColorStop(0.5, "#040c1a");
       grd.addColorStop(1, "#020810");
@@ -126,7 +134,14 @@ function AnimatedBackground({ mode }) {
       ctx.fillRect(0, 0, W, H);
 
       // Ambient center glow
-      const ag = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, W * 0.4);
+      const ag = ctx.createRadialGradient(
+        W * 0.5,
+        H * 0.5,
+        0,
+        W * 0.5,
+        H * 0.5,
+        W * 0.4,
+      );
       ag.addColorStop(0, `rgba(0,80,160,${0.08 + Math.sin(t * 0.8) * 0.03})`);
       ag.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = ag;
@@ -146,7 +161,7 @@ function AnimatedBackground({ mode }) {
           s.y * H + floatY,
           s.size,
           0.07 + Math.sin(t * s.speed + i * 1.3) * 0.04,
-          t
+          t,
         );
       });
 
@@ -161,11 +176,14 @@ function AnimatedBackground({ mode }) {
 
       // Floating particles
       const pts = particlesRef.current;
-      pts.forEach(p => {
+      pts.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
         p.pulse += dt * 1.5;
-        if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+        if (p.y < -10) {
+          p.y = H + 10;
+          p.x = Math.random() * W;
+        }
         if (p.x < -10) p.x = W + 10;
         if (p.x > W + 10) p.x = -10;
         const pa = p.alpha * (0.5 + Math.sin(p.pulse) * 0.5);
@@ -186,16 +204,22 @@ function AnimatedBackground({ mode }) {
       ctx.strokeStyle = "#00cfff";
       ctx.lineWidth = 0.5;
       for (let x = 0; x < W; x += 80) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
       }
       for (let y = 0; y < H; y += 80) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
       }
       ctx.restore();
 
       // Pulse rings emanating from center
       for (let i = 0; i < 3; i++) {
-        const phase = ((t * 0.4 + i / 3) % 1);
+        const phase = (t * 0.4 + i / 3) % 1;
         const pr = phase * Math.min(W, H) * 0.5;
         ctx.save();
         ctx.globalAlpha = (1 - phase) * 0.04;
@@ -218,9 +242,15 @@ function AnimatedBackground({ mode }) {
   }, [mode]);
 
   return (
-    <canvas ref={canvasRef} style={{
-      position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
-    }} />
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
   );
 }
 
@@ -228,10 +258,22 @@ function AnimatedBackground({ mode }) {
 function GoogleIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0 }}>
-      <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-      <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/>
-      <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
-      <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/>
+      <path
+        fill="#4285F4"
+        d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+      />
+      <path
+        fill="#34A853"
+        d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+      />
+      <path
+        fill="#EA4335"
+        d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"
+      />
     </svg>
   );
 }
@@ -241,12 +283,18 @@ function Field({ label, type = "text", placeholder, value, onChange }) {
   const [focused, setFocused] = useState(false);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-      <label style={{
-        fontSize: "9px", letterSpacing: "3px",
-        color: focused ? "rgba(0,207,255,0.8)" : "rgba(0,207,255,0.45)",
-        textTransform: "uppercase", transition: "color .2s",
-        fontFamily: "'Courier New', monospace",
-      }}>{label}</label>
+      <label
+        style={{
+          fontSize: "9px",
+          letterSpacing: "3px",
+          color: focused ? "rgba(0,207,255,0.8)" : "rgba(0,207,255,0.45)",
+          textTransform: "uppercase",
+          transition: "color .2s",
+          fontFamily: "'Courier New', monospace",
+        }}
+      >
+        {label}
+      </label>
       <input
         type={type}
         placeholder={placeholder}
@@ -264,7 +312,9 @@ function Field({ label, type = "text", placeholder, value, onChange }) {
           letterSpacing: "0.5px",
           outline: "none",
           fontFamily: "'Courier New', monospace",
-          boxShadow: focused ? "0 0 16px rgba(0,207,255,0.12), inset 0 1px 0 rgba(0,207,255,0.08)" : "none",
+          boxShadow: focused
+            ? "0 0 16px rgba(0,207,255,0.12), inset 0 1px 0 rgba(0,207,255,0.08)"
+            : "none",
           transition: "all .25s",
           width: "100%",
           boxSizing: "border-box",
@@ -282,52 +332,88 @@ function LoginPage({ onSwitch }) {
   const [gHover, setGHover] = useState(false);
 
   return (
-    <div style={{
-      position: "relative", zIndex: 10,
-      width: "100%", maxWidth: "420px",
-      margin: "0 auto",
-      animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
-    }}>
-      {/* Card */}
-      <div style={{
-        background: "rgba(4,18,48,0.82)",
-        border: "1px solid rgba(0,180,255,0.18)",
-        borderRadius: "16px",
-        padding: "40px 36px 36px",
-        backdropFilter: "blur(24px)",
-        boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+    <div
+      style={{
         position: "relative",
-        overflow: "hidden",
-      }}>
+        zIndex: 10,
+        width: "100%",
+        maxWidth: "420px",
+        margin: "0 auto",
+        animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+      }}
+    >
+      {/* Card */}
+      <div
+        style={{
+          background: "rgba(4,18,48,0.82)",
+          border: "1px solid rgba(0,180,255,0.18)",
+          borderRadius: "16px",
+          padding: "40px 36px 36px",
+          backdropFilter: "blur(24px)",
+          boxShadow:
+            "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
         {/* Top accent line */}
-        <div style={{
-          position: "absolute", top: 0, left: "20%", right: "20%", height: "1px",
-          background: "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
-        }}/>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "20%",
+            right: "20%",
+            height: "1px",
+            background:
+              "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
+          }}
+        />
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{
-            fontSize: "10px", letterSpacing: "5px",
-            color: "rgba(0,207,255,0.45)", marginBottom: "10px",
-            fontFamily: "'Courier New', monospace",
-          }}>◈ SECURE PORTAL</div>
-          <h1 style={{
-            margin: 0, fontSize: "2rem", letterSpacing: "4px",
-            color: "#7de8ff",
-            textShadow: "0 0 30px rgba(0,207,255,0.5)",
-            fontFamily: "'Courier New', monospace",
-            fontWeight: 700,
-          }}>SIGN IN</h1>
-          <p style={{
-            margin: "8px 0 0", fontSize: "12px",
-            color: "rgba(100,200,255,0.45)", letterSpacing: "1.5px",
-            fontFamily: "'Courier New', monospace",
-          }}>SHIELDHER · POWERING RESILIENCE</p>
-          <div style={{
-            height: "1px", marginTop: "16px",
-            background: "linear-gradient(90deg,transparent,rgba(0,207,255,0.3),transparent)",
-          }}/>
+          <div
+            style={{
+              fontSize: "10px",
+              letterSpacing: "5px",
+              color: "rgba(0,207,255,0.45)",
+              marginBottom: "10px",
+              fontFamily: "'Courier New', monospace",
+            }}
+          >
+            ◈ SECURE PORTAL
+          </div>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "2rem",
+              letterSpacing: "4px",
+              color: "#7de8ff",
+              textShadow: "0 0 30px rgba(0,207,255,0.5)",
+              fontFamily: "'Courier New', monospace",
+              fontWeight: 700,
+            }}
+          >
+            SIGN IN
+          </h1>
+          <p
+            style={{
+              margin: "8px 0 0",
+              fontSize: "12px",
+              color: "rgba(100,200,255,0.45)",
+              letterSpacing: "1.5px",
+              fontFamily: "'Courier New', monospace",
+            }}
+          >
+            SHIELDHER · POWERING RESILIENCE
+          </p>
+          <div
+            style={{
+              height: "1px",
+              marginTop: "16px",
+              background:
+                "linear-gradient(90deg,transparent,rgba(0,207,255,0.3),transparent)",
+            }}
+          />
         </div>
 
         {/* Google button */}
@@ -335,46 +421,105 @@ function LoginPage({ onSwitch }) {
           onMouseEnter={() => setGHover(true)}
           onMouseLeave={() => setGHover(false)}
           style={{
-            width: "100%", padding: "12px",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
-            background: gHover ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.05)",
+            width: "100%",
+            padding: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            background: gHover
+              ? "rgba(255,255,255,0.1)"
+              : "rgba(255,255,255,0.05)",
             border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "6px", cursor: "pointer",
-            color: "rgba(200,230,255,0.85)", fontSize: "13px",
-            letterSpacing: "1.5px", fontFamily: "'Courier New', monospace",
+            borderRadius: "6px",
+            cursor: "pointer",
+            color: "rgba(200,230,255,0.85)",
+            fontSize: "13px",
+            letterSpacing: "1.5px",
+            fontFamily: "'Courier New', monospace",
             transition: "all .2s",
             boxShadow: gHover ? "0 0 20px rgba(255,255,255,0.06)" : "none",
             marginBottom: "20px",
-          }}>
+          }}
+        >
           <GoogleIcon />
           CONTINUE WITH GOOGLE
         </button>
 
         {/* Divider */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px",
-        }}>
-          <div style={{ flex: 1, height: "1px", background: "rgba(0,150,220,0.2)" }}/>
-          <span style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(0,150,220,0.4)", fontFamily: "'Courier New', monospace" }}>OR</span>
-          <div style={{ flex: 1, height: "1px", background: "rgba(0,150,220,0.2)" }}/>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            marginBottom: "20px",
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(0,150,220,0.2)",
+            }}
+          />
+          <span
+            style={{
+              fontSize: "10px",
+              letterSpacing: "2px",
+              color: "rgba(0,150,220,0.4)",
+              fontFamily: "'Courier New', monospace",
+            }}
+          >
+            OR
+          </span>
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(0,150,220,0.2)",
+            }}
+          />
         </div>
 
         {/* Fields */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "24px" }}>
-          <Field label="Email Address" type="email" placeholder="you@example.com"
-            value={email} onChange={e => setEmail(e.target.value)} />
-          <Field label="Password" type="password" placeholder="••••••••••"
-            value={password} onChange={e => setPassword(e.target.value)} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            marginBottom: "24px",
+          }}
+        >
+          <Field
+            label="Email Address"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Field
+            label="Password"
+            type="password"
+            placeholder="••••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
 
         {/* Forgot */}
         <div style={{ textAlign: "right", marginBottom: "24px" }}>
-          <span style={{
-            fontSize: "11px", letterSpacing: "1px",
-            color: "rgba(0,207,255,0.5)", cursor: "pointer",
-            fontFamily: "'Courier New', monospace",
-            textDecoration: "underline",
-          }}>FORGOT PASSWORD?</span>
+          <span
+            style={{
+              fontSize: "11px",
+              letterSpacing: "1px",
+              color: "rgba(0,207,255,0.5)",
+              cursor: "pointer",
+              fontFamily: "'Courier New', monospace",
+              textDecoration: "underline",
+            }}
+          >
+            FORGOT PASSWORD?
+          </span>
         </div>
 
         {/* Submit */}
@@ -382,50 +527,93 @@ function LoginPage({ onSwitch }) {
           onMouseEnter={() => setBtnHover(true)}
           onMouseLeave={() => setBtnHover(false)}
           style={{
-            width: "100%", padding: "14px",
+            width: "100%",
+            padding: "14px",
             background: btnHover
               ? "linear-gradient(90deg,rgba(0,130,230,0.6),rgba(0,207,255,0.5))"
               : "linear-gradient(90deg,rgba(0,100,200,0.4),rgba(0,180,255,0.3))",
             border: "1px solid rgba(0,207,255,0.5)",
-            borderRadius: "6px", cursor: "pointer",
-            color: "#7de8ff", fontSize: "13px",
-            letterSpacing: "3px", textTransform: "uppercase",
+            borderRadius: "6px",
+            cursor: "pointer",
+            color: "#7de8ff",
+            fontSize: "13px",
+            letterSpacing: "3px",
+            textTransform: "uppercase",
             fontFamily: "'Courier New', monospace",
             boxShadow: btnHover
               ? "0 0 30px rgba(0,207,255,0.3), 0 0 60px rgba(0,100,200,0.2)"
               : "0 0 16px rgba(0,207,255,0.12)",
             transition: "all .25s",
-            position: "relative", overflow: "hidden",
-          }}>
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
           AUTHENTICATE
         </button>
 
         {/* Switch */}
-        <p style={{
-          textAlign: "center", marginTop: "24px", marginBottom: 0,
-          fontSize: "12px", color: "rgba(100,180,220,0.5)",
-          fontFamily: "'Courier New', monospace", letterSpacing: "1px",
-        }}>
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "24px",
+            marginBottom: 0,
+            fontSize: "12px",
+            color: "rgba(100,180,220,0.5)",
+            fontFamily: "'Courier New', monospace",
+            letterSpacing: "1px",
+          }}
+        >
           NEW TO SHIELDHER?{" "}
-          <span onClick={onSwitch} style={{
-            color: "#00cfff", cursor: "pointer",
-            textDecoration: "underline", letterSpacing: "1.5px",
-          }}>
+          <span
+            onClick={onSwitch}
+            style={{
+              color: "#00cfff",
+              cursor: "pointer",
+              textDecoration: "underline",
+              letterSpacing: "1.5px",
+            }}
+          >
             CREATE ACCOUNT
           </span>
         </p>
 
         {/* Corner decorations */}
         {[
-          { top: 10, left: 10, borderTop: "1px solid", borderLeft: "1px solid" },
-          { top: 10, right: 10, borderTop: "1px solid", borderRight: "1px solid" },
-          { bottom: 10, left: 10, borderBottom: "1px solid", borderLeft: "1px solid" },
-          { bottom: 10, right: 10, borderBottom: "1px solid", borderRight: "1px solid" },
+          {
+            top: 10,
+            left: 10,
+            borderTop: "1px solid",
+            borderLeft: "1px solid",
+          },
+          {
+            top: 10,
+            right: 10,
+            borderTop: "1px solid",
+            borderRight: "1px solid",
+          },
+          {
+            bottom: 10,
+            left: 10,
+            borderBottom: "1px solid",
+            borderLeft: "1px solid",
+          },
+          {
+            bottom: 10,
+            right: 10,
+            borderBottom: "1px solid",
+            borderRight: "1px solid",
+          },
         ].map((s, i) => (
-          <div key={i} style={{
-            position: "absolute", width: "14px", height: "14px",
-            borderColor: "rgba(0,207,255,0.25)", ...s,
-          }}/>
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              width: "14px",
+              height: "14px",
+              borderColor: "rgba(0,207,255,0.25)",
+              ...s,
+            }}
+          />
         ))}
       </div>
     </div>
@@ -442,48 +630,86 @@ function SignupPage({ onSwitch }) {
   const [gHover, setGHover] = useState(false);
 
   return (
-    <div style={{
-      position: "relative", zIndex: 10,
-      width: "100%", maxWidth: "420px",
-      margin: "0 auto",
-      animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
-    }}>
-      <div style={{
-        background: "rgba(4,18,48,0.82)",
-        border: "1px solid rgba(0,180,255,0.18)",
-        borderRadius: "16px",
-        padding: "36px 36px 32px",
-        backdropFilter: "blur(24px)",
-        boxShadow: "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
-        position: "relative", overflow: "hidden",
-      }}>
-        <div style={{
-          position: "absolute", top: 0, left: "20%", right: "20%", height: "1px",
-          background: "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
-        }}/>
+    <div
+      style={{
+        position: "relative",
+        zIndex: 10,
+        width: "100%",
+        maxWidth: "420px",
+        margin: "0 auto",
+        animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
+      }}
+    >
+      <div
+        style={{
+          background: "rgba(4,18,48,0.82)",
+          border: "1px solid rgba(0,180,255,0.18)",
+          borderRadius: "16px",
+          padding: "36px 36px 32px",
+          backdropFilter: "blur(24px)",
+          boxShadow:
+            "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "20%",
+            right: "20%",
+            height: "1px",
+            background:
+              "linear-gradient(90deg,transparent,rgba(0,207,255,0.6),transparent)",
+          }}
+        />
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "28px" }}>
-          <div style={{
-            fontSize: "10px", letterSpacing: "5px",
-            color: "rgba(0,207,255,0.45)", marginBottom: "10px", 
-            fontFamily: "'Courier New', monospace",
-          }}>◈ JOIN THE SHIELD</div>
-          <h1 style={{
-            margin: 0, fontSize: "2rem", letterSpacing: "4px",
-            color: "#7de8ff",
-            textShadow: "0 0 30px rgba(0,207,255,0.5)",
-            fontFamily: "'Courier New', monospace", fontWeight: 700,
-          }}>CREATE ACCOUNT</h1>
-          <p style={{
-            margin: "8px 0 0", fontSize: "12px",
-            color: "rgba(100,200,255,0.45)", letterSpacing: "1.5px",
-            fontFamily: "'Courier New', monospace",
-          }}>SHIELDHER · POWERING RESILIENCE</p>
-          <div style={{
-            height: "1px", marginTop: "14px",
-            background: "linear-gradient(90deg,transparent,rgba(0,207,255,0.3),transparent)",
-          }}/>
+          <div
+            style={{
+              fontSize: "10px",
+              letterSpacing: "5px",
+              color: "rgba(0,207,255,0.45)",
+              marginBottom: "10px",
+              fontFamily: "'Courier New', monospace",
+            }}
+          >
+            ◈ JOIN THE SHIELD
+          </div>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "2rem",
+              letterSpacing: "4px",
+              color: "#7de8ff",
+              textShadow: "0 0 30px rgba(0,207,255,0.5)",
+              fontFamily: "'Courier New', monospace",
+              fontWeight: 700,
+            }}
+          >
+            CREATE ACCOUNT
+          </h1>
+          <p
+            style={{
+              margin: "8px 0 0",
+              fontSize: "12px",
+              color: "rgba(100,200,255,0.45)",
+              letterSpacing: "1.5px",
+              fontFamily: "'Courier New', monospace",
+            }}
+          >
+            SHIELDHER · POWERING RESILIENCE
+          </p>
+          <div
+            style={{
+              height: "1px",
+              marginTop: "14px",
+              background:
+                "linear-gradient(90deg,transparent,rgba(0,207,255,0.3),transparent)",
+            }}
+          />
         </div>
 
         {/* Google */}
@@ -491,52 +717,134 @@ function SignupPage({ onSwitch }) {
           onMouseEnter={() => setGHover(true)}
           onMouseLeave={() => setGHover(false)}
           style={{
-            width: "100%", padding: "12px",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
-            background: gHover ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.05)",
+            width: "100%",
+            padding: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            background: gHover
+              ? "rgba(255,255,255,0.1)"
+              : "rgba(255,255,255,0.05)",
             border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "6px", cursor: "pointer",
-            color: "rgba(200,230,255,0.85)", fontSize: "13px",
-            letterSpacing: "1.5px", fontFamily: "'Courier New', monospace",
+            borderRadius: "6px",
+            cursor: "pointer",
+            color: "rgba(200,230,255,0.85)",
+            fontSize: "13px",
+            letterSpacing: "1.5px",
+            fontFamily: "'Courier New', monospace",
             transition: "all .2s",
             boxShadow: gHover ? "0 0 20px rgba(255,255,255,0.06)" : "none",
             marginBottom: "18px",
-          }}>
+          }}
+        >
           <GoogleIcon />
           SIGN UP WITH GOOGLE
         </button>
 
         {/* Divider */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "18px" }}>
-          <div style={{ flex: 1, height: "1px", background: "rgba(0,150,220,0.2)" }}/>
-          <span style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(0,150,220,0.4)", fontFamily: "'Courier New', monospace" }}>OR</span>
-          <div style={{ flex: 1, height: "1px", background: "rgba(0,150,220,0.2)" }}/>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            marginBottom: "18px",
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(0,150,220,0.2)",
+            }}
+          />
+          <span
+            style={{
+              fontSize: "10px",
+              letterSpacing: "2px",
+              color: "rgba(0,150,220,0.4)",
+              fontFamily: "'Courier New', monospace",
+            }}
+          >
+            OR
+          </span>
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(0,150,220,0.2)",
+            }}
+          />
         </div>
 
         {/* Fields */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "22px" }}>
-          <Field label="Full Name" type="text" placeholder="Your name"
-            value={name} onChange={e => setName(e.target.value)} />
-          <Field label="Email Address" type="email" placeholder="you@example.com"
-            value={email} onChange={e => setEmail(e.target.value)} />
-          <Field label="Password" type="password" placeholder="Create a strong password"
-            value={password} onChange={e => setPassword(e.target.value)} />
-          <Field label="Confirm Password" type="password" placeholder="Repeat password"
-            value={confirm} onChange={e => setConfirm(e.target.value)} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "14px",
+            marginBottom: "22px",
+          }}
+        >
+          <Field
+            label="Full Name"
+            type="text"
+            placeholder="Your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Field
+            label="Email Address"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Field
+            label="Password"
+            type="password"
+            placeholder="Create a strong password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Field
+            label="Confirm Password"
+            type="password"
+            placeholder="Repeat password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+          />
         </div>
 
         {/* Terms */}
-        <p style={{
-          fontSize: "10px", letterSpacing: "0.8px",
-          color: "rgba(0,150,200,0.4)", textAlign: "center",
-          marginBottom: "18px", fontFamily: "'Courier New', monospace",
-        }}>
+        <p
+          style={{
+            fontSize: "10px",
+            letterSpacing: "0.8px",
+            color: "rgba(0,150,200,0.4)",
+            textAlign: "center",
+            marginBottom: "18px",
+            fontFamily: "'Courier New', monospace",
+          }}
+        >
           BY JOINING YOU AGREE TO OUR{" "}
-          <span style={{ color: "rgba(0,207,255,0.6)", cursor: "pointer", textDecoration: "underline" }}>
+          <span
+            style={{
+              color: "rgba(0,207,255,0.6)",
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
             TERMS
           </span>{" "}
           &{" "}
-          <span style={{ color: "rgba(0,207,255,0.6)", cursor: "pointer", textDecoration: "underline" }}>
+          <span
+            style={{
+              color: "rgba(0,207,255,0.6)",
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
             PRIVACY POLICY
           </span>
         </p>
@@ -546,48 +854,90 @@ function SignupPage({ onSwitch }) {
           onMouseEnter={() => setBtnHover(true)}
           onMouseLeave={() => setBtnHover(false)}
           style={{
-            width: "100%", padding: "14px",
+            width: "100%",
+            padding: "14px",
             background: btnHover
               ? "linear-gradient(90deg,rgba(0,130,230,0.6),rgba(0,207,255,0.5))"
               : "linear-gradient(90deg,rgba(0,100,200,0.4),rgba(0,180,255,0.3))",
             border: "1px solid rgba(0,207,255,0.5)",
-            borderRadius: "6px", cursor: "pointer",
-            color: "#7de8ff", fontSize: "13px",
-            letterSpacing: "3px", textTransform: "uppercase",
+            borderRadius: "6px",
+            cursor: "pointer",
+            color: "#7de8ff",
+            fontSize: "13px",
+            letterSpacing: "3px",
+            textTransform: "uppercase",
             fontFamily: "'Courier New', monospace",
             boxShadow: btnHover
               ? "0 0 30px rgba(0,207,255,0.3), 0 0 60px rgba(0,100,200,0.2)"
               : "0 0 16px rgba(0,207,255,0.12)",
             transition: "all .25s",
-          }}>
+          }}
+        >
           JOIN SHIELDHER
         </button>
 
         {/* Switch */}
-        <p style={{
-          textAlign: "center", marginTop: "20px", marginBottom: 0,
-          fontSize: "12px", color: "rgba(100,180,220,0.5)",
-          fontFamily: "'Courier New', monospace", letterSpacing: "1px",
-        }}>
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "20px",
+            marginBottom: 0,
+            fontSize: "12px",
+            color: "rgba(100,180,220,0.5)",
+            fontFamily: "'Courier New', monospace",
+            letterSpacing: "1px",
+          }}
+        >
           ALREADY PROTECTED?{" "}
-          <span onClick={onSwitch} style={{
-            color: "#00cfff", cursor: "pointer",
-            textDecoration: "underline", letterSpacing: "1.5px",
-          }}>
+          <span
+            onClick={onSwitch}
+            style={{
+              color: "#00cfff",
+              cursor: "pointer",
+              textDecoration: "underline",
+              letterSpacing: "1.5px",
+            }}
+          >
             SIGN IN
           </span>
         </p>
 
         {[
-          { top: 10, left: 10, borderTop: "1px solid", borderLeft: "1px solid" },
-          { top: 10, right: 10, borderTop: "1px solid", borderRight: "1px solid" },
-          { bottom: 10, left: 10, borderBottom: "1px solid", borderLeft: "1px solid" },
-          { bottom: 10, right: 10, borderBottom: "1px solid", borderRight: "1px solid" },
+          {
+            top: 10,
+            left: 10,
+            borderTop: "1px solid",
+            borderLeft: "1px solid",
+          },
+          {
+            top: 10,
+            right: 10,
+            borderTop: "1px solid",
+            borderRight: "1px solid",
+          },
+          {
+            bottom: 10,
+            left: 10,
+            borderBottom: "1px solid",
+            borderLeft: "1px solid",
+          },
+          {
+            bottom: 10,
+            right: 10,
+            borderBottom: "1px solid",
+            borderRight: "1px solid",
+          },
         ].map((s, i) => (
-          <div key={i} style={{
-            position: "absolute", width: "14px", height: "14px",
-            borderColor: "rgba(0,207,255,0.25)", ...s,
-          }}/>
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              width: "14px",
+              height: "14px",
+              borderColor: "rgba(0,207,255,0.25)",
+              ...s,
+            }}
+          />
         ))}
       </div>
     </div>
@@ -599,52 +949,100 @@ export default function AuthPages() {
   const [page, setPage] = useState("login"); // "login" | "signup"
 
   return (
-    <div style={{
-      minHeight: "100vh", width: "100%",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      padding: "24px 16px",
-      boxSizing: "border-box",
-      fontFamily: "'Courier New', monospace",
-      position: "relative",
-      overflow: "hidden",
-    }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px 16px",
+        boxSizing: "border-box",
+        fontFamily: "'Courier New', monospace",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
       {/* Animated canvas background */}
       <AnimatedBackground mode={page} />
 
       {/* Corner HUD marks */}
       {[
         { top: 16, left: 16, borderTop: "1px solid", borderLeft: "1px solid" },
-        { top: 16, right: 16, borderTop: "1px solid", borderRight: "1px solid" },
-        { bottom: 16, left: 16, borderBottom: "1px solid", borderLeft: "1px solid" },
-        { bottom: 16, right: 16, borderBottom: "1px solid", borderRight: "1px solid" },
+        {
+          top: 16,
+          right: 16,
+          borderTop: "1px solid",
+          borderRight: "1px solid",
+        },
+        {
+          bottom: 16,
+          left: 16,
+          borderBottom: "1px solid",
+          borderLeft: "1px solid",
+        },
+        {
+          bottom: 16,
+          right: 16,
+          borderBottom: "1px solid",
+          borderRight: "1px solid",
+        },
       ].map((s, i) => (
-        <div key={i} style={{
-          position: "fixed", width: "24px", height: "24px",
-          borderColor: "rgba(0,180,255,0.22)", ...s, zIndex: 20, pointerEvents: "none",
-        }}/>
+        <div
+          key={i}
+          style={{
+            position: "fixed",
+            width: "24px",
+            height: "24px",
+            borderColor: "rgba(0,180,255,0.22)",
+            ...s,
+            zIndex: 20,
+            pointerEvents: "none",
+          }}
+        />
       ))}
 
       {/* Status bar top */}
-      <div style={{
-        position: "fixed", top: "20px", left: "50%", transform: "translateX(-50%)",
-        zIndex: 20, pointerEvents: "none",
-        display: "flex", alignItems: "center", gap: "8px",
-      }}>
-        <span style={{
-          display: "inline-block", width: "6px", height: "6px",
-          borderRadius: "50%", background: "#00cfff",
-          boxShadow: "0 0 8px #00cfff",
-          animation: "pulseDot 1.4s ease-in-out infinite",
-        }}/>
-       
+      <div
+        style={{
+          position: "fixed",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 20,
+          pointerEvents: "none",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
+        <span
+          style={{
+            display: "inline-block",
+            width: "6px",
+            height: "6px",
+            borderRadius: "50%",
+            background: "#00cfff",
+            boxShadow: "0 0 8px #00cfff",
+            animation: "pulseDot 1.4s ease-in-out infinite",
+          }}
+        />
       </div>
 
       {/* Page content */}
-      <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: "420px" }}>
-        {page === "login"
-          ? <LoginPage  onSwitch={() => setPage("signup")} />
-          : <SignupPage onSwitch={() => setPage("login")}  />
-        }
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          width: "100%",
+          maxWidth: "420px",
+        }}
+      >
+        {page === "login" ? (
+          <LoginPage onSwitch={() => setPage("signup")} />
+        ) : (
+          <SignupPage onSwitch={() => setPage("login")} />
+        )}
       </div>
 
       <style>{`
