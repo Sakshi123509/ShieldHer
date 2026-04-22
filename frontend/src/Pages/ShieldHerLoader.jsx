@@ -390,8 +390,8 @@ export default function ShieldHerLoader() {
     window.addEventListener("resize", resize);
 
     function render(now) {
-      const W = canvas.width,
-        H = canvas.height;
+    const W = canvas.width;
+const H = canvas.height;
       const cx = W / 2,
         cy = H / 2,
         sc = Math.min(W, H) / 900;
@@ -530,7 +530,7 @@ export default function ShieldHerLoader() {
     <>
       {/* Login always mounted underneath, fades in when showLogin=true
       <LoginPage visible={showLogin} /> */}
-      <AuthPages visible={AuthPages} />
+      {showLogin && <AuthPages />}
 
       {/* Loader sits on top, fades out, then unmounts */}
       {!hideLoader && (
@@ -715,7 +715,7 @@ export default function ShieldHerLoader() {
       )}
 
       <style>{`
-        @keyframes pulse-dot {
+        @keyframes pulse-dot {kuii
           0%,100% { opacity:1; transform:scale(1); }
           50%      { opacity:0.3; transform:scale(0.6); }
         }
