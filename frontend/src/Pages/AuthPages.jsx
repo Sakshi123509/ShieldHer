@@ -718,33 +718,7 @@ function SignupPage({ onSwitch }) {
           />
         </div>
 
-        <button
-          onMouseEnter={() => setGHover(true)}
-          onMouseLeave={() => setGHover(false)}
-          style={{
-            width: "100%",
-            padding: "12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-            background: gHover
-              ? "rgba(255,255,255,0.1)"
-              : "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "6px",
-            cursor: "pointer",
-            color: "rgba(200,230,255,0.85)",
-            fontSize: "13px",
-            letterSpacing: "1.5px",
-            fontFamily: "'Courier New', monospace",
-            transition: "all .2s",
-            boxShadow: gHover ? "0 0 20px rgba(255,255,255,0.06)" : "none",
-            marginBottom: "18px",
-          }}
-        >
-          <GoogleIcon /> SIGN UP WITH GOOGLE
-        </button>
+       
 
         <div
           style={{
@@ -761,16 +735,7 @@ function SignupPage({ onSwitch }) {
               background: "rgba(0,150,220,0.2)",
             }}
           />
-          <span
-            style={{
-              fontSize: "10px",
-              letterSpacing: "2px",
-              color: "rgba(0,150,220,0.4)",
-              fontFamily: "'Courier New', monospace",
-            }}
-          >
-            OR
-          </span>
+         
           <div
             style={{
               flex: 1,
