@@ -222,7 +222,8 @@ export const Home = () => {
           background: "#060d1a",
         }}
       >
-        {/* ✅ Animation ONLY here */}
+        
+        {/* Animation ONLY here */}
         <BlueBG />
 
         {/* Your Home Content */}
