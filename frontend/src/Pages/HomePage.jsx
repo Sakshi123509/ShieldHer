@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import ShieldHerFlipbook from "./ShieldHerFlipbook";
 import PersonalDetailsPage from "./PersonalDetailsPage";
 import { useNavigate } from "react-router-dom";
+import Gpstracker from "./Gpstracker";
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
@@ -1354,6 +1355,7 @@ export default function HomePage() {
   return (
     <>
       <style>{CSS}</style>
+      
       <div
         style={{
           position: "relative",
@@ -1370,6 +1372,7 @@ export default function HomePage() {
           {/* <Magazine/> */}
           <Methods />
         </main>
+        <Gpstracker/>
         <Footer />
       </div>
     </>
