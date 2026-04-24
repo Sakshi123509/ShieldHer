@@ -3,6 +3,14 @@ export default function ShieldHerFlipbook() {
     <div
       style={{
         backgroundColor: "#040d1c",
+
+    //        background: `
+    //   linear-gradient(rgba(4, 13, 28, 0.43), rgba(4, 13, 28, 0.51)),
+    //   url("https://i.pinimg.com/1200x/ab/b3/17/abb317402dce8c2162c60f4bed57ed63.jpg")
+    // `,
+    // backgroundSize: "cover",
+    // backgroundPosition: "center",
+    // backgroundRepeat: "no-repeat",
         height: "100vh",
         display: "flex",
         flexDirection: "column",
