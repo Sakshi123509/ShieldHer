@@ -40,7 +40,7 @@ function Navbar() {
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  const links = ["Home", "About", "How It Works", "Safety", "Contact"];
+  const links = ["Home", "About","Instruction Manual" , "How It Works", "Profile"];
   return (
     <nav
       style={{
@@ -128,33 +128,7 @@ function Navbar() {
             {l}
           </a>
         ))}
-        <button
-          style={{
-            padding: "9px 24px",
-            background:
-              "linear-gradient(90deg,rgba(0,100,200,0.48),rgba(0,207,255,0.36))",
-            border: "1px solid rgba(0,207,255,0.52)",
-            borderRadius: "6px",
-            color: "#7de8ff",
-            fontSize: "11px",
-            letterSpacing: "2px",
-            fontFamily: "'Orbitron',monospace",
-            fontWeight: 700,
-            cursor: "pointer",
-            boxShadow: "0 0 18px rgba(0,207,255,0.14)",
-            transition: "all .25s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = "0 0 30px rgba(0,207,255,0.32)";
-            e.currentTarget.style.transform = "translateY(-2px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = "0 0 18px rgba(0,207,255,0.14)";
-            e.currentTarget.style.transform = "translateY(0)";
-          }}
-        >
-          GET PROTECTED
-        </button>
+       
       </div>
     </nav>
   );
@@ -178,6 +152,7 @@ function Hero({ navigate }) {
   }, []);
   return (
     <section
+    id="home"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -358,47 +333,7 @@ function Hero({ navigate }) {
             LEARN MORE
           </button>
         </div>
-        <div
-          style={{
-            display: "flex",
-            gap: "48px",
-            justifyContent: "center",
-            marginTop: "64px",
-            flexWrap: "wrap",
-          }}
-        >
-          {[
-            ["10K+", "Women Protected"],
-            ["< 3s", "SOS Response"],
-            ["99.9%", "Uptime"],
-            ["24/7", "AI Monitoring"],
-          ].map(([n, l]) => (
-            <div key={l} style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  fontFamily: "'Orbitron',monospace",
-                  fontSize: "1.65rem",
-                  fontWeight: 700,
-                  color: "#00cfff",
-                  textShadow: "0 0 18px rgba(0,207,255,0.45)",
-                }}
-              >
-                {n}
-              </div>
-              <div
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "2px",
-                  color: "rgba(0,180,255,0.42)",
-                  marginTop: "4px",
-                  fontFamily: "'Courier New',monospace",
-                }}
-              >
-                {l}
-              </div>
-            </div>
-          ))}
-        </div>
+       
       </div>
       <div
         style={{
@@ -674,249 +609,6 @@ function ShieldViz() {
   );
 }
 
-/* ── Magazine Placeholder ────────────────────────────────────── */
-function Magazine() {
-  const ref = useRef(null);
-  const [vis, setVis] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) setVis(true);
-      },
-      { threshold: 0.12 },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-  const slots = [
-    { tag: "COVER STORY", sub: "Technology for Safety" },
-    { tag: "FEATURE", sub: "Innovation in Security" },
-    { tag: "SPOTLIGHT", sub: "Women Empowerment" },
-    { tag: "EXCLUSIVE", sub: "AI & Personal Safety" },
-    { tag: "REVIEW", sub: "ShieldHer In-Depth" },
-    { tag: "AWARD", sub: "Best Safety App 2025" },
-  ];
-  return (
-    <section
-      ref={ref}
-      id="press"
-      style={{ padding: "80px 48px", position: "relative", zIndex: 1 }}
-    >
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: "48px",
-            opacity: vis ? 1 : 0,
-            transform: vis ? "translateY(0)" : "translateY(20px)",
-            transition: "all .6s ease",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "9px",
-              letterSpacing: "5px",
-              color: "rgba(0,207,255,0.42)",
-              marginBottom: "12px",
-              fontFamily: "'Courier New',monospace",
-            }}
-          >
-            ◈ FEATURED IN
-          </div>
-          <h2
-            style={{
-              fontFamily: "'Orbitron',monospace",
-              fontSize: "clamp(1.3rem,2.5vw,1.9rem)",
-              fontWeight: 700,
-              letterSpacing: "2px",
-              color: "#7de8ff",
-            }}
-          >
-            AS SEEN IN PRESS
-          </h2>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3,1fr)",
-            gap: "20px",
-          }}
-        >
-          {slots.map((s, i) => (
-            <div
-              key={i}
-              style={{
-                aspectRatio: "3/4",
-                background: "rgba(4,14,40,0.75)",
-                border: "1px solid rgba(0,180,255,0.16)",
-                borderRadius: "10px",
-                position: "relative",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                cursor: "pointer",
-                opacity: vis ? 1 : 0,
-                transform: vis ? "translateY(0)" : "translateY(30px)",
-                transition: `opacity .5s ease ${i * 0.08}s, transform .5s ease ${i * 0.08}s, border-color .25s, box-shadow .25s`,
-                animation: vis
-                  ? `borderPulse ${3 + i * 0.4}s ease-in-out ${i * 0.3}s infinite`
-                  : undefined,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,207,255,0.48)";
-                e.currentTarget.style.boxShadow =
-                  "0 0 30px rgba(0,207,255,0.1)";
-                e.currentTarget.style.transform = "translateY(-4px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,180,255,0.16)";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  height: "1px",
-                  background:
-                    "linear-gradient(90deg,transparent,rgba(0,207,255,0.22),transparent)",
-                  animation: `scanLine ${4 + i * 0.5}s linear ${i * 0.4}s infinite",pointerEvents:"none`,
-                }}
-              />
-              <div
-                style={{
-                  width: "48px",
-                  height: "48px",
-                  border: "1px dashed rgba(0,207,255,0.3)",
-                  borderRadius: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "rgba(0,207,255,0.03)",
-                }}
-              >
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <rect
-                    x="3"
-                    y="3"
-                    width="16"
-                    height="16"
-                    rx="2"
-                    stroke="rgba(0,207,255,0.38)"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="11"
-                    y1="7"
-                    x2="11"
-                    y2="15"
-                    stroke="rgba(0,207,255,0.38)"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                  />
-                  <polyline
-                    points="7,10 11,7 15,10"
-                    stroke="rgba(0,207,255,0.38)"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                  />
-                </svg>
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Courier New',monospace",
-                  fontSize: "9px",
-                  letterSpacing: "2px",
-                  color: "rgba(0,207,255,0.48)",
-                  textTransform: "uppercase",
-                }}
-              >
-                {s.tag}
-              </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: "rgba(168,240,255,0.32)",
-                  letterSpacing: "0.5px",
-                  textAlign: "center",
-                  padding: "0 12px",
-                }}
-              >
-                {s.sub}
-              </div>
-              <div
-                style={{
-                  fontSize: "9px",
-                  color: "rgba(0,180,255,0.28)",
-                  fontFamily: "'Courier New',monospace",
-                  letterSpacing: "1px",
-                }}
-              >
-                IMAGE COMING SOON
-              </div>
-              {[
-                {
-                  top: 8,
-                  left: 8,
-                  borderTop: "1px solid",
-                  borderLeft: "1px solid",
-                },
-                {
-                  top: 8,
-                  right: 8,
-                  borderTop: "1px solid",
-                  borderRight: "1px solid",
-                },
-                {
-                  bottom: 8,
-                  left: 8,
-                  borderBottom: "1px solid",
-                  borderLeft: "1px solid",
-                },
-                {
-                  bottom: 8,
-                  right: 8,
-                  borderBottom: "1px solid",
-                  borderRight: "1px solid",
-                },
-              ].map((st, j) => (
-                <div
-                  key={j}
-                  style={{
-                    position: "absolute",
-                    width: "10px",
-                    height: "10px",
-                    borderColor: "rgba(0,207,255,0.18)",
-                    ...st,
-                  }}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-        <p
-          style={{
-            textAlign: "center",
-            marginTop: "22px",
-            fontSize: "10px",
-            letterSpacing: "2px",
-            color: "rgba(0,180,255,0.28)",
-            fontFamily: "'Courier New',monospace",
-          }}
-        >
-          ◈ PROVIDE IMAGES — MAGAZINE FLIP EFFECT WILL BE APPLIED
-        </p>
-      </div>
-    </section>
-  );
-}
 
 /* ── Methods ─────────────────────────────────────────────────── */
 function Methods() {
@@ -941,6 +633,7 @@ function Methods() {
       glow: "rgba(0,207,255,0.22)",
       border: "rgba(0,207,255,0.38)",
       title: "Manual App Activation",
+      image: "https://i.pinimg.com/736x/8c/97/75/8c9775d7df307f49b983b1b49908ae12.jpg",
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect
@@ -984,6 +677,7 @@ function Methods() {
       glow: "rgba(125,232,255,0.18)",
       border: "rgba(125,232,255,0.32)",
       title: "Voice Trigger Word",
+        image: "https://i.pinimg.com/1200x/be/5e/7f/be5e7f544410ed5d96eae44ce987479d.jpg",
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect
@@ -1054,6 +748,7 @@ function Methods() {
       glow: "rgba(91,200,255,0.18)",
       border: "rgba(91,200,255,0.32)",
       title: "Physical Wearable Button",
+        image: "https://i.pinimg.com/1200x/56/35/11/563511db778ff644a93f2d23403c93ac.jpg",
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <circle cx="16" cy="16" r="11" stroke="#5bc8ff" strokeWidth="1.5" />
@@ -1127,7 +822,7 @@ function Methods() {
         >
           <div
             style={{
-              fontSize: "9px",
+              fontSize: "15px",
               letterSpacing: "5px",
               color: "rgba(0,207,255,0.42)",
               marginBottom: "14px",
@@ -1185,7 +880,15 @@ function MethodCard({ m, i, vis }) {
       onMouseLeave={() => setHov(false)}
       style={{
         position: "relative",
-        background: hov ? "rgba(6,22,55,0.95)" : "rgba(4,14,40,0.85)",
+       background: m.image
+  ? `linear-gradient(rgba(6, 22, 55, 0.48), rgba(4,14,40,0.9)), url(${m.image})`
+  : hov
+  ? "rgba(6,22,55,0.95)"
+  : "rgba(4,14,40,0.85)",
+
+backgroundSize: "cover",
+backgroundPosition: "center",
+backgroundRepeat: "no-repeat",
         border: `1px solid ${hov ? m.border : "rgba(0,180,255,0.15)"}`,
         borderRadius: "14px",
         padding: "36px 28px 32px",
@@ -1257,7 +960,7 @@ function MethodCard({ m, i, vis }) {
       <div
         style={{
           fontFamily: "'Courier New',monospace",
-          fontSize: "8px",
+          fontSize: "15px",
           letterSpacing: "3px",
           color: m.color,
           opacity: 0.6,
@@ -1286,6 +989,8 @@ function MethodCard({ m, i, vis }) {
       >
         {m.icon}
       </div>
+    
+  
 
       {/* Title */}
       <h3

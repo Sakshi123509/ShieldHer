@@ -1,6 +1,8 @@
 
 export default function ShieldHerFlipbook() {
   return (
+    
+    
     <div
       style={{
         backgroundColor: "#050E1E",
@@ -10,13 +12,16 @@ export default function ShieldHerFlipbook() {
         alignItems: "center",
           position: "relative", 
       }}
+
+      
     >
+      
       <div
         style={{
           width: "70%",
           height: "80vh",
           overflow: "hidden",
-           zIndex : 5
+           zIndex : 1,
         }}
       >
         <iframe
