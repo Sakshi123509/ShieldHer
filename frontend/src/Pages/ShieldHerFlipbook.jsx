@@ -154,6 +154,7 @@ export default function ShieldHerFlipbook() {
         position: "relative",
       }}
     >
+      {/* Title */}
       <h2
         style={{
           fontFamily: "'Orbitron', monospace",
@@ -165,16 +166,19 @@ export default function ShieldHerFlipbook() {
           marginBottom: "40px",
         }}
       >
-       INSTRUCTION MANUAL
+        INSTRUCTION MANUAL
       </h2>
+
+      {/* Flipbook Container */}
       <div
         style={{
           width: "70%",
           height: "80vh",
+          position: "relative",
           overflow: "hidden",
-          zIndex: 1,
         }}
       >
+        {/* Iframe */}
         <iframe
           src="https://heyzine.com/flip-book/3d12cf6d45.html"
           title="Flipbook"
@@ -182,104 +186,68 @@ export default function ShieldHerFlipbook() {
             border: "none",
             width: "100%",
             height: "100%",
+            position: "relative",
+            zIndex: 1,
           }}
           allow="clipboard-write"
           allowFullScreen
         />
 
-        {/* White Rectangle Overlay */}
-
-               <div
-        style={{
-          position: "absolute",   // ✅ sits on top of iframe
-          bottom: "6%",
-          left: "23%",
-          transform: "translate(-50%, -50%)",
-          width: "220px",
-          height: "80px",
-          backgroundColor: "#040d1c",
-          borderRadius: "10px",
-          
-          zIndex: 1,
+        {/* Overlay Layer */}
         <div
           style={{
-            position: "absolute", // ✅ sits on top of iframe
-            top: "18%",
-            left: "23%",
-            transform: "translate(-50%, -50%)",
-            width: "220px",
-            height: "80px",
-            backgroundColor: "#050E1E",
-            borderRadius: "10px",
-
-            zIndex: 1,
-
-           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: "28px",
-            fontWeight: "bold",
-            color: "#fff",
-            letterSpacing: "2px",
-               textAlign: "center",
+            position: "absolute",
+            inset: 0,
+            zIndex: 5,
+            pointerEvents: "none", // important so iframe still clickable
           }}
         >
-          SHIELDHER ◇
-        </h1>
-      </div>
-      <div
-        style={{
-          position: "absolute",   // ✅ sits on top of iframe
-          top: "17%",
-          right: "13%",
-          transform: "translate(-50%, -50%)",
-          width: "100px",
-          height: "100px",
-          backgroundColor: "#050E1E",
-          borderRadius: "10px",
-        
-          zIndex: 10,
-        }}
-      >
-      </div>
-
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 10,
-          }}
-        >
-          <h1
+          {/* SHIELDHER Badge */}
+          {/* <div
             style={{
-              margin: 0,
-              fontSize: "28px",
-              fontWeight: "bold",
-              color: "#fff",
-              letterSpacing: "2px",
+              position: "absolute",
+              top: "15%",
+              left: "20%",
+              transform: "translateX(-50%)",
+              width: "220px",
+              height: "80px",
+              backgroundColor: "#050E1E",
+              borderRadius: "10px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              boxShadow: "0 0 20px rgba(0,0,0,0.4)",
             }}
           >
-            SHIELDHER ◇
-          </h1>
-        </div>
-        <div
-          style={{
-            position: "absolute", // ✅ sits on top of iframe
-            top: "17%",
-            right: "13%",
-            transform: "translate(-50%, -50%)",
-            width: "100px",
-            height: "100px",
-            backgroundColor: "#050E1E",
-            borderRadius: "10px",
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "28px",
+                fontWeight: "bold",
+                color: "#fff",
+                letterSpacing: "2px",
+              }}
+            >
+              SHIELDHER ◇
+            </h1>
+          </div> */}
 
-            zIndex: 10,
-          }}
-        ></div>
+          {/* Right Floating Box */}
+          <div
+          imgsrc=""
+            style={{
+              position: "absolute",
+              top: "17%",
+              right: "13%",
+              transform: "translate(-50%, -50%)",
+              width: "100px",
+              height: "100px",
+              backgroundColor: "#050E1E",
+              borderRadius: "10px",
+              zIndex: 10,
+            }}
+          />
+        </div>
       </div>
     </div>
   );
