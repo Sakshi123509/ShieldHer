@@ -11,7 +11,7 @@ const CSS = `
   body{background:#060d1a;color:#a8f0ff;font-family:'Rajdhani',sans-serif;overflow-x:hidden;}
   ::-webkit-scrollbar{width:3px;}
   ::-webkit-scrollbar-track{background:#060d1a;}
-  ::-webkit-scrollbar-thumb{background:#00cfff;border-radius:2px;}
+  ::-webkit-scrollbar-thumb{background:#000;border-radius:2px;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
   @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
   @keyframes glow{0%,100%{text-shadow:0 0 20px rgba(0,207,255,0.4);}50%{text-shadow:0 0 50px rgba(0,207,255,0.8),0 0 90px rgba(0,150,255,0.3);}}

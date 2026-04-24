@@ -142,10 +142,29 @@ export default function VoiceGPS() {
   };
 
   return (
+     <div
+    style={{
+      height: "100vh",
+      background: "#040d1c",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
     <div
       style={{
-        height: "100vh",
-        background: "#040d1c",
+        width : "100vw" , 
+        height: "90vh",
+        // background: "#040d1c",
+
+         background: `
+      linear-gradient(rgba(4, 13, 28, 0.43), rgba(4, 13, 28, 0.51)),
+      url("https://i.pinimg.com/1200x/32/62/95/3262954384b2d2e2d9da54bbabad6fdf.jpg")
+    `,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -173,9 +192,10 @@ export default function VoiceGPS() {
       <p
         style={{
           color: "#aaa",
-          fontSize: "14px",
+          fontSize: "18px",
           maxWidth: "400px",
           lineHeight: "1.6",
+          fontWeight:"500"
         }}
       >
         Say <span style={{ color: "#00cfff" }}>“HELP”</span> to automatically
@@ -221,6 +241,7 @@ export default function VoiceGPS() {
           src={`https://maps.google.com/maps?q=${location.lat},${location.lng}&z=15&output=embed`}
         />
       )}
+    </div>
     </div>
   );
 }
