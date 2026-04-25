@@ -12,18 +12,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<ShieldHerLoader />} />
+        <Route path="/" element={<ShieldHerLoader />} />
 
         <Route path="/login" element={<AuthPages />} />
 
         <Route path="/home" element={<HomePage />} />
 
-        <Route path="/details" element={<PersonalDetailsPage />} /> */}
+        <Route path="/details" element={<PersonalDetailsPage />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/sos-confirmation" element={<SOSConfirmation />} />
 
-        <Route path="/details" element={<PersonalDetailsPage />} />
+      
       </Routes>
     </BrowserRouter>
   );

@@ -12,10 +12,34 @@ const MOCK_PROFILE = {
     medicalNotes: "Allergic to penicillin. Asthma — carry inhaler.",
   },
   contacts: [
-    { name: "Anita Sharma",  relation: "Mother",  phone: "+91 99001 12345", email: "anita@email.com",  priority: 1 },
-    { name: "Ravi Sharma",   relation: "Father",  phone: "+91 99002 67890", email: "ravi@email.com",   priority: 1 },
-    { name: "Neha Kapoor",   relation: "Friend",  phone: "+91 98888 11223", email: "neha@email.com",   priority: 2 },
-    { name: "Dr. Meera Rao", relation: "Colleague",phone: "+91 97777 55667", email: "meera@email.com",  priority: 3 },
+    {
+      name: "Anita Sharma",
+      relation: "Mother",
+      phone: "+91 99001 12345",
+      email: "anita@email.com",
+      priority: 1,
+    },
+    {
+      name: "Ravi Sharma",
+      relation: "Father",
+      phone: "+91 99002 67890",
+      email: "ravi@email.com",
+      priority: 1,
+    },
+    {
+      name: "Neha Kapoor",
+      relation: "Friend",
+      phone: "+91 98888 11223",
+      email: "neha@email.com",
+      priority: 2,
+    },
+    {
+      name: "Dr. Meera Rao",
+      relation: "Colleague",
+      phone: "+91 97777 55667",
+      email: "meera@email.com",
+      priority: 3,
+    },
   ],
   address: {
     line1: "Flat 4B, Sunrise Apartments, MG Road",
@@ -59,84 +83,245 @@ const CSS = `
 function BG() {
   const ref = useRef(null);
   const raf = useRef(null);
-  const T   = useRef(0);
+  const T = useRef(0);
   const lst = useRef(null);
   const pts = useRef([]);
   useEffect(() => {
-    const c = ref.current, ctx = c.getContext("2d");
+    const c = ref.current,
+      ctx = c.getContext("2d");
     const resize = () => {
-      c.width = window.innerWidth; c.height = window.innerHeight;
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
       pts.current = Array.from({ length: 55 }, () => ({
-        x: Math.random() * c.width, y: Math.random() * c.height,
-        r: .4 + Math.random() * 1.6, vx: (Math.random() - .5) * .25,
-        vy: -.05 - Math.random() * .2, alpha: .08 + Math.random() * .38,
-        pulse: Math.random() * Math.PI * 2, hue: 185 + Math.random() * 35,
+        x: Math.random() * c.width,
+        y: Math.random() * c.height,
+        r: 0.4 + Math.random() * 1.6,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: -0.05 - Math.random() * 0.2,
+        alpha: 0.08 + Math.random() * 0.38,
+        pulse: Math.random() * Math.PI * 2,
+        hue: 185 + Math.random() * 35,
       }));
     };
-    resize(); window.addEventListener("resize", resize);
+    resize();
+    window.addEventListener("resize", resize);
     const render = (now) => {
-      const W = c.width, H = c.height, dt = Math.min(now - (lst.current || now), 50) / 1000;
-      lst.current = now; T.current += dt; const t = T.current;
+      const W = c.width,
+        H = c.height,
+        dt = Math.min(now - (lst.current || now), 50) / 1000;
+      lst.current = now;
+      T.current += dt;
+      const t = T.current;
       ctx.clearRect(0, 0, W, H);
-      const bg = ctx.createRadialGradient(W * .5, H * .35, 0, W * .5, H * .5, Math.max(W, H) * .8);
-      bg.addColorStop(0, "#060f22"); bg.addColorStop(.5, "#040c1a"); bg.addColorStop(1, "#020810");
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-      [[.15, .2, .25], [.85, .75, .18], [.5, .95, .14]].forEach(([rx, ry, s]) => {
-        const g = ctx.createRadialGradient(W * rx, H * ry, 0, W * rx, H * ry, Math.min(W, H) * s);
-        g.addColorStop(0, `rgba(0,80,160,${.06 + Math.sin(t * .35 + rx * 8) * .02})`);
+      const bg = ctx.createRadialGradient(
+        W * 0.5,
+        H * 0.35,
+        0,
+        W * 0.5,
+        H * 0.5,
+        Math.max(W, H) * 0.8,
+      );
+      bg.addColorStop(0, "#060f22");
+      bg.addColorStop(0.5, "#040c1a");
+      bg.addColorStop(1, "#020810");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+      [
+        [0.15, 0.2, 0.25],
+        [0.85, 0.75, 0.18],
+        [0.5, 0.95, 0.14],
+      ].forEach(([rx, ry, s]) => {
+        const g = ctx.createRadialGradient(
+          W * rx,
+          H * ry,
+          0,
+          W * rx,
+          H * ry,
+          Math.min(W, H) * s,
+        );
+        g.addColorStop(
+          0,
+          `rgba(0,80,160,${0.06 + Math.sin(t * 0.35 + rx * 8) * 0.02})`,
+        );
         g.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
       });
-      ctx.save(); ctx.globalAlpha = .02; ctx.strokeStyle = "#00cfff"; ctx.lineWidth = .5;
-      for (let x = 0; x < W; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-      for (let y = 0; y < H; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+      ctx.save();
+      ctx.globalAlpha = 0.02;
+      ctx.strokeStyle = "#00cfff";
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < W; x += 80) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = 0; y < H; y += 80) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
       ctx.restore();
-      pts.current.forEach(p => {
-        p.x += p.vx; p.y += p.vy; p.pulse += dt * 1.2;
-        if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
-        const a = p.alpha * (.4 + Math.sin(p.pulse) * .4);
-        ctx.save(); ctx.globalAlpha = a * .7; ctx.fillStyle = `hsl(${p.hue},100%,65%)`;
-        ctx.shadowColor = `hsl(${p.hue},100%,65%)`; ctx.shadowBlur = 6;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      pts.current.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.pulse += dt * 1.2;
+        if (p.y < -10) {
+          p.y = H + 10;
+          p.x = Math.random() * W;
+        }
+        const a = p.alpha * (0.4 + Math.sin(p.pulse) * 0.4);
+        ctx.save();
+        ctx.globalAlpha = a * 0.7;
+        ctx.fillStyle = `hsl(${p.hue},100%,65%)`;
+        ctx.shadowColor = `hsl(${p.hue},100%,65%)`;
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       });
       raf.current = requestAnimationFrame(render);
     };
     raf.current = requestAnimationFrame(render);
-    return () => { cancelAnimationFrame(raf.current); window.removeEventListener("resize", resize); };
+    return () => {
+      cancelAnimationFrame(raf.current);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
-  return <canvas ref={ref} style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }} />;
+  return (
+    <canvas
+      ref={ref}
+      style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
+    />
+  );
 }
 
 /* ─── Navbar ─────────────────────────────────────────────────── */
 function Navbar({ name }) {
   return (
-    <nav style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-      height: "64px", padding: "0 32px",
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      background: "rgba(6,13,26,0.94)", backdropFilter: "blur(24px)",
-      borderBottom: "1px solid rgba(0,180,255,0.14)",
-    }}>
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        height: "64px",
+        padding: "0 32px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        background: "rgba(6,13,26,0.94)",
+        backdropFilter: "blur(24px)",
+        borderBottom: "1px solid rgba(0,180,255,0.14)",
+      }}
+    >
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <div style={{ width: "32px", height: "32px", border: "1.5px solid rgba(0,207,255,0.6)", borderRadius: "7px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,207,255,0.07)", boxShadow: "0 0 12px rgba(0,207,255,0.2)" }}>
+        <div
+          style={{
+            width: "32px",
+            height: "32px",
+            border: "1.5px solid rgba(0,207,255,0.6)",
+            borderRadius: "7px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(0,207,255,0.07)",
+            boxShadow: "0 0 12px rgba(0,207,255,0.2)",
+          }}
+        >
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-            <path d="M10 2L17 5L17 10C17 14.5 13.5 17.5 10 19C6.5 17.5 3 14.5 3 10L3 5Z" fill="rgba(0,207,255,0.2)" stroke="#00cfff" strokeWidth="1.5" />
+            <path
+              d="M10 2L17 5L17 10C17 14.5 13.5 17.5 10 19C6.5 17.5 3 14.5 3 10L3 5Z"
+              fill="rgba(0,207,255,0.2)"
+              stroke="#00cfff"
+              strokeWidth="1.5"
+            />
             <circle cx="10" cy="9" r="2.2" fill="#00cfff" />
           </svg>
         </div>
-        <span style={{ fontFamily: "'Orbitron',monospace", fontSize: "15px", fontWeight: 700, color: "#00cfff", letterSpacing: "3px", textShadow: "0 0 14px rgba(0,207,255,0.35)" }}>SHIELDHER</span>
+        <span
+          style={{
+            fontFamily: "'Orbitron',monospace",
+            fontSize: "15px",
+            fontWeight: 700,
+            color: "#00cfff",
+            letterSpacing: "3px",
+            textShadow: "0 0 14px rgba(0,207,255,0.35)",
+          }}
+        >
+          SHIELDHER
+        </span>
       </div>
 
-      <span style={{ fontFamily: "'Courier New',monospace", fontSize: "10px", letterSpacing: "3px", color: "rgba(0,207,255,0.42)" }}>DASHBOARD</span>
+      <span
+        style={{
+          fontFamily: "'Courier New',monospace",
+          fontSize: "20px",
+          letterSpacing: "3px",
+          color: "rgba(0,207,255,0.42)",
+        }}
+      >
+        DASHBOARD
+      </span>
 
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
         {/* Shield status */}
-        <div style={{ display: "flex", alignItems: "center", gap: "7px", padding: "6px 14px", background: "rgba(0,207,255,0.06)", border: "1px solid rgba(0,207,255,0.22)", borderRadius: "20px" }}>
-          <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#00cfff", boxShadow: "0 0 8px #00cfff", animation: "blink 1.5s ease-in-out infinite" }} />
-          <span style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(0,207,255,0.7)", fontFamily: "'Courier New',monospace" }}>SHIELD ACTIVE</span>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "7px",
+            padding: "6px 14px",
+            background: "rgba(0,207,255,0.06)",
+            border: "1px solid rgba(0,207,255,0.22)",
+            borderRadius: "20px",
+          }}
+        >
+          <div
+            style={{
+              width: "6px",
+              height: "6px",
+              borderRadius: "50%",
+              background: "#00cfff",
+              boxShadow: "0 0 8px #00cfff",
+              animation: "blink 1.5s ease-in-out infinite",
+            }}
+          />
+          <span
+            style={{
+              fontSize: "10px",
+              letterSpacing: "2px",
+              color: "rgba(0,207,255,0.7)",
+              fontFamily: "'Courier New',monospace",
+            }}
+          >
+            SHIELD ACTIVE
+          </span>
         </div>
         {/* Avatar */}
-        <div style={{ width: "36px", height: "36px", borderRadius: "50%", border: "1.5px solid rgba(0,207,255,0.45)", background: "linear-gradient(135deg,rgba(0,80,180,0.4),rgba(0,207,255,0.2))", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Orbitron',monospace", fontSize: "13px", color: "#00cfff", fontWeight: 700, boxShadow: "0 0 10px rgba(0,207,255,0.2)", cursor: "pointer" }}>
+        <div
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            border: "1.5px solid rgba(0,207,255,0.45)",
+            background:
+              "linear-gradient(135deg,rgba(0,80,180,0.4),rgba(0,207,255,0.2))",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "'Orbitron',monospace",
+            fontSize: "13px",
+            color: "#00cfff",
+            fontWeight: 700,
+            boxShadow: "0 0 10px rgba(0,207,255,0.2)",
+            cursor: "pointer",
+          }}
+        >
           {name?.[0]?.toUpperCase() || "P"}
         </div>
       </div>
@@ -147,24 +332,93 @@ function Navbar({ name }) {
 /* ─── Stat Card ──────────────────────────────────────────────── */
 function StatCard({ icon, label, value, sub, color = "#00cfff", delay = 0 }) {
   return (
-    <div style={{
-      background: "rgba(4,14,40,0.85)", border: "1px solid rgba(0,180,255,0.16)",
-      borderRadius: "12px", padding: "20px 22px",
-      position: "relative", overflow: "hidden",
-      animation: `fadeUp .5s ease ${delay}ms both`,
-      boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
-      transition: "border-color .25s, box-shadow .25s",
-    }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = `rgba(0,207,255,0.38)`; e.currentTarget.style.boxShadow = `0 0 30px rgba(0,207,255,0.08), 0 4px 24px rgba(0,0,0,0.25)`; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(0,180,255,0.16)"; e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.25)"; }}>
-      <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: `linear-gradient(90deg,transparent,${color},transparent)`, opacity: .5 }} />
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "12px" }}>
+    <div
+      style={{
+        background: "rgba(4,14,40,0.85)",
+        border: "1px solid rgba(0,180,255,0.16)",
+        borderRadius: "12px",
+        padding: "20px 22px",
+        position: "relative",
+        overflow: "hidden",
+        animation: `fadeUp .5s ease ${delay}ms both`,
+        boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
+        transition: "border-color .25s, box-shadow .25s",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = `rgba(0,207,255,0.38)`;
+        e.currentTarget.style.boxShadow = `0 0 30px rgba(0,207,255,0.08), 0 4px 24px rgba(0,0,0,0.25)`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "rgba(0,180,255,0.16)";
+        e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.25)";
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "20%",
+          right: "20%",
+          height: "1px",
+          background: `linear-gradient(90deg,transparent,${color},transparent)`,
+          opacity: 0.5,
+        }}
+      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          marginBottom: "12px",
+        }}
+      >
         <span style={{ fontSize: "22px" }}>{icon}</span>
-        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: color, boxShadow: `0 0 7px ${color}`, animation: "blink 2s ease-in-out infinite" }} />
+        <div
+          style={{
+            width: "6px",
+            height: "6px",
+            borderRadius: "50%",
+            background: color,
+            boxShadow: `0 0 7px ${color}`,
+            animation: "blink 2s ease-in-out infinite",
+          }}
+        />
       </div>
-      <div style={{ fontFamily: "'Orbitron',monospace", fontSize: "1.5rem", fontWeight: 700, color, textShadow: `0 0 14px ${color}55`, marginBottom: "4px" }}>{value}</div>
-      <div style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(0,207,255,0.55)", fontFamily: "'Courier New',monospace", textTransform: "uppercase" }}>{label}</div>
-      {sub && <div style={{ fontSize: "11px", color: "rgba(168,240,255,0.35)", marginTop: "4px", letterSpacing: ".5px" }}>{sub}</div>}
+      <div
+        style={{
+          fontFamily: "'Orbitron',monospace",
+          fontSize: "1.5rem",
+          fontWeight: 700,
+          color,
+          textShadow: `0 0 14px ${color}55`,
+          marginBottom: "4px",
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          fontSize: "10px",
+          letterSpacing: "2px",
+          color: "rgba(0,207,255,0.55)",
+          fontFamily: "'Courier New',monospace",
+          textTransform: "uppercase",
+        }}
+      >
+        {label}
+      </div>
+      {sub && (
+        <div
+          style={{
+            fontSize: "11px",
+            color: "rgba(168,240,255,0.35)",
+            marginTop: "4px",
+            letterSpacing: ".5px",
+          }}
+        >
+          {sub}
+        </div>
+      )}
     </div>
   );
 }
@@ -172,23 +426,88 @@ function StatCard({ icon, label, value, sub, color = "#00cfff", delay = 0 }) {
 /* ─── Section Card ───────────────────────────────────────────── */
 function SCard({ icon, title, children, delay = 0, accent = "#00cfff" }) {
   return (
-    <div style={{
-      background: "rgba(4,14,40,0.85)", border: "1px solid rgba(0,180,255,0.16)",
-      borderRadius: "14px", overflow: "hidden",
-      boxShadow: "0 4px 30px rgba(0,0,0,0.22)",
-      animation: `fadeUp .55s ease ${delay}ms both`,
-      position: "relative",
-    }}>
-      <div style={{ position: "absolute", top: 0, left: "15%", right: "15%", height: "1px", background: `linear-gradient(90deg,transparent,${accent},transparent)`, opacity: .5 }} />
+    <div
+      style={{
+        background: "rgba(4,14,40,0.85)",
+        border: "1px solid rgba(0,180,255,0.16)",
+        borderRadius: "14px",
+        overflow: "hidden",
+        boxShadow: "0 4px 30px rgba(0,0,0,0.22)",
+        animation: `fadeUp .55s ease ${delay}ms both`,
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "15%",
+          right: "15%",
+          height: "1px",
+          background: `linear-gradient(90deg,transparent,${accent},transparent)`,
+          opacity: 0.5,
+        }}
+      />
       {/* Scan line */}
-      <div style={{ position: "absolute", left: 0, right: 0, height: "1px", background: `linear-gradient(90deg,transparent,rgba(0,207,255,0.2),transparent)`, animation: "scanLine 6s linear infinite", pointerEvents: "none" }} />
-      <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(0,180,255,0.1)", background: "rgba(0,207,255,0.03)", display: "flex", alignItems: "center", gap: "10px" }}>
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          height: "1px",
+          background: `linear-gradient(90deg,transparent,rgba(0,207,255,0.2),transparent)`,
+          animation: "scanLine 6s linear infinite",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          padding: "14px 20px",
+          borderBottom: "1px solid rgba(0,180,255,0.1)",
+          background: "rgba(0,207,255,0.03)",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
         <span style={{ fontSize: "16px" }}>{icon}</span>
-        <span style={{ fontFamily: "'Courier New',monospace", fontSize: "10px", letterSpacing: "2.5px", color: "rgba(0,207,255,0.58)", textTransform: "uppercase" }}>{title}</span>
+        <span
+          style={{
+            fontFamily: "'Courier New',monospace",
+            fontSize: "13px",
+            letterSpacing: "2.5px",
+            color: "rgba(0, 208, 255, 0.81)",
+            textTransform: "uppercase",
+          }}
+        >
+          {title}
+        </span>
       </div>
       <div style={{ padding: "22px 20px" }}>{children}</div>
-      {[{ bottom: 10, left: 10, borderBottom: "1px solid", borderLeft: "1px solid" }, { bottom: 10, right: 10, borderBottom: "1px solid", borderRight: "1px solid" }].map((s, i) => (
-        <div key={i} style={{ position: "absolute", width: "10px", height: "10px", borderColor: "rgba(0,207,255,0.18)", ...s }} />
+      {[
+        {
+          bottom: 10,
+          left: 10,
+          borderBottom: "1px solid",
+          borderLeft: "1px solid",
+        },
+        {
+          bottom: 10,
+          right: 10,
+          borderBottom: "1px solid",
+          borderRight: "1px solid",
+        },
+      ].map((s, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            width: "10px",
+            height: "10px",
+            borderColor: "rgba(0,207,255,0.18)",
+            ...s,
+          }}
+        />
       ))}
     </div>
   );
@@ -197,9 +516,40 @@ function SCard({ icon, title, children, delay = 0, accent = "#00cfff" }) {
 /* ─── Info Row ───────────────────────────────────────────────── */
 function Row({ label, value, highlight }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid rgba(0,180,255,0.07)", gap: "16px" }}>
-      <span style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(0,207,255,0.42)", fontFamily: "'Courier New',monospace", textTransform: "uppercase", flexShrink: 0, paddingTop: "1px" }}>{label}</span>
-      <span style={{ fontSize: "14px", color: highlight ? "#00cfff" : "rgba(168,240,255,0.72)", letterSpacing: ".5px", textAlign: "right", fontWeight: highlight ? 600 : 400 }}>{value || "—"}</span>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        padding: "10px 0",
+        borderBottom: "1px solid rgba(0,180,255,0.07)",
+        gap: "16px",
+      }}
+    >
+      <span
+        style={{
+          fontSize: "10px",
+          letterSpacing: "2px",
+          color: "rgba(0, 208, 255, 0.72)",
+          fontFamily: "'Courier New',monospace",
+          textTransform: "uppercase",
+          flexShrink: 0,
+          paddingTop: "1px",
+        }}
+      >
+        {label}
+      </span>
+      <span
+        style={{
+          fontSize: "14px",
+          color: highlight ? "#00cfff" : "rgba(168,240,255,0.72)",
+          letterSpacing: ".5px",
+          textAlign: "right",
+          fontWeight: highlight ? 600 : 400,
+        }}
+      >
+        {value || "—"}
+      </span>
     </div>
   );
 }
@@ -212,99 +562,162 @@ function MapWidget({ radius }) {
   const lst = useRef(null);
 
   useEffect(() => {
-    const c = ref.current, ctx = c.getContext("2d");
-    const W = c.width, H = c.height;
-    const cx = W / 2, cy = H / 2;
+    const c = ref.current,
+      ctx = c.getContext("2d");
+    const W = c.width,
+      H = c.height;
+    const cx = W / 2,
+      cy = H / 2;
 
     const render = (now) => {
       const dt = Math.min(now - (lst.current || now), 50) / 1000;
-      lst.current = now; T.current += dt; const t = T.current;
+      lst.current = now;
+      T.current += dt;
+      const t = T.current;
 
       ctx.clearRect(0, 0, W, H);
 
       // Dark bg
       ctx.fillStyle = "rgba(4,10,28,0.95)";
-      ctx.beginPath(); ctx.arc(cx, cy, cx, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, cx, 0, Math.PI * 2);
+      ctx.fill();
 
       // Grid
-      ctx.save(); ctx.globalAlpha = .06; ctx.strokeStyle = "#00cfff"; ctx.lineWidth = .5;
-      for (let x = 0; x < W; x += 18) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-      for (let y = 0; y < H; y += 18) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.strokeStyle = "#00cfff";
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < W; x += 18) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = 0; y < H; y += 18) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
       ctx.restore();
 
       // Safe zone circle
-      const zR = cx * .58;
+      const zR = cx * 0.58;
       ctx.save();
-      ctx.strokeStyle = "#00cfff"; ctx.lineWidth = 1.5;
-      ctx.shadowColor = "#00cfff"; ctx.shadowBlur = 12;
-      ctx.globalAlpha = .5 + Math.sin(t * 1.2) * .15;
-      ctx.beginPath(); ctx.arc(cx, cy, zR, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = "#00cfff";
+      ctx.lineWidth = 1.5;
+      ctx.shadowColor = "#00cfff";
+      ctx.shadowBlur = 12;
+      ctx.globalAlpha = 0.5 + Math.sin(t * 1.2) * 0.15;
+      ctx.beginPath();
+      ctx.arc(cx, cy, zR, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.restore();
       ctx.save();
       ctx.fillStyle = "rgba(0,100,200,0.06)";
-      ctx.beginPath(); ctx.arc(cx, cy, zR, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, zR, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
 
       // Crosshairs
-      ctx.save(); ctx.globalAlpha = .18; ctx.strokeStyle = "#00cfff"; ctx.lineWidth = .8;
-      ctx.beginPath(); ctx.moveTo(cx, 10); ctx.lineTo(cx, H - 10); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(10, cy); ctx.lineTo(W - 10, cy); ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.strokeStyle = "#00cfff";
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(cx, 10);
+      ctx.lineTo(cx, H - 10);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(10, cy);
+      ctx.lineTo(W - 10, cy);
+      ctx.stroke();
       ctx.restore();
 
       // Outer rings
-      [cx * .72, cx * .86, cx * .96].forEach((r, i) => {
-        ctx.save(); ctx.globalAlpha = .12 - i * .03;
-        ctx.strokeStyle = "#00cfff"; ctx.lineWidth = .6;
-        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+      [cx * 0.72, cx * 0.86, cx * 0.96].forEach((r, i) => {
+        ctx.save();
+        ctx.globalAlpha = 0.12 - i * 0.03;
+        ctx.strokeStyle = "#00cfff";
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.restore();
       });
 
       // Radar sweep
-      const sweep = (t * .8) % (Math.PI * 2);
+      const sweep = (t * 0.8) % (Math.PI * 2);
       ctx.save();
       const grad = ctx.createConicalGradient ? null : null;
-      ctx.globalAlpha = .18;
+      ctx.globalAlpha = 0.18;
       ctx.strokeStyle = "#00cfff";
       ctx.lineWidth = 2;
-      ctx.shadowColor = "#00cfff"; ctx.shadowBlur = 8;
-      ctx.beginPath(); ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, cx * .92, sweep - .6, sweep);
-      ctx.closePath(); ctx.fillStyle = "rgba(0,207,255,0.07)"; ctx.fill(); ctx.stroke();
+      ctx.shadowColor = "#00cfff";
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, cx * 0.92, sweep - 0.6, sweep);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(0,207,255,0.07)";
+      ctx.fill();
+      ctx.stroke();
       ctx.restore();
 
       // Pulse rings from center
       for (let i = 0; i < 2; i++) {
-        const ph = ((t * .5 + i / 2) % 1);
-        ctx.save(); ctx.globalAlpha = (1 - ph) * .35;
-        ctx.strokeStyle = "#00cfff"; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(cx, cy, ph * zR, 0, Math.PI * 2); ctx.stroke();
+        const ph = (t * 0.5 + i / 2) % 1;
+        ctx.save();
+        ctx.globalAlpha = (1 - ph) * 0.35;
+        ctx.strokeStyle = "#00cfff";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, ph * zR, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.restore();
       }
 
       // User dot
       ctx.save();
-      ctx.fillStyle = "#00cfff"; ctx.shadowColor = "#00cfff"; ctx.shadowBlur = 16;
-      ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = "#fff"; ctx.shadowBlur = 0;
-      ctx.beginPath(); ctx.arc(cx, cy, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#00cfff";
+      ctx.shadowColor = "#00cfff";
+      ctx.shadowBlur = 16;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#fff";
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
 
       // Tick marks on safe zone ring
       for (let i = 0; i < 24; i++) {
         const a = (i / 24) * Math.PI * 2;
         const len = i % 6 === 0 ? 8 : 4;
-        ctx.save(); ctx.globalAlpha = i % 6 === 0 ? .5 : .25;
-        ctx.strokeStyle = "#00cfff"; ctx.lineWidth = i % 6 === 0 ? 1.2 : .7;
+        ctx.save();
+        ctx.globalAlpha = i % 6 === 0 ? 0.5 : 0.25;
+        ctx.strokeStyle = "#00cfff";
+        ctx.lineWidth = i % 6 === 0 ? 1.2 : 0.7;
         ctx.beginPath();
         ctx.moveTo(cx + Math.cos(a) * zR, cy + Math.sin(a) * zR);
-        ctx.lineTo(cx + Math.cos(a) * (zR + len), cy + Math.sin(a) * (zR + len));
-        ctx.stroke(); ctx.restore();
+        ctx.lineTo(
+          cx + Math.cos(a) * (zR + len),
+          cy + Math.sin(a) * (zR + len),
+        );
+        ctx.stroke();
+        ctx.restore();
       }
 
       // Clip to circle
       ctx.save();
       ctx.globalCompositeOperation = "destination-in";
-      ctx.beginPath(); ctx.arc(cx, cy, cx, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, cx, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
 
       raf.current = requestAnimationFrame(render);
@@ -314,10 +727,34 @@ function MapWidget({ radius }) {
   }, []);
 
   return (
-    <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <canvas ref={ref} width={200} height={200} style={{ borderRadius: "50%", display: "block" }} />
+    <div
+      style={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <canvas
+        ref={ref}
+        width={200}
+        height={200}
+        style={{ borderRadius: "50%", display: "block" }}
+      />
       {/* Radius label */}
-      <div style={{ position: "absolute", bottom: "-22px", left: "50%", transform: "translateX(-50%)", fontSize: "9px", letterSpacing: "2px", color: "rgba(0,207,255,0.5)", fontFamily: "'Courier New',monospace", whiteSpace: "nowrap" }}>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-22px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontSize: "9px",
+          letterSpacing: "2px",
+          color: "rgba(0,207,255,0.5)",
+          fontFamily: "'Courier New',monospace",
+          whiteSpace: "nowrap",
+        }}
+      >
         SAFE ZONE · {Number(radius).toLocaleString()} m
       </div>
     </div>
@@ -326,33 +763,118 @@ function MapWidget({ radius }) {
 
 /* ─── Contact Card ───────────────────────────────────────────── */
 function ContactBadge({ c, i }) {
-  const colors = ["#00cfff", "#7de8ff", "#5bc8ff", "rgba(0,207,255,0.6)", "rgba(125,232,255,0.7)"];
+  const colors = [
+    "#00cfff",
+    "#7de8ff",
+    "#5bc8ff",
+    "rgba(0,207,255,0.6)",
+    "rgba(125,232,255,0.7)",
+  ];
   const col = colors[Math.min(i, colors.length - 1)];
-  const priorityLabel = ["High", "Medium", "Low"][Math.min((c.priority || 1) - 1, 2)];
+  const priorityLabel = ["High", "Medium", "Low"][
+    Math.min((c.priority || 1) - 1, 2)
+  ];
 
   return (
-    <div style={{
-      background: "rgba(0,20,55,0.7)", border: `1px solid ${col}28`,
-      borderRadius: "10px", padding: "14px 16px",
-      display: "flex", alignItems: "center", gap: "14px",
-      animation: `slideIn .35s ease ${i * 80}ms both`,
-      transition: "border-color .25s, box-shadow .25s",
-    }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = col; e.currentTarget.style.boxShadow = `0 0 18px ${col}22`; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = `${col}28`; e.currentTarget.style.boxShadow = "none"; }}>
+    <div
+      style={{
+        background: "rgba(0,20,55,0.7)",
+        border: `1px solid ${col}28`,
+        borderRadius: "10px",
+        padding: "14px 16px",
+        display: "flex",
+        alignItems: "center",
+        gap: "14px",
+        animation: `slideIn .35s ease ${i * 80}ms both`,
+        transition: "border-color .25s, box-shadow .25s",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = col;
+        e.currentTarget.style.boxShadow = `0 0 18px ${col}22`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = `${col}28`;
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
       {/* Avatar */}
-      <div style={{ width: "40px", height: "40px", borderRadius: "50%", border: `1.5px solid ${col}`, background: `${col}12`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Orbitron',monospace", fontSize: "14px", color: col, fontWeight: 700, flexShrink: 0, boxShadow: `0 0 10px ${col}30` }}>
+      <div
+        style={{
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+          border: `1.5px solid ${col}`,
+          background: `${col}12`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "'Orbitron',monospace",
+          fontSize: "14px",
+          color: col,
+          fontWeight: 700,
+          flexShrink: 0,
+          boxShadow: `0 0 10px ${col}30`,
+        }}
+      >
         {c.name?.[0]?.toUpperCase()}
       </div>
       {/* Info */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: "'Rajdhani',sans-serif", fontSize: "15px", fontWeight: 600, color: "rgba(168,240,255,0.85)", letterSpacing: ".5px", marginBottom: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.name}</div>
-        <div style={{ fontSize: "11px", color: "rgba(0,180,255,0.45)", letterSpacing: "1px" }}>{c.relation} · {c.phone}</div>
+        <div
+          style={{
+            fontFamily: "'Rajdhani',sans-serif",
+            fontSize: "15px",
+            fontWeight: 600,
+            color: "rgba(168,240,255,0.85)",
+            letterSpacing: ".5px",
+            marginBottom: "2px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {c.name}
+        </div>
+        <div
+          style={{
+            fontSize: "11px",
+            color: "rgba(0,180,255,0.45)",
+            letterSpacing: "1px",
+          }}
+        >
+          {c.relation} · {c.phone}
+        </div>
       </div>
       {/* Priority */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "3px", flexShrink: 0 }}>
-        <div style={{ fontSize: "8px", letterSpacing: "1.5px", color: col, fontFamily: "'Courier New',monospace" }}>PRIORITY</div>
-        <div style={{ fontSize: "11px", color: col, fontFamily: "'Courier New',monospace", fontWeight: 700 }}>P{c.priority || 1} · {priorityLabel}</div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: "3px",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            fontSize: "8px",
+            letterSpacing: "1.5px",
+            color: col,
+            fontFamily: "'Courier New',monospace",
+          }}
+        >
+          PRIORITY
+        </div>
+        <div
+          style={{
+            fontSize: "11px",
+            color: col,
+            fontFamily: "'Courier New',monospace",
+            fontWeight: 700,
+          }}
+        >
+          P{c.priority || 1} · {priorityLabel}
+        </div>
       </div>
     </div>
   );
@@ -366,24 +888,33 @@ function ShieldStatus() {
   const lst = useRef(null);
 
   useEffect(() => {
-    const c = ref.current, ctx = c.getContext("2d");
-    const W = c.width, H = c.height, cx = W / 2, cy = H / 2;
+    const c = ref.current,
+      ctx = c.getContext("2d");
+    const W = c.width,
+      H = c.height,
+      cx = W / 2,
+      cy = H / 2;
     const render = (now) => {
       const dt = Math.min(now - (lst.current || now), 50) / 1000;
-      lst.current = now; T.current += dt; const t = T.current;
+      lst.current = now;
+      T.current += dt;
+      const t = T.current;
       ctx.clearRect(0, 0, W, H);
       // Rings
       [50, 65, 78].forEach((r, i) => {
         ctx.save();
         ctx.strokeStyle = i === 0 ? "#00cfff" : "rgba(0,207,255,0.3)";
         ctx.lineWidth = i === 0 ? 2 : 1;
-        ctx.shadowColor = "#00cfff"; ctx.shadowBlur = i === 0 ? 12 : 4;
-        ctx.globalAlpha = .5 + Math.sin(t * 1.5 + i) * .2;
+        ctx.shadowColor = "#00cfff";
+        ctx.shadowBlur = i === 0 ? 12 : 4;
+        ctx.globalAlpha = 0.5 + Math.sin(t * 1.5 + i) * 0.2;
         if (i === 1) {
           ctx.setLineDash([4, 4]);
           ctx.lineDashOffset = -t * 20;
         }
-        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.restore();
       });
       // Shield path
@@ -391,24 +922,34 @@ function ShieldStatus() {
       ctx.save();
       ctx.translate(cx, cy - 5);
       ctx.fillStyle = "rgba(0,100,200,0.18)";
-      ctx.strokeStyle = "#00cfff"; ctx.lineWidth = 2;
-      ctx.shadowColor = "#00cfff"; ctx.shadowBlur = 15 + Math.sin(t * 2) * 5;
+      ctx.strokeStyle = "#00cfff";
+      ctx.lineWidth = 2;
+      ctx.shadowColor = "#00cfff";
+      ctx.shadowBlur = 15 + Math.sin(t * 2) * 5;
       ctx.beginPath();
       ctx.moveTo(0, -28 * sc);
       ctx.bezierCurveTo(24 * sc, -14 * sc, 25 * sc, 4 * sc, 0, 30 * sc);
       ctx.bezierCurveTo(-25 * sc, 4 * sc, -24 * sc, -14 * sc, 0, -28 * sc);
       ctx.closePath();
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       // Centre dot
-      ctx.fillStyle = "#00cfff"; ctx.shadowBlur = 20;
-      ctx.beginPath(); ctx.arc(0, 2, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#00cfff";
+      ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.arc(0, 2, 5, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
       // Pulse rings
       for (let i = 0; i < 2; i++) {
-        const ph = ((t * .6 + i / 2) % 1);
-        ctx.save(); ctx.globalAlpha = (1 - ph) * .3;
-        ctx.strokeStyle = "#00cfff"; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(cx, cy, 50 + ph * 40, 0, Math.PI * 2); ctx.stroke();
+        const ph = (t * 0.6 + i / 2) % 1;
+        ctx.save();
+        ctx.globalAlpha = (1 - ph) * 0.3;
+        ctx.strokeStyle = "#00cfff";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 50 + ph * 40, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.restore();
       }
       raf.current = requestAnimationFrame(render);
@@ -417,7 +958,9 @@ function ShieldStatus() {
     return () => cancelAnimationFrame(raf.current);
   }, []);
 
-  return <canvas ref={ref} width={160} height={160} style={{ display: "block" }} />;
+  return (
+    <canvas ref={ref} width={160} height={160} style={{ display: "block" }} />
+  );
 }
 
 /* ─── Main Dashboard ─────────────────────────────────────────── */
@@ -430,124 +973,458 @@ export default function Dashboard({ profile = MOCK_PROFILE }) {
   return (
     <>
       <style>{CSS}</style>
-      <div style={{ position: "relative", minHeight: "100vh", background: "#060d1a" }}>
+      <div
+        style={{
+          position: "relative",
+          minHeight: "100vh",
+          background: "#060d1a",
+        }}
+      >
         <BG />
         <Navbar name={personal.firstName} />
 
-        <main style={{ position: "relative", zIndex: 1, maxWidth: "1200px", margin: "0 auto", padding: "84px 24px 60px" }}>
+        <main
+          style={{
+            position: "relative",
+            zIndex: 1,
+            maxWidth: "1200px",
+            margin: "0 auto",
+            padding: "84px 24px 60px",
 
+             background: `linear-gradient(rgba(4,13,28,0.55), rgba(4,13,28,0.65)),
+          url("https://i.pinimg.com/736x/b3/15/52/b315527f272a1a00df44206a286308b7.jpg")`,
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+       backgroundRepeat: "repeat"
+          }}
+        >
           {/* ── Welcome banner ── */}
-          <div style={{ marginBottom: "32px", animation: "fadeUp .5s ease both" }}>
-            <div style={{ fontSize: "9px", letterSpacing: "5px", color: "rgba(0,207,255,0.42)", marginBottom: "8px", fontFamily: "'Courier New',monospace" }}>◈ SECURE DASHBOARD</div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+          <div
+            style={{ marginBottom: "32px", animation: "fadeUp .5s ease both" }}
+          >
+            <div
+              style={{
+                fontSize: "9px",
+                letterSpacing: "5px",
+                color: "rgba(0, 208, 255, 0.81)",
+                marginBottom: "8px",
+                fontFamily: "'Courier New',monospace",
+              }}
+            >
+              ◈ SECURE DASHBOARD
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "12px",
+              }}
+            >
               <div>
-                <h1 style={{ fontFamily: "'Orbitron',monospace", fontSize: "clamp(1.5rem,3vw,2.2rem)", fontWeight: 700, letterSpacing: "3px", color: "#7de8ff", textShadow: "0 0 28px rgba(0,207,255,0.35)", animation: "glow 5s ease-in-out infinite" }}>
+                <h1
+                  style={{
+                    fontFamily: "'Orbitron',monospace",
+                    fontSize: "clamp(1.5rem,3vw,2.2rem)",
+                    fontWeight: 700,
+                    letterSpacing: "3px",
+                    color: "#7de8ff",
+                    textShadow: "0 0 28px rgba(0,207,255,0.35)",
+                    animation: "glow 5s ease-in-out infinite",
+                  }}
+                >
                   WELCOME BACK, {personal.firstName?.toUpperCase() || "USER"}
                 </h1>
-                <p style={{ fontSize: "13px", color: "rgba(0,180,255,0.4)", letterSpacing: "1px", fontFamily: "'Courier New',monospace", marginTop: "4px" }}>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(0, 179, 255, 0.74)",
+                    letterSpacing: "1px",
+                    fontFamily: "'Courier New',monospace",
+                    marginTop: "4px",
+                  }}
+                >
                   YOUR SHIELD IS ACTIVE · ALL SYSTEMS OPERATIONAL
                 </p>
               </div>
               {/* SOS button */}
-              <button style={{
-                padding: "14px 32px",
-                background: shieldActive ? "linear-gradient(90deg,rgba(0,100,200,0.5),rgba(0,207,255,0.38))" : "rgba(255,0,60,0.15)",
-                border: `1px solid ${shieldActive ? "rgba(0,207,255,0.55)" : "rgba(255,0,60,0.5)"}`,
-                borderRadius: "8px",
-                color: shieldActive ? "#7de8ff" : "#ff4488",
-                fontSize: "12px", letterSpacing: "2.5px",
-                fontFamily: "'Orbitron',monospace", fontWeight: 700,
-                cursor: "pointer",
-                boxShadow: shieldActive ? "0 0 30px rgba(0,207,255,0.2)" : "0 0 30px rgba(255,0,60,0.2)",
-                animation: "pulseRing 2.5s ease-in-out infinite",
-                transition: "all .3s",
-              }} onClick={() => setShieldActive(a => !a)}>
+              <button
+                style={{
+                  padding: "14px 32px",
+                  background: shieldActive
+                    ? "linear-gradient(90deg,rgba(0,100,200,0.5),rgba(0,207,255,0.38))"
+                    : "rgba(255,0,60,0.15)",
+                  border: `1px solid ${shieldActive ? "rgba(0,207,255,0.55)" : "rgba(255,0,60,0.5)"}`,
+                  borderRadius: "8px",
+                  color: shieldActive ? "#7de8ff" : "#ff4488",
+                  fontSize: "12px",
+                  letterSpacing: "2.5px",
+                  fontFamily: "'Orbitron',monospace",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  boxShadow: shieldActive
+                    ? "0 0 30px rgba(0,207,255,0.2)"
+                    : "0 0 30px rgba(255,0,60,0.2)",
+                  animation: "pulseRing 2.5s ease-in-out infinite",
+                  transition: "all .3s",
+                }}
+                onClick={() => setShieldActive((a) => !a)}
+              >
                 {shieldActive ? "🛡 SHIELD ON" : "⚠ SHIELD OFF"}
               </button>
             </div>
-            <div style={{ height: "1px", marginTop: "20px", background: "linear-gradient(90deg,rgba(0,207,255,0.3),transparent)" }} />
+            <div
+              style={{
+                height: "1px",
+                marginTop: "20px",
+                background:
+                  "linear-gradient(90deg,rgba(0,207,255,0.3),transparent)",
+              }}
+            />
           </div>
 
           {/* ── Stat cards row ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "16px", marginBottom: "28px" }}>
-            <StatCard icon="👤" label="Profile Status"  value="COMPLETE"              sub="All fields filled"       color="#00cfff"  delay={0}   />
-            <StatCard icon="🛡" label="Shield Status"   value={shieldActive?"ACTIVE":"OFFLINE"} sub="Real-time protection"   color={shieldActive?"#00cfff":"#ff4488"} delay={80}  />
-            <StatCard icon="👥" label="SOS Contacts"    value={`${contacts.length}/5`} sub="Emergency network"      color="#7de8ff"  delay={160} />
-            <StatCard icon="⏱" label="Uptime"          value={uptime}                sub="Session active"         color="#5bc8ff"  delay={240} />
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4,1fr)",
+              gap: "16px",
+              marginBottom: "28px",
+            }}
+          >
+            <StatCard
+              icon="👤"
+              label="Profile Status"
+              value="COMPLETE"
+              sub="All fields filled"
+              color="#00cfff"
+              delay={0}
+            />
+            <StatCard
+              icon="🛡"
+              label="Shield Status"
+              value={shieldActive ? "ACTIVE" : "OFFLINE"}
+              sub="Real-time protection"
+              color={shieldActive ? "#00cfff" : "#ff4488"}
+              delay={80}
+            />
+            <StatCard
+              icon="👥"
+              label="SOS Contacts"
+              value={`${contacts.length}/5`}
+              sub="Emergency network"
+              color="#7de8ff"
+              delay={160}
+            />
+            <StatCard
+              icon="⏱"
+              label="Uptime"
+              value={uptime}
+              sub="Session active"
+              color="#5bc8ff"
+              delay={240}
+            />
           </div>
 
           {/* ── Main 3-column grid ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px", alignItems: "start" }}>
-
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: "20px",
+              alignItems: "start",
+            }}
+          >
             {/* Col 1: Personal Info */}
             <SCard icon="👤" title="Personal Information" delay={100}>
-              <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "18px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "14px",
+                  marginBottom: "18px",
+                }}
+              >
                 {/* Big avatar */}
-                <div style={{ width: "56px", height: "56px", borderRadius: "50%", border: "2px solid rgba(0,207,255,0.5)", background: "linear-gradient(135deg,rgba(0,80,180,0.4),rgba(0,207,255,0.2))", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Orbitron',monospace", fontSize: "22px", color: "#00cfff", fontWeight: 700, boxShadow: "0 0 18px rgba(0,207,255,0.25)", flexShrink: 0, animation: "shieldOn 4s ease-in-out infinite" }}>
+                <div
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    borderRadius: "50%",
+                    border: "2px solid rgba(0,207,255,0.5)",
+                    background:
+                      "linear-gradient(135deg,rgba(0,80,180,0.4),rgba(0,207,255,0.2))",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "'Orbitron',monospace",
+                    fontSize: "22px",
+                    color: "#00cfff",
+                    fontWeight: 700,
+                    boxShadow: "0 0 18px rgba(0,207,255,0.25)",
+                    flexShrink: 0,
+                    animation: "shieldOn 4s ease-in-out infinite",
+                  }}
+                >
                   {personal.firstName?.[0]?.toUpperCase()}
                 </div>
                 <div>
-                  <div style={{ fontFamily: "'Orbitron',monospace", fontSize: "1rem", fontWeight: 700, color: "#7de8ff", letterSpacing: "1px" }}>{fullName}</div>
-                  <div style={{ fontSize: "11px", color: "rgba(0,180,255,0.45)", letterSpacing: "1px", marginTop: "2px", fontFamily: "'Courier New',monospace" }}>AGE {personal.age} · {personal.bloodGroup || "—"}</div>
+                  <div
+                    style={{
+                      fontFamily: "'Orbitron',monospace",
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                      color: "#7de8ff",
+                      letterSpacing: "1px",
+                    }}
+                  >
+                    {fullName}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "rgba(0, 179, 255, 0.93)",
+                      letterSpacing: "1px",
+                      marginTop: "2px",
+                      fontFamily: "'Courier New',monospace",
+                    }}
+                  >
+                    AGE {personal.age} · {personal.bloodGroup || "—"}
+                  </div>
                 </div>
               </div>
-              <Row label="Phone"       value={personal.phone}       highlight />
-              <Row label="Date of Birth" value={personal.dob ? new Date(personal.dob).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}) : "—"} />
-              <Row label="Blood Group" value={personal.bloodGroup}  highlight />
+              <Row label="Phone" value={personal.phone} highlight />
+              <Row
+                label="Date of Birth"
+                value={
+                  personal.dob
+                    ? new Date(personal.dob).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
+                    : "—"
+                }
+              />
+              <Row label="Blood Group" value={personal.bloodGroup} highlight />
               {personal.medicalNotes && (
                 <div style={{ marginTop: "14px" }}>
-                  <div style={{ fontSize: "9px", letterSpacing: "2px", color: "rgba(0,207,255,0.4)", fontFamily: "'Courier New',monospace", marginBottom: "7px" }}>MEDICAL NOTES</div>
-                  <div style={{ fontSize: "13px", color: "rgba(168,240,255,0.52)", lineHeight: 1.6, padding: "10px 12px", background: "rgba(0,207,255,0.04)", border: "1px solid rgba(0,180,255,0.1)", borderRadius: "6px" }}>{personal.medicalNotes}</div>
+                  <div
+                    style={{
+                      fontSize: "9px",
+                      letterSpacing: "2px",
+                      color: "rgba(0,207,255,0.4)",
+                      fontFamily: "'Courier New',monospace",
+                      marginBottom: "7px",
+                    }}
+                  >
+                    MEDICAL NOTES
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      color: "rgba(168, 241, 255, 0.9)",
+                      lineHeight: 1.6,
+                      padding: "10px 12px",
+                      background: "rgba(0,207,255,0.04)",
+                      border: "1px solid rgba(0,180,255,0.1)",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    {personal.medicalNotes}
+                  </div>
                 </div>
               )}
             </SCard>
 
             {/* Col 2: GPS / Safe Zone */}
-            <SCard icon="📍" title="Location & Safe Zone" delay={160} accent="#7de8ff">
+            <SCard
+              icon="📍"
+              title="Location & Safe Zone"
+              delay={160}
+              accent="#7de8ff"
+            >
               {/* Map */}
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: "38px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: "38px",
+                }}
+              >
                 <MapWidget radius={address.radius} />
               </div>
-              <Row label="Address"   value={address.line1} />
+              <Row label="Address" value={address.line1} />
               {address.line2 && <Row label="Landmark" value={address.line2} />}
-              <Row label="City"      value={`${address.city}, ${address.state}`} highlight />
-              <Row label="PIN Code"  value={address.pincode} />
-              <Row label="Country"   value={address.country} />
-              <Row label="Safe Zone" value={`${Number(address.radius).toLocaleString()} metres`} highlight />
+              <Row
+                label="City"
+                value={`${address.city}, ${address.state}`}
+                highlight
+              />
+              <Row label="PIN Code" value={address.pincode} />
+              <Row label="Country" value={address.country} />
+              <Row
+                label="Safe Zone"
+                value={`${Number(address.radius).toLocaleString()} metres`}
+                highlight
+              />
               {/* Zone bar */}
               <div style={{ marginTop: "12px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
-                  <span style={{ fontSize: "9px", letterSpacing: "1.5px", color: "rgba(0,207,255,0.4)", fontFamily: "'Courier New',monospace" }}>ZONE SIZE</span>
-                  <span style={{ fontSize: "9px", color: "#00cfff", fontFamily: "'Courier New',monospace" }}>{Math.round(((address.radius - 100) / 4900) * 100)}%</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "9px",
+                      letterSpacing: "1.5px",
+                      color: "rgba(0,207,255,0.4)",
+                      fontFamily: "'Courier New',monospace",
+                    }}
+                  >
+                    ZONE SIZE
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "9px",
+                      color: "#00cfff",
+                      fontFamily: "'Courier New',monospace",
+                    }}
+                  >
+                    {Math.round(((address.radius - 100) / 4900) * 100)}%
+                  </span>
                 </div>
-                <div style={{ height: "3px", background: "rgba(0,180,255,0.12)", borderRadius: "2px" }}>
-                  <div style={{ height: "100%", width: `${Math.round(((address.radius - 100) / 4900) * 100)}%`, background: "linear-gradient(90deg,#0060c0,#00cfff)", borderRadius: "2px", boxShadow: "0 0 8px rgba(0,207,255,0.4)", transition: "width .6s ease" }} />
+                <div
+                  style={{
+                    height: "3px",
+                    background: "rgba(0,180,255,0.12)",
+                    borderRadius: "2px",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      width: `${Math.round(((address.radius - 100) / 4900) * 100)}%`,
+                      background: "linear-gradient(90deg,#0060c0,#00cfff)",
+                      borderRadius: "2px",
+                      boxShadow: "0 0 8px rgba(0,207,255,0.4)",
+                      transition: "width .6s ease",
+                    }}
+                  />
                 </div>
               </div>
             </SCard>
 
             {/* Col 3: Shield Status visual */}
             <SCard icon="🛡" title="Shield Status" delay={220} accent="#5bc8ff">
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "20px",
+                }}
+              >
                 <ShieldStatus />
                 <div style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "'Orbitron',monospace", fontSize: "1.1rem", fontWeight: 700, color: shieldActive ? "#00cfff" : "#ff4488", textShadow: shieldActive ? "0 0 20px rgba(0,207,255,0.5)" : "none", marginBottom: "6px" }}>
+                  <div
+                    style={{
+                      fontFamily: "'Orbitron',monospace",
+                      fontSize: "1.1rem",
+                      fontWeight: 700,
+                      color: shieldActive ? "#00cfff" : "#ff4488",
+                      textShadow: shieldActive
+                        ? "0 0 20px rgba(0,207,255,0.5)"
+                        : "none",
+                      marginBottom: "6px",
+                    }}
+                  >
                     {shieldActive ? "SHIELD ACTIVE" : "SHIELD OFFLINE"}
                   </div>
-                  <div style={{ fontSize: "11px", color: "rgba(0,180,255,0.45)", letterSpacing: "1.5px", fontFamily: "'Courier New',monospace" }}>
-                    {shieldActive ? "MONITORING · GPS LIVE · AI ON" : "TAP TO ACTIVATE"}
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "rgba(0,180,255,0.45)",
+                      letterSpacing: "1.5px",
+                      fontFamily: "'Courier New',monospace",
+                    }}
+                  >
+                    {shieldActive
+                      ? "MONITORING · GPS LIVE · AI ON"
+                      : "TAP TO ACTIVATE"}
                   </div>
                 </div>
               </div>
 
               {/* System checks */}
-              <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                {[["GPS Signal","STRONG","#00cfff"],["AI Engine","ONLINE","#00cfff"],["GSM Module","READY","#7de8ff"],["Cloud Sync","ACTIVE","#5bc8ff"],["Contacts","NOTIFIED","#00cfff"]].map(([l, v, c]) => (
-                  <div key={l} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 12px", background: "rgba(0,20,55,0.5)", border: "1px solid rgba(0,180,255,0.1)", borderRadius: "5px" }}>
-                    <span style={{ fontSize: "10px", letterSpacing: "1.5px", color: "rgba(0,180,255,0.5)", fontFamily: "'Courier New',monospace" }}>{l}</span>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: c, boxShadow: `0 0 6px ${c}`, animation: "blink 1.8s ease-in-out infinite" }} />
-                      <span style={{ fontSize: "10px", color: c, fontFamily: "'Courier New',monospace", letterSpacing: "1px" }}>{v}</span>
+              <div
+                style={{
+                  marginTop: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                }}
+              >
+                {[
+                  ["GPS Signal", "STRONG", "#00cfff"],
+                  ["AI Engine", "ONLINE", "#00cfff"],
+                  ["GSM Module", "READY", "#7de8ff"],
+                  ["Cloud Sync", "ACTIVE", "#5bc8ff"],
+                  ["Contacts", "NOTIFIED", "#00cfff"],
+                ].map(([l, v, c]) => (
+                  <div
+                    key={l}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "8px 12px",
+                      background: "rgba(0,20,55,0.5)",
+                      border: "1px solid rgba(0,180,255,0.1)",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "10px",
+                        letterSpacing: "1.5px",
+                        color: "rgba(0, 179, 255, 0.77)",
+                        fontFamily: "'Courier New',monospace",
+                      }}
+                    >
+                      {l}
+                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "5px",
+                          height: "5px",
+                          borderRadius: "50%",
+                          background: c,
+                          boxShadow: `0 0 6px ${c}`,
+                          animation: "blink 1.8s ease-in-out infinite",
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          color: c,
+                          fontFamily: "'Courier New',monospace",
+                          letterSpacing: "1px",
+                        }}
+                      >
+                        {v}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -558,52 +1435,52 @@ export default function Dashboard({ profile = MOCK_PROFILE }) {
           {/* ── Emergency Contacts (full width) ── */}
           <div style={{ marginTop: "20px" }}>
             <SCard icon="🚨" title="Emergency Contacts" delay={280}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: "12px" }}>
-                {contacts.map((c, i) => <ContactBadge key={i} c={c} i={i} />)}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))",
+                  gap: "12px",
+                }}
+              >
+                {contacts.map((c, i) => (
+                  <ContactBadge key={i} c={c} i={i} />
+                ))}
               </div>
-              <div style={{ marginTop: "14px", padding: "10px 14px", background: "rgba(0,207,255,0.04)", border: "1px solid rgba(0,180,255,0.1)", borderRadius: "7px", display: "flex", alignItems: "center", gap: "10px" }}>
-                <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#00cfff", boxShadow: "0 0 6px #00cfff", flexShrink: 0 }} />
-                <p style={{ fontSize: "12px", color: "rgba(0,180,255,0.42)", fontFamily: "'Courier New',monospace", letterSpacing: ".8px" }}>
-                  ALL {contacts.length} CONTACTS WILL RECEIVE INSTANT CALL + SMS WITH LIVE GPS WHEN SHIELDHER ACTIVATES
+              <div
+                style={{
+                  marginTop: "14px",
+                  padding: "10px 14px",
+                  background: "rgba(0,207,255,0.04)",
+                  border: "1px solid rgba(0,180,255,0.1)",
+                  borderRadius: "7px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "5px",
+                    height: "5px",
+                    borderRadius: "50%",
+                    background: "#00cfff",
+                    boxShadow: "0 0 6px #00cfff",
+                    flexShrink: 0,
+                  }}
+                />
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: "rgba(0,180,255,0.42)",
+                    fontFamily: "'Courier New',monospace",
+                    letterSpacing: ".8px",
+                  }}
+                >
+                  ALL {contacts.length} CONTACTS WILL RECEIVE INSTANT CALL + SMS
+                  WITH LIVE GPS WHEN SHIELDHER ACTIVATES
                 </p>
               </div>
             </SCard>
-          </div>
-
-          {/* ── Quick Actions ── */}
-          <div style={{ marginTop: "20px" }}>
-            <SCard icon="⚡" title="Quick Actions" delay={340}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "12px" }}>
-                {[
-                  { icon: "📱", label: "Activate SOS",   desc: "Manual trigger",   col: "#00cfff" },
-                  { icon: "🎙", label: "Voice Setup",    desc: "Change trigger word", col: "#7de8ff" },
-                  { icon: "💎", label: "Wearable Pair",  desc: "Connect brooch",   col: "#5bc8ff" },
-                  { icon: "✏️", label: "Edit Profile",   desc: "Update details",   col: "#00cfff" },
-                ].map(({ icon, label, desc, col }, i) => (
-                  <button key={i} style={{
-                    background: "rgba(0,20,55,0.6)", border: `1px solid ${col}28`,
-                    borderRadius: "10px", padding: "18px 14px",
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: "8px",
-                    cursor: "pointer", transition: "all .25s",
-                    animation: `fadeUp .5s ease ${300 + i * 60}ms both`,
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = col; e.currentTarget.style.background = `${col}10`; e.currentTarget.style.boxShadow = `0 0 20px ${col}22`; e.currentTarget.style.transform = "translateY(-3px)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = `${col}28`; e.currentTarget.style.background = "rgba(0,20,55,0.6)"; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}>
-                    <span style={{ fontSize: "22px" }}>{icon}</span>
-                    <div style={{ fontFamily: "'Courier New',monospace", fontSize: "10px", letterSpacing: "1.5px", color: col, textAlign: "center" }}>{label}</div>
-                    <div style={{ fontSize: "11px", color: "rgba(168,240,255,0.35)", letterSpacing: ".5px" }}>{desc}</div>
-                  </button>
-                ))}
-              </div>
-            </SCard>
-          </div>
-
-          {/* ── Footer note ── */}
-          <div style={{ textAlign: "center", marginTop: "32px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-            <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#00cfff", boxShadow: "0 0 7px #00cfff", animation: "blink 2s ease-in-out infinite" }} />
-            <span style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(0,180,255,0.3)", fontFamily: "'Courier New',monospace" }}>
-              🔒 AES-256 ENCRYPTED · SHIELDHER v2.4 · ALL SYSTEMS OPERATIONAL
-            </span>
           </div>
         </main>
       </div>

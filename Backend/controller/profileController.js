@@ -59,7 +59,6 @@ export const createProfile = async (req, res) => {
   }
 };
 
-
 // Get profile for the logged-in user
 
 export const getProfile = async (req, res) => {

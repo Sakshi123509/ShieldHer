@@ -299,12 +299,10 @@ function Hero({ navigate }) {
               fontFamily: "'Orbitron',monospace",
               fontWeight: 700,
               cursor: "pointer",
-              boxShadow: "0 0 36px rgba(0,207,255,0.18)",
-              animation: "pulseRing 2.5s ease-in-out infinite",
-              transition: "transform .2s",
+           
             }}
             onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.04)")
+              (e.currentTarget.style.transform = "scale(1.15)")
             }
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             onClick={() => navigate("/details")}
