@@ -3,10 +3,10 @@ import ShieldHerFlipbook from "./ShieldHerFlipbook";
 import PersonalDetailsPage from "./PersonalDetailsPage";
 import { useNavigate } from "react-router-dom";
 import Gpstracker from "./Gpstracker";
-import home from "../assets/home.jpg"
-import method1 from "../assets/method1.jpg"
-import method2 from "../assets/method2.jpg"
-import method3 from "../assets/method3.jpg"
+import home from "../assets/home.jpg";
+import method1 from "../assets/method1.jpg";
+import method2 from "../assets/method2.jpg";
+import method3 from "../assets/method3.jpg";
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
@@ -38,22 +38,23 @@ const CSS = `
 /* ── BG Canvas ───────────────────────────────────────────────── */
 
 /* ── Navbar ──────────────────────────────────────────────────── */
-function Navbar({navigate} ) {
+function Navbar({ navigate }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-useEffect(() => {
-  const handleResize = () => setIsMobile(window.innerWidth < 768);
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
+
   const links = [
     "Home",
     "About",
@@ -61,126 +62,138 @@ useEffect(() => {
     "How It Works",
     "Profile",
   ];
+
+  // ✅ COMMON CLICK HANDLER (VERY IMPORTANT)
+  const handleClick = async (e, l) => {
+    e.preventDefault();
+
+    if (l === "Profile") {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          navigate("/details");
+          return;
+        }
+
+        const res = await fetch("http://localhost:5000/api/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.ok) navigate("/dashboard");
+        else navigate("/details");
+      } catch {
+        navigate("/details");
+      }
+    } else {
+      const sectionId = l.toLowerCase().replace(/ /g, "-");
+      document
+        .getElementById(sectionId)
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    setMenuOpen(false); // close menu on click
+  };
+
   return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        height: "64px",
-        padding: "0 clamp(12px,4vw,48px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: scrolled ? "rgba(6,13,26,0.97)" : "rgba(6,13,26,0.72)",
-        backdropFilter: "blur(24px)",
-        borderBottom: "1px solid rgba(0,180,255,0.14)",
-        transition: "background .3s",
-        animation: "navReveal .5s ease both",
-      }}
-    >
-      <div
+    <>
+      <nav
         style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          height: "64px",
+          padding: "0 clamp(12px,4vw,48px)",
           display: "flex",
           alignItems: "center",
-          gap: "10px",
-          cursor: "pointer",
+          justifyContent: "space-between",
+          background: scrolled
+            ? "rgba(6,13,26,0.97)"
+            : "rgba(6,13,26,0.72)",
+          backdropFilter: "blur(24px)",
+          borderBottom: "1px solid rgba(0,180,255,0.14)",
         }}
       >
+        {/* LOGO */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span style={{ color: "#00cfff", fontSize: "12px" }}>
+            SHIELDHER
+          </span>
+        </div>
+
+        {/* 🔥 DESKTOP NAV */}
+        {!isMobile && (
+          <div style={{ display: "flex", gap: "clamp(12px,3vw,34px)" }}>
+            {links.map((l) => (
+              <a
+                key={l}
+                href="#"
+                onClick={(e) => handleClick(e, l)}
+                style={{
+                  color: "rgba(168,240,255,0.58)",
+                  fontSize: "12px",
+                  letterSpacing: "1.5px",
+                  textDecoration: "none",
+                }}
+              >
+                {l}
+              </a>
+            ))}
+          </div>
+        )}
+
+        {/* 🔥 MOBILE MENU ICON */}
+        {isMobile && (
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              fontSize: "24px",
+              color: "#00cfff",
+              cursor: "pointer",
+            }}
+          >
+            ☰
+          </div>
+        )}
+      </nav>
+
+      {/* 🔥 MOBILE DROPDOWN */}
+      {isMobile && menuOpen && (
         <div
           style={{
-            width: "34px",
-            height: "34px",
-            border: "1.5px solid rgba(0,207,255,0.65)",
-            borderRadius: "8px",
+            position: "fixed",
+            top: "64px",
+            left: 0,
+            right: 0,
+            background: "rgba(6,13,26,0.98)",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
-            background: "rgba(0,207,255,0.08)",
-            boxShadow: "0 0 14px rgba(0,207,255,0.22)",
+            gap: "20px",
+            padding: "20px 0",
+            zIndex: 2000,
           }}
         >
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M10 2L17 5L17 10C17 14.5 13.5 17.5 10 19C6.5 17.5 3 14.5 3 10L3 5Z"
-              fill="rgba(0,207,255,0.18)"
-              stroke="#00cfff"
-              strokeWidth="1.5"
-            />
-            <circle cx="10" cy="9.5" r="2.2" fill="#00cfff" />
-          </svg>
+          {links.map((l) => (
+            <a
+              key={l}
+              href="#"
+              onClick={(e) => handleClick(e, l)}
+              style={{
+                color: "#a8f0ff",
+                fontSize: "14px",
+                letterSpacing: "2px",
+                textDecoration: "none",
+              }}
+            >
+              {l}
+            </a>
+          ))}
         </div>
-        <span
-          style={{
-            fontFamily: "'Orbitron',monospace",
-            fontSize: "10px",
-            fontWeight: 700,
-            color: "#00cfff",
-            letterSpacing: "3px",
-            textShadow: "0 0 14px rgba(0,207,255,0.38)",
-          }}
-        >
-          SHIELDHER
-        </span>
-      </div>
-      <div style={{ display: "flex",gap: "clamp(12px,3vw,34px)",
-flexWrap: "wrap",
-justifyContent: "flex-end", alignItems: "center" }}>
-       {links.map((l) => (
-  <a
-    key={l}
-    href="#"
-    onClick={async (e) => {
-      e.preventDefault();
-
-      if (l === "Profile") {
-        try {
-          const token = localStorage.getItem("token");
-
-          if (!token) {
-            navigate("/details");
-            return;
-          }
-
-          const res = await fetch("http://localhost:5000/api/profile", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (res.ok) {
-            navigate("/dashboard"); // ✅ profile exists
-          } else {
-            navigate("/details");   // ❌ not exists
-          }
-        } catch (err) {
-          console.error(err);
-          navigate("/details");
-        }
-      } else {
-        // normal scroll for other links
-        const sectionId = l.toLowerCase().replace(/ /g, "-");
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
-      }
-    }}
-    style={{
-      color: "rgba(168,240,255,0.58)",
-      fontSize: "12px",
-      letterSpacing: "1.5px",
-      textDecoration: "none",
-      fontFamily: "'Rajdhani',sans-serif",
-      fontWeight: 600,
-      textTransform: "uppercase",
-      transition: "color .2s",
-    }}
-  >
-    {l}
-  </a>
-))}
-      </div>
-    </nav>
+      )}
+    </>
   );
 }
 
@@ -210,7 +223,7 @@ function Hero({ navigate }) {
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-   padding: "clamp(100px,15vh,120px) clamp(12px,4vw,24px) 80px",
+        padding: "clamp(100px,15vh,120px) clamp(12px,4vw,24px) 80px",
         position: "relative",
         /* 🔥 BACKGROUND ONLY HERE */
         background: `linear-gradient(rgba(6, 13, 26, 0.72), rgba(4, 12, 29, 1)), url(${home}) `,
@@ -343,40 +356,39 @@ function Hero({ navigate }) {
               fontFamily: "'Orbitron',monospace",
               fontWeight: 700,
               cursor: "pointer",
-           
             }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.transform = "scale(1.15)")
             }
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             onClick={async () => {
-  try {
-    const token = localStorage.getItem("token");
+              try {
+                const token = localStorage.getItem("token");
 
-    if (!token) {
-      navigate("/details"); // not logged in → create profile
-      return;
-    }
+                if (!token) {
+                  navigate("/details"); // not logged in → create profile
+                  return;
+                }
 
-    const res = await fetch("http://localhost:5000/api/profile", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+                const res = await fetch("http://localhost:5000/api/profile", {
+                  method: "GET",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                });
 
-    if (res.ok) {
-      // ✅ profile exists
-      navigate("/dashboard");
-    } else {
-      // ❌ profile not created
-      navigate("/details");
-    }
-  } catch (err) {
-    console.error(err);
-    navigate("/details");
-  }
-}}
+                if (res.ok) {
+                  // ✅ profile exists
+                  navigate("/dashboard");
+                } else {
+                  // ❌ profile not created
+                  navigate("/details");
+                }
+              } catch (err) {
+                console.error(err);
+                navigate("/details");
+              }
+            }}
           >
             ACTIVATE SHIELD
           </button>
@@ -404,11 +416,11 @@ function Hero({ navigate }) {
               e.currentTarget.style.color = "rgba(168,240,255,0.58)";
               e.currentTarget.style.background = "transparent";
             }}
-          onClick={() => {
-  document
-    .getElementById("how-it-works")
-    ?.scrollIntoView({ behavior: "smooth" });
-}}
+            onClick={() => {
+              document
+                .getElementById("how-it-works")
+                ?.scrollIntoView({ behavior: "smooth" });
+            }}
           >
             LEARN MORE
           </button>
@@ -469,7 +481,7 @@ function About() {
       ref={ref}
       id="about"
       style={{
-       padding: "clamp(40px,8vw,80px) clamp(12px,4vw,48px)",
+        padding: "clamp(40px,8vw,80px) clamp(12px,4vw,48px)",
         maxWidth: "1100px",
         margin: "0 auto",
         position: "relative",
@@ -711,7 +723,7 @@ function Methods() {
       glow: "rgba(0,207,255,0.22)",
       border: "rgba(0,207,255,0.38)",
       title: "Manual App Activation",
-      image:method1,
+      image: method1,
 
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -756,7 +768,7 @@ function Methods() {
       glow: "rgba(125,232,255,0.18)",
       border: "rgba(125,232,255,0.32)",
       title: "Voice Trigger Word",
-      image:method2,
+      image: method2,
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect
@@ -827,7 +839,7 @@ function Methods() {
       glow: "rgba(91,200,255,0.18)",
       border: "rgba(91,200,255,0.32)",
       title: "Physical Wearable Button",
-      image:method3,
+      image: method3,
 
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -888,7 +900,11 @@ function Methods() {
     <section
       ref={ref}
       id="how-it-works"
-      style={{padding: "clamp(50px,10vw,100px) clamp(12px,4vw,48px)", position: "relative", zIndex: 1 }}
+      style={{
+        padding: "clamp(50px,10vw,100px) clamp(12px,4vw,48px)",
+        position: "relative",
+        zIndex: 1,
+      }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <div
@@ -973,7 +989,7 @@ function MethodCard({ m, i, vis }) {
 
         border: `1px solid ${hov ? m.border : "rgba(0,180,255,0.15)"}`,
         borderRadius: "14px",
-       padding: "clamp(20px,5vw,36px) clamp(16px,4vw,28px)",
+        padding: "clamp(20px,5vw,36px) clamp(16px,4vw,28px)",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
@@ -1265,8 +1281,8 @@ function Footer() {
           maxWidth: "1200px",
           margin: "0 auto",
           display: "grid",
-         padding: "clamp(32px,8vw,64px) clamp(12px,4vw,48px)",
-gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          padding: "clamp(32px,8vw,64px) clamp(12px,4vw,48px)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
           gap: "48px",
         }}
       >
@@ -1381,7 +1397,7 @@ gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       <div
         style={{
           borderTop: "1px solid rgba(0,180,255,0.08)",
-         padding: "16px clamp(12px,4vw,48px)",
+          padding: "16px clamp(12px,4vw,48px)",
           maxWidth: "1200px",
           margin: "0 auto",
           display: "flex",
@@ -1442,8 +1458,8 @@ export default function HomePage() {
         }}
       >
         {/* <BG/> */}
-       <Navbar navigate={navigate} />
-        <main style={{ position: "relative", zIndex: 1 ,overflowX: "hidden", }}>
+        <Navbar navigate={navigate} />
+        <main style={{ position: "relative", zIndex: 1, overflowX: "hidden" }}>
           <Hero navigate={navigate} />
 
           <About />
