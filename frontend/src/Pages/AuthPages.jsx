@@ -719,7 +719,6 @@ function SignupPage({ onSwitch }) {
             }}
           />
         </div>
-
         <div
           style={{
             display: "flex",
@@ -735,7 +734,6 @@ function SignupPage({ onSwitch }) {
               background: "rgba(0,150,220,0.2)",
             }}
           />
-
           <div
             style={{
               flex: 1,

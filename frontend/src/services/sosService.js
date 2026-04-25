@@ -1,4 +1,5 @@
 export const triggerSOS = async (lat, lng) => {
+
   const token = localStorage.getItem("token");
 
   if (!token) {

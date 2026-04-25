@@ -18,6 +18,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/sos", sosRoutes); 
 
+
 const PORT = process.env.PORT || 8000;
 
 mongoose.connect(process.env.MONGO_URI)

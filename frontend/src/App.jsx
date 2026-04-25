@@ -6,7 +6,6 @@ import { Home } from "./Pages/Home";
 import PersonalDetailsPage from "./Pages/PersonalDetailsPage";
 import SOSConfirmation from "./Pages/sosConfirmation";
 import HomePage from "./Pages/HomePage";
-
 import ShieldHerFlipbook from "./Pages/ShieldHerFlipbook";
 
 function App() {

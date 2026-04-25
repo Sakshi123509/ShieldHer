@@ -45,8 +45,8 @@ export default function ShieldHerFlipbook() {
           allow="clipboard-write"
           allowFullScreen
         />
-
         {/* Overlay */}
+
         <div
           style={{
             position: "absolute",
@@ -56,11 +56,11 @@ export default function ShieldHerFlipbook() {
           }}
         >
           {/* SHIELDHER BOX */}
-          {/* <div
+          <div
             style={{
               position: "absolute",
-              bottom: "5%",
-              left: "15%",
+              bottom: "3%",
+              left: "3%",
               width: "220px",
               height: "80px",
               backgroundColor: "#050E1E",
@@ -82,14 +82,14 @@ export default function ShieldHerFlipbook() {
             >
               SHIELDHER ◇
             </h1>
-          </div> */}
+          </div>
 
           {/* RIGHT FLOAT BOX */}
           <div
             style={{
               position: "absolute",
-              top: "17%",
-              right: "13%",
+              top: "0%",
+              right: "2%",
               width: "100px",
               height: "100px",
               backgroundColor: "#050E1E",

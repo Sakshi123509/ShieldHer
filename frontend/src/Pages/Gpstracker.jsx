@@ -96,18 +96,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { triggerSOS } from "../services/sosService";
@@ -137,7 +125,6 @@ export default function VoiceGPS() {
       const text = event.results[event.results.length - 1][0].transcript
         .toLowerCase()
         .trim();
-
       console.log("Heard:", text);
 
       if (text.includes("help")) {

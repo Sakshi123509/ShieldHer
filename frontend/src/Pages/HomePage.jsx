@@ -300,18 +300,17 @@ function Hero({ navigate }) {
               fontWeight: 700,
               cursor: "pointer",
               boxShadow: "0 0 36px rgba(0,207,255,0.18)",
-              // animation: "pulseRing 2.5s ease-in-out infinite",
+              animation: "pulseRing 2.5s ease-in-out infinite",
               transition: "transform .2s",
             }}
-            onMouseEnter={(e) =>{
-              (e.currentTarget.style.transform = "scale(1.04)");
-            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.04)")
+            }
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             onClick={() => navigate("/details")}
           >
             ACTIVATE SHIELD
           </button>
-
           <button
             style={{
               padding: "15px 44px",
@@ -640,6 +639,7 @@ function Methods() {
       title: "Manual App Activation",
       image:
         "https://i.pinimg.com/736x/8c/97/75/8c9775d7df307f49b983b1b49908ae12.jpg",
+
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect
@@ -757,6 +757,7 @@ function Methods() {
       title: "Physical Wearable Button",
       image:
         "https://i.pinimg.com/1200x/56/35/11/563511db778ff644a93f2d23403c93ac.jpg",
+
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <circle cx="16" cy="16" r="11" stroke="#5bc8ff" strokeWidth="1.5" />
@@ -888,6 +889,7 @@ function MethodCard({ m, i, vis }) {
       onMouseLeave={() => setHov(false)}
       style={{
         position: "relative",
+
         background: m.image
           ? `linear-gradient(rgba(6, 22, 55, 0.48), rgba(4,14,40,0.9)), url(${m.image})`
           : hov
@@ -897,6 +899,7 @@ function MethodCard({ m, i, vis }) {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+
         border: `1px solid ${hov ? m.border : "rgba(0,180,255,0.15)"}`,
         borderRadius: "14px",
         padding: "36px 28px 32px",
@@ -1360,7 +1363,6 @@ export default function HomePage() {
   return (
     <>
       <style>{CSS}</style>
-
       <div
         style={{
           position: "relative",
@@ -1372,11 +1374,14 @@ export default function HomePage() {
         <Navbar />
         <main style={{ position: "relative", zIndex: 1 }}>
           <Hero navigate={navigate} />
+
           <About />
           <ShieldHerFlipbook />
           <Methods />
         </main>
+
         <Gpstracker />
+
         <Footer />
       </div>
     </>
