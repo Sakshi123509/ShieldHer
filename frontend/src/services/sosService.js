@@ -1,28 +1,64 @@
-export const triggerSOS = async (lat, lng) => {
+// export const triggerSOS = async (lat, lng) => {
 
+//   const token = localStorage.getItem("token");
+
+//   if (!token) {
+//     console.error("Token not found");
+//     return;
+//   }
+
+//   // token decode karo - userId nikalo
+//   const payload = JSON.parse(atob(token.split(".")[1]));
+//   const userId = payload.id;
+
+//   console.log("userId from token:", userId);
+
+//   const res = await fetch("http://localhost:5000/api/sos", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ 
+//       userId, 
+//       name: payload.name || "User", 
+//       lat, 
+//       lng 
+//     }),
+//   });
+
+//   return res.json();
+// };
+
+export const triggerSOS = async (lat, lng) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
     console.error("Token not found");
-    return;
+    throw new Error("Not authenticated");
   }
 
-  // token decode karo - userId nikalo
+  // Decode token to get user info
   const payload = JSON.parse(atob(token.split(".")[1]));
   const userId = payload.id;
-  
-  console.log("userId from token:", userId);
+
+  console.log("Triggering SOS for userId:", userId, "at", lat, lng);
 
   const res = await fetch("http://localhost:5000/api/sos", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ 
-      userId, 
-      name: payload.name || "User", 
-      lat, 
-      lng 
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      userId,
+      name: payload.name || "User",
+      lat,  
+      lng,
     }),
   });
 
-  return res.json();
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.msg || "SOS request failed");
+  }
+
+  return await res.json();
 };
