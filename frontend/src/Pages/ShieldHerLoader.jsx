@@ -393,8 +393,9 @@ export default function ShieldHerLoader() {
     const W = canvas.width;
 const H = canvas.height;
       const cx = W / 2,
-        cy = H / 2,
-        sc = Math.min(W, H) / 900;
+        cy = H / 2;
+     const baseScale = Math.min(W, H) / 900;
+const sc = Math.max(baseScale, 0.6); 
       const dt = Math.min(now - (lastRef.current || now), 50) / 1000;
       lastRef.current = now;
       tRef.current += dt;
@@ -556,15 +557,15 @@ const H = canvas.height;
           <div
             style={{
               position: "absolute",
-              top: "28px",
+             top: "4vh",
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 10,
               pointerEvents: "none",
               opacity: loadPct > 5 ? 1 : 0,
               transition: "opacity 1s",
-              fontSize: "11px",
-              letterSpacing: "4px",
+            fontSize: "clamp(9px, 2.5vw, 11px)",
+letterSpacing: "clamp(2px, 1vw, 4px)",
               color: "rgba(125,232,255,0.55)",
               textTransform: "uppercase",
               whiteSpace: "nowrap",
@@ -577,7 +578,7 @@ const H = canvas.height;
           <div
             style={{
               position: "absolute",
-              bottom: "60px",
+             bottom: "6vh",
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 10,
@@ -586,7 +587,9 @@ const H = canvas.height;
               flexDirection: "column",
               alignItems: "center",
               gap: "16px",
-              width: "340px",
+              width: "90vw",
+maxWidth: "340px",
+padding: "0 12px",
             }}
           >
             <div style={{ width: "100%", position: "relative" }}>
@@ -651,7 +654,7 @@ const H = canvas.height;
               />
               <span
                 style={{
-                  fontSize: "11px",
+                 fontSize: "clamp(10px, 2.8vw, 12px)",
                   letterSpacing: "2.5px",
                   color: "rgba(100,220,255,0.75)",
                   textTransform: "uppercase",
@@ -661,7 +664,7 @@ const H = canvas.height;
               </span>
               <span
                 style={{
-                  fontSize: "11px",
+                  fontSize: "clamp(10px, 2.8vw, 12px)",
                   letterSpacing: "1px",
                   color: "rgba(0,207,255,0.45)",
                 }}

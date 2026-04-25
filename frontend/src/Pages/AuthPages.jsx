@@ -229,12 +229,12 @@ function Field({ label, type = "text", placeholder, value, onChange }) {
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         style={{
-          padding: "12px 16px",
+        padding: "clamp(10px,3vw,12px) clamp(12px,4vw,16px)",
           background: focused ? "rgba(0,40,90,0.7)" : "rgba(0,25,65,0.55)",
           border: `1px solid ${focused ? "rgba(0,207,255,0.65)" : "rgba(0,150,220,0.22)"}`,
           borderRadius: "6px",
           color: "#a8f0ff",
-          fontSize: "13px",
+        fontSize: "clamp(12px,3.5vw,13px)",
           letterSpacing: "0.5px",
           outline: "none",
           fontFamily: "'Courier New', monospace",
@@ -324,23 +324,24 @@ function LoginPage({ onSwitch }) {
         position: "relative",
         zIndex: 10,
         width: "100%",
-        maxWidth: "420px",
+        width: "100%",
+padding: "clamp(20px, 5vw, 40px) clamp(16px, 5vw, 36px)",
         margin: "0 auto",
         animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
 
-        background: `
+       
+      }}
+    >
+      {/* FIX: Removed duplicate outer card wrapper — single card div only */}
+      <div
+        style={{
+          background: `
       linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
       url(${log})
     `,
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-      }}
-    >
-      {/* FIX: Removed duplicate outer card wrapper — single card div only */}
-      <div
-        style={{
-          background: "rgba(4, 18, 48, 0.68)",
           border: "1px solid rgba(0,180,255,0.18)",
           borderRadius: "16px",
           padding: "40px 36px 36px",
@@ -351,6 +352,19 @@ function LoginPage({ onSwitch }) {
           overflow: "hidden",
         }}
       >
+      
+        <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(rgba(13, 16, 48, 0.69), rgba(8, 14, 65, 0.48))",
+      zIndex: 0,
+      pointerEvents: "none",
+    }}
+  />
+   <div style={{ position: "relative", zIndex: 1 }}>
+
         <div
           style={{
             position: "absolute",
@@ -366,7 +380,7 @@ function LoginPage({ onSwitch }) {
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <div
             style={{
-              fontSize: "10px",
+             fontSize: "clamp(9px, 2.5vw, 10px)",
               letterSpacing: "5px",
               color: "rgba(0, 208, 255, 0.62)",
               marginBottom: "10px",
@@ -378,7 +392,8 @@ function LoginPage({ onSwitch }) {
           <h1
             style={{
               margin: 0,
-              fontSize: "2rem",
+            fontSize: "clamp(1.4rem, 5vw, 2rem)",
+letterSpacing: "clamp(2px, 1vw, 4px)",
               letterSpacing: "4px",
               color: "#7de8ff",
               textShadow: "0 0 30px rgba(0,207,255,0.5)",
@@ -391,7 +406,7 @@ function LoginPage({ onSwitch }) {
           <p
             style={{
               margin: "8px 0 0",
-              fontSize: "12px",
+            fontSize: "clamp(10px, 3vw, 12px)",
               color: "rgba(100, 201, 255, 0.57)",
               letterSpacing: "1.5px",
               fontFamily: "'Courier New', monospace",
@@ -476,7 +491,7 @@ function LoginPage({ onSwitch }) {
           />
           <span
             style={{
-              fontSize: "10px",
+             fontSize: "clamp(9px, 2.5vw, 10px)",
               letterSpacing: "2px",
               color: "rgba(0,150,220,0.4)",
               fontFamily: "'Courier New', monospace",
@@ -497,7 +512,7 @@ function LoginPage({ onSwitch }) {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "16px",
+           gap: "clamp(12px, 3vw, 16px)",
             marginBottom: "24px",
           }}
         >
@@ -538,7 +553,8 @@ function LoginPage({ onSwitch }) {
           onClick={handleLogin}
           style={{
             width: "100%",
-            padding: "14px",
+          padding: "clamp(12px,3.5vw,14px)",
+
             background: btnHover
               ? "linear-gradient(90deg,rgba(0,130,230,0.6),rgba(0,207,255,0.5))"
               : "linear-gradient(90deg,rgba(0,100,200,0.4),rgba(0,180,255,0.3))",
@@ -546,7 +562,7 @@ function LoginPage({ onSwitch }) {
             borderRadius: "6px",
             cursor: "pointer",
             color: "#7de8ff",
-            fontSize: "13px",
+          fontSize: "clamp(12px,3.5vw,13px)",
             letterSpacing: "3px",
             textTransform: "uppercase",
             fontFamily: "'Courier New', monospace",
@@ -566,7 +582,7 @@ function LoginPage({ onSwitch }) {
             textAlign: "center",
             marginTop: "24px",
             marginBottom: 0,
-            fontSize: "12px",
+            fontSize: "clamp(10px, 3vw, 12px)",
             color: "rgba(100,180,220,0.5)",
             fontFamily: "'Courier New', monospace",
             letterSpacing: "1px",
@@ -599,6 +615,7 @@ function LoginPage({ onSwitch }) {
           />
         ))}
       </div>
+    </div>
     </div>
   );
 }
@@ -634,19 +651,11 @@ function SignupPage({ onSwitch }) {
         position: "relative",
         zIndex: 10,
         width: "100%",
-        maxWidth: "420px",
+        width: "100%",
+padding: "clamp(20px, 5vw, 40px) clamp(16px, 5vw, 36px)",
         margin: "0 auto",
         animation: "slideUp 0.6s cubic-bezier(0.23,1,0.32,1) both",
 
-        background: `
-      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-      url(${sign})
-    `,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        // FIX: Removed `sign` variable reference (was undefined). Add your image URL here if needed:
-        // backgroundImage: "url('/your-image-path.png')",
       }}
     >
       <div
@@ -655,6 +664,13 @@ function SignupPage({ onSwitch }) {
           border: "1px solid rgba(0,180,255,0.18)",
           borderRadius: "16px",
           padding: "36px 36px 32px",
+            background: `
+      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+      url(${sign})
+    `,
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
           // backdropFilter: "blur(24px)",
           boxShadow:
             "0 0 60px rgba(0,100,200,0.15), 0 2px 0 rgba(0,207,255,0.08) inset",
@@ -662,6 +678,17 @@ function SignupPage({ onSwitch }) {
           overflow: "hidden",
         }}
       >
+        <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(rgba(29, 56, 124, 0.36), rgba(0, 0, 0, 0.48))",
+      zIndex: 0,
+      pointerEvents: "none"
+    }}
+  />
+   <div style={{ position: "relative", zIndex: 1 }}>
         <div
           style={{
             position: "absolute",
@@ -677,7 +704,7 @@ function SignupPage({ onSwitch }) {
         <div style={{ textAlign: "center", marginBottom: "28px" }}>
           <div
             style={{
-              fontSize: "10px",
+            fontSize: "clamp(9px, 2.5vw, 10px)",
               letterSpacing: "5px",
               color: "rgba(0,207,255,0.45)",
               marginBottom: "10px",
@@ -689,7 +716,8 @@ function SignupPage({ onSwitch }) {
           <h1
             style={{
               margin: 0,
-              fontSize: "2rem",
+           fontSize: "clamp(1.4rem, 5vw, 2rem)",
+letterSpacing: "clamp(2px, 1vw, 4px)",
               letterSpacing: "4px",
               color: "#7de8ff",
               textShadow: "0 0 30px rgba(0,207,255,0.5)",
@@ -702,7 +730,7 @@ function SignupPage({ onSwitch }) {
           <p
             style={{
               margin: "8px 0 0",
-              fontSize: "12px",
+              fontSize: "clamp(10px, 3vw, 12px)",
               color: "rgba(100,200,255,0.45)",
               letterSpacing: "1.5px",
               fontFamily: "'Courier New', monospace",
@@ -783,7 +811,7 @@ function SignupPage({ onSwitch }) {
 
         <p
           style={{
-            fontSize: "10px",
+           fontSize: "clamp(9px, 2.5vw, 10px)",
             letterSpacing: "0.8px",
             color: "rgba(0,150,200,0.4)",
             textAlign: "center",
@@ -819,7 +847,7 @@ function SignupPage({ onSwitch }) {
           onClick={handleRegister}
           style={{
             width: "100%",
-            padding: "14px",
+         padding: "clamp(12px,3.5vw,14px)",
             background: btnHover
               ? "linear-gradient(90deg,rgba(0,130,230,0.6),rgba(0,207,255,0.5))"
               : "linear-gradient(90deg,rgba(0,100,200,0.4),rgba(0,180,255,0.3))",
@@ -827,7 +855,7 @@ function SignupPage({ onSwitch }) {
             borderRadius: "6px",
             cursor: "pointer",
             color: "#7de8ff",
-            fontSize: "13px",
+            fontSize: "clamp(12px,3.5vw,13px)",
             letterSpacing: "3px",
             textTransform: "uppercase",
             fontFamily: "'Courier New', monospace",
@@ -845,7 +873,7 @@ function SignupPage({ onSwitch }) {
             textAlign: "center",
             marginTop: "20px",
             marginBottom: 0,
-            fontSize: "12px",
+            fontSize: "clamp(10px, 3vw, 12px)",
             color: "rgba(100,180,220,0.5)",
             fontFamily: "'Courier New', monospace",
             letterSpacing: "1px",
@@ -878,6 +906,7 @@ function SignupPage({ onSwitch }) {
           />
         ))}
       </div>
+    </div>
     </div>
   );
 }
