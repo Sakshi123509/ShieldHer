@@ -4,12 +4,11 @@ import ShieldHerLoader from "./Pages/ShieldHerLoader";
 import AuthPages from "./pages/AuthPages";
 import { Home } from "./Pages/Home";
 import PersonalDetailsPage from "./Pages/PersonalDetailsPage";
+import SOSConfirmation from "./Pages/sosConfirmation";
 import HomePage from "./Pages/HomePage";
-
 import ShieldHerFlipbook from "./Pages/ShieldHerFlipbook";
 import Dashboard from "./Pages/Dashboard";
 function App() {
-  
   return (
     <BrowserRouter>
       <Routes>
@@ -21,7 +20,10 @@ function App() {
 
         <Route path="/details" element={<PersonalDetailsPage />} /> */}
 
-<Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/sos-confirmation" element={<SOSConfirmation />} />
+
+        <Route path="/details" element={<PersonalDetailsPage />} />
       </Routes>
     </BrowserRouter>
   );

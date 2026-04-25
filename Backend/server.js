@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import sosRoutes from "./routes/sosRoutes.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,6 +16,8 @@ app.use(express.urlencoded({ extended: true }));
 // Route
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/sos", sosRoutes); 
+
 
 const PORT = process.env.PORT || 8000;
 

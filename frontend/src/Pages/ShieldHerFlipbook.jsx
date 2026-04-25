@@ -45,8 +45,8 @@ export default function ShieldHerFlipbook() {
           allow="clipboard-write"
           allowFullScreen
         />
+        {/* Overlay */}
 
-     
         <div
           style={{
             position: "absolute",

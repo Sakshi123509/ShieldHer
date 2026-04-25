@@ -41,7 +41,13 @@ function Navbar() {
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  const links = ["Home", "About","Instruction Manual" , "How It Works", "Profile"];
+  const links = [
+    "Home",
+    "About",
+    "Instruction Manual",
+    "How It Works",
+    "Profile",
+  ];
   return (
     <nav
       style={{
@@ -129,7 +135,6 @@ function Navbar() {
             {l}
           </a>
         ))}
-       
       </div>
     </nav>
   );
@@ -153,7 +158,7 @@ function Hero({ navigate }) {
   }, []);
   return (
     <section
-    id="home"
+      id="home"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -302,7 +307,7 @@ function Hero({ navigate }) {
               (e.currentTarget.style.transform = "scale(1.04)")
             }
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-              onClick={() => navigate("/details")}
+            onClick={() => navigate("/details")}
           >
             ACTIVATE SHIELD
           </button>
@@ -334,7 +339,6 @@ function Hero({ navigate }) {
             LEARN MORE
           </button>
         </div>
-       
       </div>
       <div
         style={{
@@ -610,7 +614,6 @@ function ShieldViz() {
   );
 }
 
-
 /* ── Methods ─────────────────────────────────────────────────── */
 function Methods() {
   const ref = useRef(null);
@@ -634,7 +637,9 @@ function Methods() {
       glow: "rgba(0,207,255,0.22)",
       border: "rgba(0,207,255,0.38)",
       title: "Manual App Activation",
-      image: "https://i.pinimg.com/736x/8c/97/75/8c9775d7df307f49b983b1b49908ae12.jpg",
+      image:
+        "https://i.pinimg.com/736x/8c/97/75/8c9775d7df307f49b983b1b49908ae12.jpg",
+
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect
@@ -678,7 +683,8 @@ function Methods() {
       glow: "rgba(125,232,255,0.18)",
       border: "rgba(125,232,255,0.32)",
       title: "Voice Trigger Word",
-        image: "https://i.pinimg.com/1200x/be/5e/7f/be5e7f544410ed5d96eae44ce987479d.jpg",
+      image:
+        "https://i.pinimg.com/1200x/be/5e/7f/be5e7f544410ed5d96eae44ce987479d.jpg",
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect
@@ -749,7 +755,9 @@ function Methods() {
       glow: "rgba(91,200,255,0.18)",
       border: "rgba(91,200,255,0.32)",
       title: "Physical Wearable Button",
-        image: "https://i.pinimg.com/1200x/56/35/11/563511db778ff644a93f2d23403c93ac.jpg",
+      image:
+        "https://i.pinimg.com/1200x/56/35/11/563511db778ff644a93f2d23403c93ac.jpg",
+
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <circle cx="16" cy="16" r="11" stroke="#5bc8ff" strokeWidth="1.5" />
@@ -881,15 +889,17 @@ function MethodCard({ m, i, vis }) {
       onMouseLeave={() => setHov(false)}
       style={{
         position: "relative",
-       background: m.image
-  ? `linear-gradient(rgba(6, 22, 55, 0.48), rgba(4,14,40,0.9)), url(${m.image})`
-  : hov
-  ? "rgba(6,22,55,0.95)"
-  : "rgba(4,14,40,0.85)",
 
-backgroundSize: "cover",
-backgroundPosition: "center",
-backgroundRepeat: "no-repeat",
+        background: m.image
+          ? `linear-gradient(rgba(6, 22, 55, 0.48), rgba(4,14,40,0.9)), url(${m.image})`
+          : hov
+            ? "rgba(6,22,55,0.95)"
+            : "rgba(4,14,40,0.85)",
+
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+
         border: `1px solid ${hov ? m.border : "rgba(0,180,255,0.15)"}`,
         borderRadius: "14px",
         padding: "36px 28px 32px",
@@ -990,8 +1000,6 @@ backgroundRepeat: "no-repeat",
       >
         {m.icon}
       </div>
-    
-  
 
       {/* Title */}
       <h3
@@ -1351,11 +1359,10 @@ function Footer() {
 
 /* ── Export ──────────────────────────────────────────────────── */
 export default function HomePage() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       <style>{CSS}</style>
-      
       <div
         style={{
           position: "relative",
@@ -1366,12 +1373,15 @@ export default function HomePage() {
         {/* <BG/> */}
         <Navbar />
         <main style={{ position: "relative", zIndex: 1 }}>
-        <Hero navigate={navigate} />
+          <Hero navigate={navigate} />
+
           <About />
           <ShieldHerFlipbook />
           <Methods />
         </main>
-        <Gpstracker/>
+
+        <Gpstracker />
+
         <Footer />
       </div>
     </>

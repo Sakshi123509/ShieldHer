@@ -275,6 +275,8 @@ function LoginPage({ onSwitch }) {
     const data = await loginUser({ email, password });
     if (data.token) {
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("userName", data.name);
       console.log("✅ Login successful! User:", email);
       navigate("/home");
     } else {
@@ -717,9 +719,6 @@ function SignupPage({ onSwitch }) {
             }}
           />
         </div>
-
-       
-
         <div
           style={{
             display: "flex",
@@ -735,7 +734,6 @@ function SignupPage({ onSwitch }) {
               background: "rgba(0,150,220,0.2)",
             }}
           />
-         
           <div
             style={{
               flex: 1,
