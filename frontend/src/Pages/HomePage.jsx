@@ -3,6 +3,10 @@ import ShieldHerFlipbook from "./ShieldHerFlipbook";
 import PersonalDetailsPage from "./PersonalDetailsPage";
 import { useNavigate } from "react-router-dom";
 import Gpstracker from "./Gpstracker";
+import home from "../assets/home.jpg"
+import method1 from "../assets/method1.jpg"
+import method2 from "../assets/method2.jpg"
+import method3 from "../assets/method3.jpg"
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
@@ -35,7 +39,16 @@ const CSS = `
 
 /* ── Navbar ──────────────────────────────────────────────────── */
 function Navbar({navigate} ) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+useEffect(() => {
+  const handleResize = () => setIsMobile(window.innerWidth < 768);
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn);
@@ -57,7 +70,7 @@ function Navbar({navigate} ) {
         right: 0,
         zIndex: 1000,
         height: "64px",
-        padding: "0 48px",
+        padding: "0 clamp(12px,4vw,48px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -102,7 +115,7 @@ function Navbar({navigate} ) {
         <span
           style={{
             fontFamily: "'Orbitron',monospace",
-            fontSize: "16px",
+            fontSize: "10px",
             fontWeight: 700,
             color: "#00cfff",
             letterSpacing: "3px",
@@ -112,7 +125,9 @@ function Navbar({navigate} ) {
           SHIELDHER
         </span>
       </div>
-      <div style={{ display: "flex", gap: "34px", alignItems: "center" }}>
+      <div style={{ display: "flex",gap: "clamp(12px,3vw,34px)",
+flexWrap: "wrap",
+justifyContent: "flex-end", alignItems: "center" }}>
        {links.map((l) => (
   <a
     key={l}
@@ -195,10 +210,10 @@ function Hero({ navigate }) {
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        padding: "120px 24px 80px",
+   padding: "clamp(100px,15vh,120px) clamp(12px,4vw,24px) 80px",
         position: "relative",
         /* 🔥 BACKGROUND ONLY HERE */
-        background: `linear-gradient(rgba(6, 13, 26, 0.72), rgba(4, 12, 29, 1)), url("https://static.vecteezy.com/system/resources/thumbnails/030/337/740/original/loop-animation-of-glossy-shield-with-dark-background-3d-rendering-free-video.jpg") `,
+        background: `linear-gradient(rgba(6, 13, 26, 0.72), rgba(4, 12, 29, 1)), url(${home}) `,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -280,7 +295,7 @@ function Hero({ navigate }) {
         <div
           style={{
             fontFamily: "'Courier New',monospace",
-            fontSize: "clamp(0.95rem,2vw,1.25rem)",
+            fontSize: "clamp(0.8rem,2vw,1.25rem)",
             color: "rgba(168,240,255,0.78)",
             letterSpacing: "1px",
             marginBottom: "14px",
@@ -389,6 +404,11 @@ function Hero({ navigate }) {
               e.currentTarget.style.color = "rgba(168,240,255,0.58)";
               e.currentTarget.style.background = "transparent";
             }}
+          onClick={() => {
+  document
+    .getElementById("how-it-works")
+    ?.scrollIntoView({ behavior: "smooth" });
+}}
           >
             LEARN MORE
           </button>
@@ -449,7 +469,7 @@ function About() {
       ref={ref}
       id="about"
       style={{
-        padding: "80px 48px",
+       padding: "clamp(40px,8vw,80px) clamp(12px,4vw,48px)",
         maxWidth: "1100px",
         margin: "0 auto",
         position: "relative",
@@ -459,7 +479,7 @@ function About() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
           gap: "64px",
           alignItems: "center",
         }}
@@ -691,8 +711,7 @@ function Methods() {
       glow: "rgba(0,207,255,0.22)",
       border: "rgba(0,207,255,0.38)",
       title: "Manual App Activation",
-      image:
-        "https://i.pinimg.com/736x/8c/97/75/8c9775d7df307f49b983b1b49908ae12.jpg",
+      image:method1,
 
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -737,8 +756,7 @@ function Methods() {
       glow: "rgba(125,232,255,0.18)",
       border: "rgba(125,232,255,0.32)",
       title: "Voice Trigger Word",
-      image:
-        "https://i.pinimg.com/1200x/be/5e/7f/be5e7f544410ed5d96eae44ce987479d.jpg",
+      image:method2,
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect
@@ -809,8 +827,7 @@ function Methods() {
       glow: "rgba(91,200,255,0.18)",
       border: "rgba(91,200,255,0.32)",
       title: "Physical Wearable Button",
-      image:
-        "https://i.pinimg.com/1200x/56/35/11/563511db778ff644a93f2d23403c93ac.jpg",
+      image:method3,
 
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -871,7 +888,7 @@ function Methods() {
     <section
       ref={ref}
       id="how-it-works"
-      style={{ padding: "100px 48px", position: "relative", zIndex: 1 }}
+      style={{padding: "clamp(50px,10vw,100px) clamp(12px,4vw,48px)", position: "relative", zIndex: 1 }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <div
@@ -921,7 +938,7 @@ function Methods() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3,1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
             gap: "24px",
             alignItems: "stretch",
           }}
@@ -956,7 +973,7 @@ function MethodCard({ m, i, vis }) {
 
         border: `1px solid ${hov ? m.border : "rgba(0,180,255,0.15)"}`,
         borderRadius: "14px",
-        padding: "36px 28px 32px",
+       padding: "clamp(20px,5vw,36px) clamp(16px,4vw,28px)",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
@@ -1247,9 +1264,9 @@ function Footer() {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "64px 48px 48px",
           display: "grid",
-          gridTemplateColumns: "1.5fr 1fr 1fr 1fr",
+         padding: "clamp(32px,8vw,64px) clamp(12px,4vw,48px)",
+gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
           gap: "48px",
         }}
       >
@@ -1364,7 +1381,7 @@ function Footer() {
       <div
         style={{
           borderTop: "1px solid rgba(0,180,255,0.08)",
-          padding: "20px 48px",
+         padding: "16px clamp(12px,4vw,48px)",
           maxWidth: "1200px",
           margin: "0 auto",
           display: "flex",
@@ -1426,7 +1443,7 @@ export default function HomePage() {
       >
         {/* <BG/> */}
        <Navbar navigate={navigate} />
-        <main style={{ position: "relative", zIndex: 1 }}>
+        <main style={{ position: "relative", zIndex: 1 ,overflowX: "hidden", }}>
           <Hero navigate={navigate} />
 
           <About />
