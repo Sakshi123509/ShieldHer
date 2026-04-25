@@ -709,6 +709,7 @@
 
 //LAUDE CODE
 import { useLocation, useNavigate } from "react-router-dom";
+import voice from "../assets/voice.jpg";
 
 export default function SOSConfirmation() {
   const { state } = useLocation();
@@ -742,7 +743,7 @@ export default function SOSConfirmation() {
           width: "100vw",
           minHeight: "100vh",
           position: "relative",
-          background: `linear-gradient(rgba(4,13,28,0.62), rgba(4,13,28,0.72)), url("https://i.pinimg.com/1200x/32/62/95/3262954384b2d2e2d9da54bbabad6fdf.jpg")`,
+          background: `linear-gradient(rgba(4,13,28,0.62), rgba(4,13,28,0.72)), url(${voice})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           display: "flex",

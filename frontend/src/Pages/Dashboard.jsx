@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import bg from "../assets/bg.jpg";
 
 /* ─── Mock profile data (replace with real state/context/API) ── */
 const MOCK_PROFILE = {
@@ -1048,7 +1049,7 @@ const removeTrigger = (word) => {
             padding: "84px 24px 60px",
 
              background: `linear-gradient(rgba(4,13,28,0.55), rgba(4,13,28,0.65)),
-          url("https://i.pinimg.com/736x/b3/15/52/b315527f272a1a00df44206a286308b7.jpg")`,
+          url(${bg})`,
           backgroundSize: "contain",
           backgroundPosition: "center",
        backgroundRepeat: "repeat"

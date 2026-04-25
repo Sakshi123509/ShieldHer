@@ -1,6 +1,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import addressbg from "../assets/address.jpg";
+import address2 from "../assets/address2.jpeg";
+import contact1 from "../assets/contact1.webp";
+import home from "../assets/home.jpg";
 /* ─── CSS ────────────────────────────────────────────────────── */
 const G = `
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
@@ -274,7 +278,7 @@ function ContactCard({ idx, contact, onChange, onRemove, canRemove }) {
 
       {/* Body */}
       {open && (
-        <div style={{ padding: "18px", display: "flex", flexDirection: "column", gap: "14px", backgroundImage: `linear-gradient(rgba(45, 36, 36, 0.5), rgba(35, 35, 125, 0.5)), url("https://www.shutterstock.com/image-vector/contact-us-customer-support-hotline-600nw-2407847227.jpg")`, backgroundSize: "cover", backgroundPosition: "center" }}>
+        <div style={{ padding: "18px", display: "flex", flexDirection: "column", gap: "14px", backgroundImage: `linear-gradient(rgba(45, 36, 36, 0.5), rgba(35, 35, 125, 0.5)), url(${contact1})`, backgroundSize: "cover", backgroundPosition: "center" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
             <Field label="Full Name" required>
               <input
@@ -501,7 +505,7 @@ setTimeout(() => {
           {/* STEP 0: Personal Info */}
           {step === 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: "18px", animation: "fadeUp .4s ease both" }}>
-              <Card icon="📍" title="Personal Information" bgImage={`linear-gradient(rgba(15, 41, 90, 0.5), rgba(255,255,255,0.2)), url("https://static.vecteezy.com/system/resources/thumbnails/030/337/740/original/loop-animation-of-glossy-shield-with-dark-background-3d-rendering-free-video.jpg")`}>
+              <Card icon="📍" title="Personal Information" bgImage={`linear-gradient(rgba(15, 41, 90, 0.5), rgba(255,255,255,0.2)), url(${home})`}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
                   <Field label="First Name" required>
                     <input type="text" placeholder="Priya" value={personal.firstName} onChange={(e) => setPersonal((p) => ({ ...p, firstName: e.target.value }))} />
@@ -568,7 +572,7 @@ setTimeout(() => {
           {/* STEP 2: Address */}
           {step === 2 && (
             <div style={{ display: "flex", flexDirection: "column", gap: "18px", animation: "fadeUp .4s ease both" }}>
-              <Card icon="🏠" title="Home Address" bgImage={`linear-gradient(rgba(41, 43, 48, 0.7), rgba(0, 0, 0, 0.85)), url("https://i.pinimg.com/1200x/10/53/4f/10534f48c2e1e0169ef2218f51e73222.jpg")`}>
+              <Card icon="🏠" title="Home Address" bgImage={`linear-gradient(rgba(41, 43, 48, 0.7), rgba(0, 0, 0, 0.85)), url(${addressbg})`}>
                 <Field label="Address Line 1" required>
                   <input type="text" placeholder="Flat / House No, Building, Street" value={address.line1} onChange={(e) => setAddress((a) => ({ ...a, line1: e.target.value }))} />
                 </Field>
@@ -593,7 +597,7 @@ setTimeout(() => {
                 </div>
               </Card>
 
-              <Card icon="📍" title="Safe Zone Radius" bgImage={`linear-gradient(rgba(0, 20, 60, 0.61), rgba(0, 0, 0, 0.69)), url("https://static.vecteezy.com/system/resources/previews/046/860/156/non_2x/map-with-red-pin-marked-free-photo.jpeg")`}>
+              <Card icon="📍" title="Safe Zone Radius" bgImage={`linear-gradient(rgba(0, 20, 60, 0.61), rgba(0, 0, 0, 0.69)), url(${address2})`}>
                 <p style={{ fontSize: "13px", color: "rgba(191, 197, 200, 0.87)", lineHeight: 1.65, fontFamily: "'Courier New', monospace" }}>
                   ShieldHer alerts when you leave this radius from home without enabling Travel Mode.
                 </p>
