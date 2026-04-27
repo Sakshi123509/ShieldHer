@@ -84,7 +84,7 @@ This project combines **IoT + AI + Full Stack Development** to build a real-time
 - Upload firmware using Arduino IDE
 
 <p align="center">
-  <img src="./images/hardware.jpeg" width="500"/>
+  <img src="./images/Hardware.jpeg" width="500"/>
 </p>
 
 ---
