@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ShieldHerLoader from "./Pages/ShieldHerLoader";
-import AuthPages from "./pages/AuthPages";
+import AuthPages from "./Pages/AuthPages";
 import { Home } from "./Pages/Home";
 import PersonalDetailsPage from "./Pages/PersonalDetailsPage";
 import SOSConfirmation from "./Pages/sosConfirmation";
