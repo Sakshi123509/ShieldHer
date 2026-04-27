@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import ShieldHerLoader from "./Pages/ShieldHerLoader";
-import AuthPages from "./Pages/AuthPages";
-import { Home } from "./Pages/Home";
-import PersonalDetailsPage from "./Pages/PersonalDetailsPage";
-import SOSConfirmation from "./Pages/sosConfirmation";
-import HomePage from "./Pages/HomePage";
-import ShieldHerFlipbook from "./Pages/ShieldHerFlipbook";
-import Dashboard from "./Pages/Dashboard";
+import ShieldHerLoader from "./pages/ShieldHerLoader";
+import AuthPages from "./pages/AuthPages";
+import { Home } from "./pages/Home";
+import PersonalDetailsPage from "./pages/PersonalDetailsPage";
+import SOSConfirmation from "./pages/sosConfirmation";
+import HomePage from "./pages/HomePage";
+import ShieldHerFlipbook from "./pages/ShieldHerFlipbook";
+import Dashboard from "./pages/Dashboard";
 function App() {
   return (
     <BrowserRouter>

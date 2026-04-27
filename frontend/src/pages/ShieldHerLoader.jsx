@@ -380,6 +380,8 @@ export default function ShieldHerLoader() {
   }
 
   useEffect(() => {
+
+    
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     function resize() {
