@@ -56,7 +56,7 @@ export default function VoiceGPS() {
         setLocation({ lat, lng });
 
         try {
-          const res = await triggerSOS(lat, lng);
+         const res = await triggerSOS(lat, lng);
           console.log("SOS Response:", res);
 
           // ✅ Use res.contacts OR res.success — whichever has data

@@ -361,12 +361,15 @@ export default function PersonalDetailsPage() {
 
   // Load existing profile
   useEffect(() => {
-    const fetchProfile = async () => {
+    const 
+    
+    
+    Profile = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) { setIsProfileExists(false); return; }
 
-        const res = await fetch("http://localhost:5000/api/profile", {
+        const res = await fetch("https://shieldher-backend-1h8b.onrender.com/api/profile", {
           method: "GET",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
@@ -439,7 +442,7 @@ export default function PersonalDetailsPage() {
 
       const profileData = { personal, contacts: emergencyContacts, address };
 
-      const res = await fetch("http://localhost:5000/api/profile", {
+      const res = await fetch("https://shieldher-backend-1h8b.onrender.com/api/profile", {
         method: isProfileExists ? "PUT" : "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(profileData),

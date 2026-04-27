@@ -41,7 +41,7 @@ export const triggerSOS = async (lat, lng) => {
 
   console.log("Triggering SOS for userId:", userId, "at", lat, lng);
 
-  const res = await fetch("http://localhost:5000/api/sos", {
+  const res = await fetch("https://shieldher-backend-1h8b.onrender.com/api/sos", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

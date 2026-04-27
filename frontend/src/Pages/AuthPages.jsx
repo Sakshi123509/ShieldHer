@@ -303,7 +303,7 @@ function LoginPage({ onSwitch }) {
   }, []);
   const handleLoginCredentialResponse = async (response) => {
     console.log("Google token:", response.credential);
-    const res = await fetch("http://localhost:5000/api/auth/google", {
+    const res = await fetch("https://shieldher-backend-1h8b.onrender.com/api/auth/google", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: response.credential }),

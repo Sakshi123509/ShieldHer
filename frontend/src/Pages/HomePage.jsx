@@ -76,7 +76,7 @@ function Navbar({ navigate }) {
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/profile", {
+        const res = await fetch("https://shieldher-backend-1h8b.onrender.com/api/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -370,7 +370,7 @@ function Hero({ navigate }) {
                   return;
                 }
 
-                const res = await fetch("http://localhost:5000/api/profile", {
+                const res = await fetch("https://shieldher-backend-1h8b.onrender.com/api/profile", {
                   method: "GET",
                   headers: {
                     Authorization: `Bearer ${token}`,
