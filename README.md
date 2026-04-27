@@ -44,8 +44,10 @@ This project combines **IoT + AI + Full Stack Development** to build a real-time
 * ESP32 microcontroller
 * GPS Module (for live location tracking)
 * GSM Module (for SMS & calling functionality)
-* Battery-powered setup for portability
 
+### Communication
+* Twilio API is integrated in the backend
+* Sends SMS alerts and makes calls via internet
 ---
 
 ## System Architecture
