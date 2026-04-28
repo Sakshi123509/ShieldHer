@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: function () {
-      return !this.googleId; // ✅ googleId nahi hai to password required
+      return !this.googleId; //  googleId nahi hai to password required
     }
   },
   googleId: { type: String, default: null },
